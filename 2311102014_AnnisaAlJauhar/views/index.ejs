@@ -1,0 +1,243 @@
+<!-- 
+    Nama  : Annisa Al Jauhar
+    NIM   : 2311102014
+    Kelas : S1 IF-11-REG01
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Buku</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --dark: #0f172a;
+            --card: #1e293b;
+            --border: rgba(255,255,255,0.08);
+        }
+        body {
+            background: var(--dark);
+            color: #e2e8f0;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+        }
+        .navbar-custom {
+            background: rgba(30,41,59,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+        .card-custom {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+        .btn-tambah {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            color: white;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-tambah:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+            color: white;
+        }
+        table#bukuTable thead th {
+            background: rgba(99,102,241,0.15) !important;
+            color: #94a3b8 !important;
+            font-size: 0.78rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.08em !important;
+            border: none !important;
+            padding: 12px 16px !important;
+        }
+        table#bukuTable tbody td {
+            background: transparent !important;
+            color: #cbd5e1 !important;
+            border-color: var(--border) !important;
+            padding: 12px 16px !important;
+            vertical-align: middle !important;
+        }
+        table#bukuTable tbody tr:hover td {
+            background: rgba(255,255,255,0.03) !important;
+        }
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid var(--border) !important;
+            color: #e2e8f0 !important;
+            border-radius: 8px !important;
+            padding: 4px 10px !important;
+        }
+        .dataTables_wrapper .dataTables_filter label,
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_info {
+            color: #64748b !important;
+            font-size: 0.82rem !important;
+        }
+        .paginate_button {
+            color: #94a3b8 !important;
+            border-radius: 8px !important;
+            border: none !important;
+        }
+        .paginate_button.current {
+            background: var(--primary) !important;
+            color: white !important;
+            border: none !important;
+        }
+        .paginate_button:hover {
+            background: rgba(99,102,241,0.2) !important;
+            color: white !important;
+        }
+        .badge-genre {
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(99,102,241,0.2);
+            color: var(--primary-light);
+        }
+        .btn-edit {
+            background: rgba(234,179,8,0.15);
+            border: 1px solid rgba(234,179,8,0.3);
+            color: #fbbf24;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-edit:hover { background: rgba(234,179,8,0.3); color: #fde68a; }
+        .btn-hapus {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #f87171;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-hapus:hover { background: rgba(239,68,68,0.3); color: #fca5a5; }
+        .stat-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-custom mb-4">
+    <div class="container">
+        <span class="navbar-brand text-white fw-bold">📚 Data Buku</span>
+        <a href="/tambah" class="btn btn-tambah">
+            <i class="bi bi-plus-lg me-1"></i> Tambah Buku
+        </a>
+    </div>
+</nav>
+
+<div class="container pb-5">
+
+    <div class="row g-3 mb-4">
+        <div class="col-4">
+            <div class="stat-box">
+                <div class="stat-number"><%= buku.length %></div>
+                <div class="stat-label">Total Buku</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="stat-box">
+                <div class="stat-number"><%= [...new Set(buku.map(b => b.genre))].length %></div>
+                <div class="stat-label">Genre</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="stat-box">
+                <div class="stat-number"><%= buku.reduce((a,b) => a + parseInt(b.stok||0), 0) %></div>
+                <div class="stat-label">Total Stok</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-custom p-4">
+        <h5 class="mb-4 fw-bold">Daftar Buku</h5>
+        <div class="table-responsive">
+            <table id="bukuTable" class="table table-borderless" width="100%">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Judul</th>
+                        <th>Pengarang</th>
+                        <th>Tahun</th>
+                        <th>Genre</th>
+                        <th>Stok</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#bukuTable').DataTable({
+        ajax: {
+            url: '/api/buku',
+            dataSrc: ''
+        },
+        columns: [
+            { data: null, render: function(data, type, row, meta) { return meta.row + 1; }, orderable: false },
+            { data: 'judul' },
+            { data: 'pengarang' },
+            { data: 'tahun' },
+            { data: 'genre', render: function(data) { return '<span class="badge-genre">'+data+'</span>'; }},
+            { data: 'stok' },
+            { data: 'id', render: function(data) {
+                return '<a href="/edit/'+data+'" class="btn-edit me-1"><i class="bi bi-pencil"></i> Edit</a>' +
+                       '<form action="/hapus/'+data+'" method="POST" style="display:inline" onsubmit="return confirm(\'Yakin hapus buku ini?\')">' +
+                       '<button type="submit" class="btn-hapus"><i class="bi bi-trash"></i> Hapus</button></form>';
+            }, orderable: false }
+        ],
+        pageLength: 5,
+        lengthMenu: [5, 10, 25],
+        language: {
+            search: 'Cari:',
+            lengthMenu: 'Tampilkan _MENU_ data',
+            info: 'Menampilkan _START_-_END_ dari _TOTAL_ buku',
+            infoEmpty: 'Tidak ada data',
+            zeroRecords: 'Buku tidak ditemukan',
+            paginate: { next: '›', previous: '‹' }
+        }
+    });
+});
+</script>
+</body>
+</html>
