@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PuTi — Input Mahasiswa Baru</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --blue-50:  #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-200: #bfdbfe;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --teal-400: #2dd4bf;
+            --teal-500: #14b8a6;
+            --slate-50:  #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --red-100:  #fee2e2;
+            --red-600:  #dc2626;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-800);
+            min-height: 100vh;
+        }
+
+        /* ─── NAVBAR ─────────────────────────────── */
+        .puti-navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1030;
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid var(--slate-200);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 1px 4px rgba(15,23,42,.05);
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 0.6rem;
+            text-decoration: none;
+            font-size: 1rem; font-weight: 800; color: var(--slate-900);
+        }
+        .nav-brand .logo {
+            width: 34px; height: 34px;
+            background: var(--blue-600);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .nav-brand .wordmark { color: var(--blue-600); }
+        .nav-links { display: flex; gap: 4px; }
+        .nav-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 8px;
+            font-size: 0.82rem; font-weight: 600;
+            text-decoration: none; color: var(--slate-500);
+            transition: all .15s;
+        }
+        .nav-btn:hover { background: var(--slate-100); color: var(--slate-700); }
+        .nav-btn.active { background: var(--blue-600); color: white !important; }
+        .nav-btn i { font-size: 0.85rem; }
+
+        /* ─── PAGE ───────────────────────────────── */
+        .page { padding-top: 80px; padding-bottom: 3rem; }
+
+        /* ─── PAGE HEADER ────────────────────────── */
+        .page-header {
+            padding: 1.75rem 0 1.5rem;
+            border-bottom: 1px solid var(--slate-200);
+            margin-bottom: 1.5rem;
+        }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+            color: var(--blue-600);
+            background: var(--blue-50);
+            border: 1px solid var(--blue-200);
+            border-radius: 6px;
+            padding: 3px 10px;
+            margin-bottom: 0.65rem;
+        }
+        .page-header h1 { font-size: 1.55rem; font-weight: 800; color: var(--slate-900); line-height: 1.25; }
+        .page-header p { font-size: 0.83rem; color: var(--slate-500); margin-top: 0.3rem; }
+
+        /* ─── STAT CARDS ─────────────────────────── */
+        .stat-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 0.9rem;
+            height: 100%;
+        }
+        .stat-icon {
+            width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .si-blue  { background: var(--blue-50);  color: var(--blue-600); }
+        .si-teal  { background: #f0fdfa;          color: var(--teal-500); }
+        .si-slate { background: var(--slate-100); color: var(--slate-600); }
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.65rem; font-weight: 700;
+            line-height: 1; color: var(--slate-900);
+        }
+        .stat-label {
+            font-size: 0.68rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .06em;
+            color: var(--slate-400); margin-top: 3px;
+        }
+
+        /* ─── CARD ───────────────────────────────── */
+        .puti-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .puti-card-head {
+            display: flex; align-items: center; gap: 8px;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--slate-100);
+        }
+        .card-head-icon {
+            width: 28px; height: 28px; border-radius: 7px;
+            background: var(--blue-50); color: var(--blue-600);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; flex-shrink: 0;
+        }
+        .card-head-title {
+            font-size: 0.83rem; font-weight: 700; color: var(--slate-700);
+            text-transform: uppercase; letter-spacing: .05em;
+        }
+
+        /* ─── FORM FIELDS ────────────────────────── */
+        .field label {
+            display: block;
+            font-size: 0.76rem; font-weight: 600; color: var(--slate-500);
+            margin-bottom: 6px;
+        }
+        .field .form-control,
+        .field .form-select {
+            height: 40px;
+            border: 1.5px solid var(--slate-200);
+            border-radius: 8px;
+            padding: 0 12px;
+            font-family: 'Plus Jakarta Sans', inherit;
+            font-size: 0.85rem; color: var(--slate-800);
+            background: var(--slate-50);
+            transition: border-color .15s, box-shadow .15s, background .15s;
+        }
+        .field .form-control:focus,
+        .field .form-select:focus {
+            border-color: var(--blue-500);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+        }
+        .field .form-control::placeholder { color: var(--slate-400); }
+        #nim { font-family: 'JetBrains Mono', monospace; font-size: 0.83rem; letter-spacing: .03em; }
+
+        /* ─── SUBMIT BUTTON ──────────────────────── */
+        .btn-submit {
+            display: inline-flex; align-items: center; gap: 7px;
+            height: 40px; padding: 0 22px;
+            background: var(--blue-600); color: white;
+            border: none; border-radius: 9px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.86rem; font-weight: 700;
+            cursor: pointer; white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(37,99,235,.25), 0 4px 12px rgba(37,99,235,.2);
+            transition: all .15s;
+        }
+        .btn-submit:hover { background: var(--blue-700); box-shadow: 0 2px 6px rgba(37,99,235,.35), 0 6px 18px rgba(37,99,235,.25); }
+        .btn-submit:disabled { opacity: .65; cursor: not-allowed; }
+
+        /* ─── INFO NOTE ──────────────────────────── */
+        .info-note {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--blue-50);
+            border: 1px solid var(--blue-200);
+            border-radius: 8px;
+            padding: 9px 12px;
+        }
+        .info-note i { color: var(--blue-500); font-size: 0.9rem; flex-shrink: 0; }
+        .info-note p { font-size: 0.78rem; color: var(--slate-600); line-height: 1.45; margin: 0; }
+
+        /* ─── RECENT LIST ────────────────────────── */
+        .btn-all {
+            display: inline-flex; align-items: center; gap: 5px;
+            height: 30px; padding: 0 12px;
+            background: var(--slate-100); color: var(--slate-600);
+            border-radius: 7px; text-decoration: none;
+            font-size: 0.78rem; font-weight: 600;
+            transition: all .15s;
+        }
+        .btn-all:hover { background: var(--blue-50); color: var(--blue-600); }
+
+        .r-empty { padding: 3rem 1.5rem; text-align: center; color: var(--slate-400); }
+        .r-empty i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: .4; }
+        .r-empty p { font-size: 0.83rem; }
+
+        .r-item {
+            display: grid;
+            grid-template-columns: 38px 1fr auto auto;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--slate-100);
+            transition: background .12s;
+        }
+        .r-item:last-child { border-bottom: none; }
+        .r-item:hover { background: var(--slate-50); }
+
+        .avatar {
+            width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-400));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 700; color: white;
+        }
+        .r-name { font-size: 0.86rem; font-weight: 600; color: var(--slate-800); }
+        .r-sub  { font-size: 0.73rem; color: var(--slate-400); margin-top: 2px; }
+        .jurusan-badge {
+            font-size: 0.7rem; font-weight: 600;
+            padding: 3px 9px; border-radius: 20px;
+            background: var(--blue-50); color: var(--blue-700);
+            white-space: nowrap;
+        }
+        .nim-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            padding: 3px 8px; border-radius: 5px;
+            background: var(--slate-100); color: var(--slate-600);
+            white-space: nowrap;
+        }
+
+        /* ─── TOAST ──────────────────────────────── */
+        .toast-wrap {
+            position: fixed; top: 68px; right: 1.25rem;
+            z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+            pointer-events: none;
+        }
+        .puti-toast {
+            display: flex; align-items: center; gap: 9px;
+            padding: 10px 16px; border-radius: 10px;
+            font-size: 0.84rem; font-weight: 600;
+            min-width: 240px;
+            box-shadow: 0 4px 20px rgba(15,23,42,.12);
+            animation: tin .28s cubic-bezier(.34,1.56,.64,1);
+            pointer-events: all;
+        }
+        @keyframes tin { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
+        .puti-toast.success { background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46; }
+        .puti-toast.error   { background: var(--red-100); border: 1px solid #fca5a5; color: var(--red-600); }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="puti-navbar">
+    <a href="/" class="nav-brand">
+        <div class="logo">🎓</div>
+        <span class="wordmark">PuTi</span>
+    </a>
+    <div class="nav-links">
+        <a href="index.html" class="nav-btn active"><i class="bi bi-plus-circle-fill"></i> Input</a>
+        <a href="data.html" class="nav-btn"><i class="bi bi-table"></i> Data</a>
+    </div>
+</nav>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<div class="container page" style="max-width:960px">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="eyebrow"><i class="bi bi-mortarboard-fill"></i> Input Mahasiswa Baru</div>
+        <h1>Tambah Data Mahasiswa Baru</h1>
+        <p>Isi formulir di bawah untuk mendaftarkan mahasiswa ke dalam sistem.</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-4">
+            <div class="stat-card">
+                <div class="stat-icon si-blue"><i class="bi bi-people-fill"></i></div>
+                <div>
+                    <div class="stat-num" id="statTotal">0</div>
+                    <div class="stat-label">Total Mahasiswa</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="stat-card">
+                <div class="stat-icon si-teal"><i class="bi bi-building"></i></div>
+                <div>
+                    <div class="stat-num" id="statJurusan">0</div>
+                    <div class="stat-label">Jurusan</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="stat-card">
+                <div class="stat-icon si-slate"><i class="bi bi-calendar3"></i></div>
+                <div>
+                    <div class="stat-num" id="statAngkatan">0</div>
+                    <div class="stat-label">Angkatan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="puti-card mb-4">
+        <div class="puti-card-head">
+            <div class="card-head-icon"><i class="bi bi-person-plus-fill"></i></div>
+            <div class="card-head-title">Form Pendaftaran</div>
+        </div>
+        <div class="p-4">
+            <form id="formMhs">
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-4 field">
+                        <label>NIM</label>
+                        <input type="text" id="nim" class="form-control" placeholder="2021001234" required>
+                    </div>
+                    <div class="col-12 col-md-4 field">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="nama" class="form-control" placeholder="Nama sesuai KTP" required>
+                    </div>
+                    <div class="col-12 col-md-4 field">
+                        <label>Jurusan</label>
+                        <select id="jurusan" class="form-select" required>
+                            <option value="">— Pilih Jurusan —</option>
+                            <option>Teknik Informatika</option>
+                            <option>Sistem Informasi</option>
+                            <option>Teknik Elektro</option>
+                            <option>Desain Komunikasi Visual</option>
+                            <option>Teknik Industri</option>
+                            <option>Sains Data</option>
+                            <option>Teknik Telekomunikasi</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 field">
+                        <label>Angkatan</label>
+                        <select id="angkatan" class="form-select">
+                            <option value="">— Tahun —</option>
+                            <option>2025</option><option>2024</option><option>2023</option>
+                            <option>2022</option><option>2021</option><option>2020</option>
+                            <option>2019</option><option>2018</option><option>2017</option>
+                            <option>2016</option><option>2015</option><option>2014</option>
+                            <option>2013</option><option>2012</option><option>2011</option>
+                            <option>2010</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 field">
+                        <label>Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="mahasiswa@email.com">
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <button type="submit" class="btn-submit" id="btnSubmit">
+                        <i class="bi bi-cloud-upload-fill"></i> Simpan Mahasiswa
+                    </button>
+                    <div class="info-note flex-grow-1">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <p>NIM tidak dapat diubah setelah disimpan. Pastikan data sudah benar sebelum menyimpan.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Recent Card -->
+    <div class="puti-card">
+        <div class="puti-card-head">
+            <div class="card-head-icon"><i class="bi bi-clock-history"></i></div>
+            <div class="card-head-title d-flex align-items-center justify-content-between w-100">
+                <span>Data Mahasiswa Terbaru</span>
+                <a href="data.html" class="btn-all">Lihat Semua <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+        <div id="recentList">
+            <div class="r-empty"><i class="bi bi-inbox"></i><p>Belum ada data mahasiswa.</p></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function showToast(msg, type = 'success') {
+        const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+        const t = $(`<div class="puti-toast ${type}"><i class="bi ${icon}"></i>${msg}</div>`);
+        $('#toastWrap').append(t);
+        setTimeout(() => t.fadeOut(300, () => t.remove()), 3200);
+    }
+
+    function initials(n) {
+        return n.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    }
+
+    function loadData() {
+        $.get('/mahasiswa', function(data) {
+            $('#statTotal').text(data.length);
+            $('#statJurusan').text([...new Set(data.map(m => m.jurusan).filter(Boolean))].length);
+            $('#statAngkatan').text([...new Set(data.map(m => m.angkatan).filter(Boolean))].length);
+
+            const recent = data.slice(-12).reverse();
+            if (!recent.length) {
+                $('#recentList').html('<div class="r-empty"><i class="bi bi-inbox"></i><p>Belum ada data mahasiswa.</p></div>');
+                return;
+            }
+            const rows = recent.map(m => `
+                <div class="r-item">
+                    <div class="avatar">${initials(m.nama)}</div>
+                    <div>
+                        <div class="r-name">${m.nama}</div>
+                        <div class="r-sub">${m.angkatan ? m.angkatan + ' · ' : ''}${m.email || ''}</div>
+                    </div>
+                    <span class="jurusan-badge">${m.jurusan || '—'}</span>
+                    <span class="nim-tag">${m.nim}</span>
+                </div>
+            `).join('');
+            $('#recentList').html(`<div>${rows}</div>`);
+        });
+    }
+
+    loadData();
+
+    $('#formMhs').submit(function(e) {
+        e.preventDefault();
+        const $btn = $('#btnSubmit');
+        $btn.html('<i class="bi bi-hourglass-split"></i> Menyimpan...').prop('disabled', true);
+        $.ajax({
+            url: '/mahasiswa', method: 'POST', contentType: 'application/json',
+            data: JSON.stringify({
+                nim: $('#nim').val().trim(),
+                nama: $('#nama').val().trim(),
+                jurusan: $('#jurusan').val(),
+                angkatan: $('#angkatan').val(),
+                email: $('#email').val().trim()
+            }),
+            success: function() {
+                showToast('Data berhasil disimpan! 🎉');
+                $('#formMhs')[0].reset();
+                loadData();
+            },
+            error: function(e) {
+                showToast(e.responseJSON?.message || 'Gagal menyimpan data.', 'error');
+            },
+            complete: function() {
+                $btn.html('<i class="bi bi-cloud-upload-fill"></i> Simpan Mahasiswa').prop('disabled', false);
+            }
+        });
+    });
+</script>
+</body>
+</html>

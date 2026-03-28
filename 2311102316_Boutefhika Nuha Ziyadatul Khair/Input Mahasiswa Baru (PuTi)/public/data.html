@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PuTi — Data Mahasiswa</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <style>
+        :root {
+            --blue-50:  #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-200: #bfdbfe;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --teal-500: #14b8a6;
+            --orange-500: #f97316;
+            --red-50:   #fef2f2;
+            --red-200:  #fecaca;
+            --red-500:  #ef4444;
+            --red-600:  #dc2626;
+            --slate-50:  #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-800);
+            min-height: 100vh;
+        }
+
+        /* ─── NAVBAR ─────────────────────────────── */
+        .puti-navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1030;
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid var(--slate-200);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 1px 4px rgba(15,23,42,.05);
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 0.6rem;
+            text-decoration: none;
+            font-size: 1rem; font-weight: 800; color: var(--slate-900);
+        }
+        .nav-brand .logo {
+            width: 34px; height: 34px;
+            background: var(--blue-600); border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .nav-brand .wordmark { color: var(--blue-600); }
+        .nav-links { display: flex; gap: 4px; }
+        .nav-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 8px;
+            font-size: 0.82rem; font-weight: 600;
+            text-decoration: none; color: var(--slate-500);
+            transition: all .15s;
+        }
+        .nav-btn:hover { background: var(--slate-100); color: var(--slate-700); }
+        .nav-btn.active { background: var(--blue-600); color: white !important; }
+        .nav-btn i { font-size: 0.85rem; }
+
+        /* ─── PAGE ───────────────────────────────── */
+        .page { padding-top: 80px; padding-bottom: 3rem; }
+
+        /* ─── PAGE HEADER ────────────────────────── */
+        .page-header {
+            padding: 1.75rem 0 1.5rem;
+            border-bottom: 1px solid var(--slate-200);
+            margin-bottom: 1.5rem;
+        }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+            color: var(--blue-600);
+            background: var(--blue-50);
+            border: 1px solid var(--blue-200);
+            border-radius: 6px;
+            padding: 3px 10px;
+            margin-bottom: 0.65rem;
+        }
+        .page-header h1 { font-size: 1.55rem; font-weight: 800; color: var(--slate-900); line-height: 1.25; }
+        .page-header p  { font-size: 0.83rem; color: var(--slate-500); margin-top: 0.3rem; margin-bottom: 0; }
+
+        /* ─── STAT CARDS ─────────────────────────── */
+        .stat-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 0.9rem;
+            height: 100%;
+        }
+        .stat-icon {
+            width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 1rem;
+        }
+        .si-blue  { background: var(--blue-50);  color: var(--blue-600); }
+        .si-teal  { background: #f0fdfa;          color: var(--teal-500); }
+        .si-slate { background: var(--slate-100); color: var(--slate-600); }
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.65rem; font-weight: 700; line-height: 1; color: var(--slate-900);
+        }
+        .stat-label {
+            font-size: 0.68rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .06em;
+            color: var(--slate-400); margin-top: 3px;
+        }
+
+        /* ─── BUTTON ADD ─────────────────────────── */
+        .btn-add {
+            display: inline-flex; align-items: center; gap: 7px;
+            height: 40px; padding: 0 20px;
+            background: var(--blue-600); color: white;
+            border: none; border-radius: 9px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.86rem; font-weight: 700;
+            text-decoration: none; white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(37,99,235,.25), 0 4px 12px rgba(37,99,235,.2);
+            transition: all .15s; flex-shrink: 0;
+        }
+        .btn-add:hover { background: var(--blue-700); color: white; }
+
+        /* ─── PUTI CARD ──────────────────────────── */
+        .puti-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .puti-card-head {
+            display: flex; align-items: center; gap: 8px;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--slate-100);
+        }
+        .card-head-icon {
+            width: 28px; height: 28px; border-radius: 7px;
+            background: var(--blue-50); color: var(--blue-600);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; flex-shrink: 0;
+        }
+        .card-head-title {
+            font-size: 0.83rem; font-weight: 700; color: var(--slate-700);
+            text-transform: uppercase; letter-spacing: .05em;
+        }
+
+        /* ─── DATATABLES OVERRIDES ───────────────── */
+        .table-wrap { padding: 0.75rem 1.5rem 1.5rem; overflow-x: auto; }
+        table.dataTable { border-collapse: separate !important; border-spacing: 0 !important; width: 100% !important; }
+        table.dataTable thead th {
+            background: var(--slate-50) !important;
+            color: var(--slate-500) !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 0.7rem !important; font-weight: 700 !important;
+            text-transform: uppercase !important; letter-spacing: .06em !important;
+            padding: 10px 12px !important;
+            border: none !important;
+            border-bottom: 1.5px solid var(--slate-200) !important;
+            white-space: nowrap;
+        }
+        table.dataTable tbody tr { background: transparent !important; }
+        table.dataTable tbody tr:hover td { background: var(--slate-50) !important; }
+        table.dataTable tbody td {
+            padding: 11px 12px !important; border: none !important;
+            border-bottom: 1px solid var(--slate-100) !important;
+            color: var(--slate-800) !important;
+            font-size: 0.85rem !important; vertical-align: middle !important;
+        }
+        table.dataTable tbody tr:last-child td { border-bottom: none !important; }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            background: var(--slate-50) !important;
+            border: 1.5px solid var(--slate-200) !important;
+            border-radius: 8px !important;
+            color: var(--slate-800) !important;
+            padding: 6px 10px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 0.83rem !important; outline: none !important;
+        }
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--blue-500) !important;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.12) !important;
+        }
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            color: var(--slate-400) !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 0.8rem !important; padding: 8px 0 !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            background: white !important; border: 1px solid var(--slate-200) !important;
+            border-radius: 7px !important; color: var(--slate-600) !important;
+            margin: 0 2px !important; padding: 4px 10px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important; font-size: 0.82rem !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: var(--blue-600) !important; border-color: var(--blue-600) !important; color: white !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current) {
+            background: var(--blue-50) !important; border-color: var(--blue-200) !important; color: var(--blue-600) !important;
+        }
+
+        /* ─── BADGES ─────────────────────────────── */
+        .nim-tag {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.73rem;
+            padding: 3px 8px; border-radius: 5px;
+            background: var(--slate-100); color: var(--slate-600);
+        }
+        .jurusan-badge {
+            font-size: 0.7rem; font-weight: 600;
+            padding: 3px 9px; border-radius: 20px;
+            background: var(--blue-50); color: var(--blue-700); white-space: nowrap;
+        }
+        .angkatan-badge {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            padding: 3px 8px; border-radius: 5px;
+            background: #fff7ed; color: var(--orange-500);
+        }
+        .avatar {
+            width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-400));
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; color: white; margin-right: 8px;
+        }
+        .name-cell { display: flex; align-items: center; }
+        .name-text { font-weight: 600; color: var(--slate-800); }
+
+        /* ─── ACTION BUTTONS ─────────────────────── */
+        .btn-act {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 30px; height: 30px; border-radius: 7px;
+            border: none; cursor: pointer; font-size: 0.8rem; transition: all .15s;
+        }
+        .btn-act.edit { background: var(--blue-50);  color: var(--blue-600); }
+        .btn-act.edit:hover { background: var(--blue-100); }
+        .btn-act.del  { background: var(--red-50);   color: var(--red-500); }
+        .btn-act.del:hover  { background: var(--red-200); }
+
+        /* ─── MODAL (Bootstrap override) ────────── */
+        .modal-content {
+            border: 1px solid var(--slate-200) !important;
+            border-radius: 16px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+        }
+        .modal-backdrop { backdrop-filter: blur(4px); }
+        .puti-modal-icon {
+            width: 44px; height: 44px; border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; margin-bottom: 1rem;
+        }
+        .puti-modal-icon.edit-icon { background: var(--blue-50); color: var(--blue-600); }
+        .puti-modal-icon.del-icon  { background: var(--red-50);  color: var(--red-500); }
+        .modal-title-custom { font-size: 1.1rem; font-weight: 800; color: var(--slate-900); }
+        .modal-sub { font-size: 0.81rem; color: var(--slate-400); }
+
+        .mfield label {
+            display: block; font-size: 0.76rem; font-weight: 600;
+            color: var(--slate-500); margin-bottom: 5px;
+        }
+        .mfield .form-control,
+        .mfield .form-select {
+            height: 40px; border: 1.5px solid var(--slate-200); border-radius: 8px;
+            padding: 0 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem; color: var(--slate-800);
+            background: var(--slate-50); outline: none;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        .mfield .form-control:focus,
+        .mfield .form-select:focus {
+            border-color: var(--blue-500); background: white;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.12) !important;
+        }
+        .mfield .form-control[readonly] { opacity: .5; cursor: not-allowed; }
+
+        .btn-modal-cancel {
+            padding: 0 18px; height: 40px;
+            background: var(--slate-100); border: none; border-radius: 8px;
+            color: var(--slate-600); font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all .15s;
+        }
+        .btn-modal-cancel:hover { background: var(--slate-200); }
+        .btn-modal-save {
+            flex: 1; height: 40px;
+            background: var(--blue-600); border: none; border-radius: 8px;
+            color: white; font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all .15s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-modal-save:hover { background: var(--blue-700); }
+        .btn-modal-del {
+            flex: 1; height: 40px;
+            background: var(--red-500); border: none; border-radius: 8px;
+            color: white; font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all .15s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-modal-del:hover { background: var(--red-600); }
+
+        /* ─── TOAST ──────────────────────────────── */
+        .toast-wrap {
+            position: fixed; top: 68px; right: 1.25rem;
+            z-index: 99999; display: flex; flex-direction: column; gap: 8px;
+            pointer-events: none;
+        }
+        .puti-toast {
+            display: flex; align-items: center; gap: 9px;
+            padding: 10px 16px; border-radius: 10px;
+            font-size: 0.84rem; font-weight: 600; min-width: 240px;
+            box-shadow: 0 4px 20px rgba(15,23,42,.12);
+            animation: tin .28s cubic-bezier(.34,1.56,.64,1);
+            pointer-events: all;
+        }
+        @keyframes tin { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
+        .puti-toast.success { background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46; }
+        .puti-toast.error   { background: var(--red-50); border: 1px solid var(--red-200); color: var(--red-600); }
+
+        .empty-state { padding: 3rem; text-align: center; color: var(--slate-400); }
+        .empty-state i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: .35; }
+        .empty-state p { font-size: 0.83rem; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="puti-navbar">
+    <a href="/" class="nav-brand">
+        <div class="logo">🎓</div><span class="wordmark">PuTi</span>
+    </a>
+    <div class="nav-links">
+        <a href="index.html" class="nav-btn"><i class="bi bi-plus-circle-fill"></i> Input</a>
+        <a href="data.html" class="nav-btn active"><i class="bi bi-table"></i> Data</a>
+    </div>
+</nav>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ─── EDIT MODAL (Bootstrap) ─────────────────────── -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="puti-modal-icon edit-icon"><i class="bi bi-pencil-fill"></i></div>
+            <div class="modal-title-custom mb-1">Edit Mahasiswa</div>
+            <div class="modal-sub mb-3">Perbarui informasi data mahasiswa</div>
+
+            <div class="row g-2 mb-2">
+                <div class="col-6 mfield">
+                    <label>NIM</label>
+                    <input id="editNim" class="form-control" readonly>
+                </div>
+                <div class="col-6 mfield">
+                    <label>Angkatan</label>
+                    <select id="editAngkatan" class="form-select">
+                        <option value="">— Tahun —</option>
+                        <option>2025</option><option>2024</option><option>2023</option>
+                        <option>2022</option><option>2021</option><option>2020</option>
+                        <option>2019</option><option>2018</option><option>2017</option>
+                        <option>2016</option><option>2015</option><option>2014</option>
+                        <option>2013</option><option>2012</option><option>2011</option>
+                        <option>2010</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mfield mb-2">
+                <label>Nama Lengkap</label>
+                <input id="editNama" class="form-control" placeholder="Nama lengkap">
+            </div>
+            <div class="mfield mb-2">
+                <label>Jurusan</label>
+                <select id="editJurusan" class="form-select">
+                    <option value="">— Pilih Jurusan —</option>
+                    <option>Teknik Informatika</option>
+                    <option>Sistem Informasi</option>
+                    <option>Teknik Elektro</option>
+                    <option>Teknik Sipil</option>
+                    <option>Manajemen</option>
+                    <option>Akuntansi</option>
+                    <option>Hukum</option>
+                    <option>Kedokteran</option>
+                </select>
+            </div>
+            <div class="mfield mb-3">
+                <label>Email</label>
+                <input id="editEmail" type="email" class="form-control" placeholder="email@example.com">
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn-modal-cancel" data-bs-dismiss="modal">Batal</button>
+                <button class="btn-modal-save" onclick="saveEdit()"><i class="bi bi-cloud-check-fill"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── DELETE MODAL (Bootstrap) ──────────────────── -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
+        <div class="modal-content p-4">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="puti-modal-icon del-icon"><i class="bi bi-trash3-fill"></i></div>
+            <div class="modal-title-custom mb-1">Hapus Data?</div>
+            <div class="modal-sub mb-3" id="deleteDesc">Data ini akan dihapus permanen dan tidak bisa dikembalikan.</div>
+            <div class="d-flex gap-2">
+                <button class="btn-modal-cancel" data-bs-dismiss="modal">Batal</button>
+                <button class="btn-modal-del" onclick="confirmDelete()"><i class="bi bi-trash3"></i> Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── PAGE ───────────────────────────────────────── -->
+<div class="container page" style="max-width:960px">
+
+    <!-- Page Header -->
+    <div class="page-header d-flex align-items-end justify-content-between flex-wrap gap-3">
+        <div>
+            <div class="eyebrow"><i class="bi bi-table"></i> Manajemen Data</div>
+            <h1>Data Mahasiswa</h1>
+            <p>Kelola seluruh data mahasiswa yang terdaftar dalam sistem.</p>
+        </div>
+        <a href="index.html" class="btn-add"><i class="bi bi-plus-lg"></i> Tambah Mahasiswa</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-4">
+            <div class="stat-card">
+                <div class="stat-icon si-blue"><i class="bi bi-people-fill"></i></div>
+                <div>
+                    <div class="stat-num" id="statTotal">—</div>
+                    <div class="stat-label">Total Mahasiswa</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="stat-card">
+                <div class="stat-icon si-teal"><i class="bi bi-building"></i></div>
+                <div>
+                    <div class="stat-num" id="statJurusan">—</div>
+                    <div class="stat-label">Jurusan</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="stat-card">
+                <div class="stat-icon si-slate"><i class="bi bi-calendar3"></i></div>
+                <div>
+                    <div class="stat-num" id="statAngkatan">—</div>
+                    <div class="stat-label">Angkatan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="puti-card">
+        <div class="puti-card-head">
+            <div class="card-head-icon"><i class="bi bi-list-ul"></i></div>
+            <div class="card-head-title">Daftar Mahasiswa</div>
+        </div>
+        <div class="table-wrap">
+            <table id="tableMhs" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th><th>NIM</th><th>Nama</th><th>Jurusan</th>
+                        <th>Angkatan</th><th>Email</th><th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+    let table, deleteNim = null;
+    let editModalInstance, deleteModalInstance;
+
+    function showToast(msg, type = 'success') {
+        const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+        const t = $(`<div class="puti-toast ${type}"><i class="bi ${icon}"></i>${msg}</div>`);
+        $('#toastWrap').append(t);
+        setTimeout(() => t.fadeOut(300, () => t.remove()), 3500);
+    }
+
+    function initials(n) {
+        return n.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    }
+
+    function loadStats(data) {
+        $('#statTotal').text(data.length);
+        $('#statJurusan').text([...new Set(data.map(m => m.jurusan).filter(Boolean))].length);
+        $('#statAngkatan').text([...new Set(data.map(m => m.angkatan).filter(Boolean))].length);
+    }
+
+    $(document).ready(function () {
+        editModalInstance   = new bootstrap.Modal(document.getElementById('editModal'));
+        deleteModalInstance = new bootstrap.Modal(document.getElementById('deleteModal'));
+
+        table = $('#tableMhs').DataTable({
+            ajax: {
+                url: '/mahasiswa',
+                dataSrc: function (json) { loadStats(json); return json; }
+            },
+            columns: [
+                { data: null, render: (d, t, r, m) => `<span style="color:var(--slate-400);font-family:'JetBrains Mono',monospace;font-size:0.76rem">${m.row + 1}</span>` },
+                { data: 'nim',     render: d => `<span class="nim-tag">${d}</span>` },
+                { data: 'nama',    render: d => `<div class="name-cell"><div class="avatar">${initials(d)}</div><span class="name-text">${d}</span></div>` },
+                { data: 'jurusan', render: d => d ? `<span class="jurusan-badge">${d}</span>` : `<span style="color:var(--slate-300)">—</span>` },
+                { data: 'angkatan',render: d => d ? `<span class="angkatan-badge">${d}</span>` : `<span style="color:var(--slate-300)">—</span>` },
+                { data: 'email',   render: d => d ? `<a href="mailto:${d}" style="color:var(--blue-600);font-size:0.83rem;text-decoration:none">${d}</a>` : `<span style="color:var(--slate-300)">—</span>` },
+                { data: null, render: d => `<div style="display:flex;gap:6px"><button class="btn-act edit" onclick="openEdit('${d.nim}')" title="Edit"><i class="bi bi-pencil"></i></button><button class="btn-act del" onclick="openDelete('${d.nim}','${d.nama}')" title="Hapus"><i class="bi bi-trash3"></i></button></div>` }
+            ],
+            language: {
+                search: '', searchPlaceholder: '🔍 Cari mahasiswa...',
+                lengthMenu: 'Tampilkan _MENU_ data',
+                info: 'Menampilkan _START_–_END_ dari _TOTAL_ data',
+                infoEmpty: 'Tidak ada data',
+                emptyTable: '<div class="empty-state"><i class="bi bi-inbox"></i><p>Belum ada data mahasiswa</p></div>',
+                paginate: { previous: '‹', next: '›' }
+            },
+            pageLength: 10, order: [[0, 'asc']]
+        });
+    });
+
+    function openEdit(nim) {
+        $.get('/mahasiswa/' + nim, function (d) {
+            $('#editNim').val(d.nim);
+            $('#editNama').val(d.nama);
+            $('#editJurusan').val(d.jurusan);
+            $('#editAngkatan').val(d.angkatan);
+            $('#editEmail').val(d.email);
+            editModalInstance.show();
+        });
+    }
+
+    function saveEdit() {
+        const nim = $('#editNim').val();
+        $.ajax({
+            url: '/mahasiswa/' + nim, method: 'PUT', contentType: 'application/json',
+            data: JSON.stringify({
+                nama: $('#editNama').val().trim(),
+                jurusan: $('#editJurusan').val(),
+                angkatan: $('#editAngkatan').val(),
+                email: $('#editEmail').val().trim()
+            }),
+            success: function () {
+                editModalInstance.hide();
+                table.ajax.reload(null, false);
+                showToast('Data berhasil diperbarui! ✨');
+            },
+            error: function () { showToast('Gagal memperbarui data.', 'error'); }
+        });
+    }
+
+    function openDelete(nim, nama) {
+        deleteNim = nim;
+        $('#deleteDesc').text(`Data "${nama}" (NIM: ${nim}) akan dihapus permanen.`);
+        deleteModalInstance.show();
+    }
+
+    function confirmDelete() {
+        if (!deleteNim) return;
+        $.ajax({
+            url: '/mahasiswa/' + deleteNim, method: 'DELETE',
+            success: function () {
+                deleteModalInstance.hide();
+                deleteNim = null;
+                table.ajax.reload(null, false);
+                showToast('Data berhasil dihapus. 🗑️');
+            },
+            error: function () { showToast('Gagal menghapus data.', 'error'); }
+        });
+    }
+</script>
+</body>
+</html>
