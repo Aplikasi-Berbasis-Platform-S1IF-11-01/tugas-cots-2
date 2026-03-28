@@ -12,7 +12,7 @@
 
   <br />
 
-  <img width="512" height="512" alt="logo" src="https://github.com/user-attachments/assets/22ae9b17-5e73-48a6-b5dd-281e6c70613e" />
+  <img width="350" height="350" alt="logo" src="https://github.com/user-attachments/assets/22ae9b17-5e73-48a6-b5dd-281e6c70613e" />
 
 
   <br />
@@ -78,8 +78,6 @@ Fitur utama dari aplikasi ini adalah:
 * Data disimpan pada file JSON lokal (db.json)
 * REST API endpoint untuk operasi CRUD
 
-Data mahasiswa disimpan pada file db.json sebagai media penyimpanan sederhana tanpa memerlukan database eksternal.
-
 # Struktur Folder Project
 
 
@@ -129,10 +127,11 @@ package.json
   "devDependencies": {}
 }
 ```
-Deskripsi
+Deskripsi:
+
 File package.json digunakan sebagai konfigurasi utama project Node.js. File ini berisi nama project, versi, deskripsi, file utama, script yang dapat dijalankan, dan daftar dependency. Dependency yang digunakan adalah express untuk membangun server backend dan cors untuk mengizinkan akses cross-origin dari halaman HTML statis. Script start memungkinkan server dijalankan menggunakan perintah npm start.
 
-Backend server.js
+# Backend server.js
 ```
 const express = require("express")
 const fs = require("fs")
@@ -196,6 +195,7 @@ app.delete("/mahasiswa/:nim", (req, res) => {
 app.listen(3000, () => console.log("✅ Server jalan di http://localhost:3000"))
 ```
 Deskripsi
+
 File server.js merupakan inti backend aplikasi. Pada bagian awal dilakukan import library express, path, fs, dan cors. Library express digunakan untuk membuat server HTTP, path untuk mengelola path file, fs untuk membaca dan menulis file JSON, serta cors untuk mengizinkan akses dari frontend HTML statis.
 
 Middleware yang digunakan adalah cors() untuk cross-origin, express.json() untuk membaca request body JSON, dan express.static() untuk melayani file HTML dari folder public.
@@ -209,22 +209,135 @@ Route REST API yang tersedia:
 * PUT /mahasiswa/:nim — memperbarui data mahasiswa berdasarkan NIM
 * DELETE /mahasiswa/:nim — menghapus data mahasiswa berdasarkan NIM
 
-File Data data/db.json
+# File Data data/db.json
 Pertama kosong
 ```
+[]
 ```
-Jika sudah isi form
+Jika sudah isi data, contoh:
 ```
-
+[
+  {
+    "nim": "2311102316",
+    "nama": "Nuha",
+    "jurusan": "Teknik Informatika",
+    "angkatan": "2023",
+    "email": "bnzk09@gmail.com",
+    "createdAt": "2026-03-24T02:12:21.064Z"
+  },
+  {
+    "nim": "221110245",
+    "nama": "Dita",
+    "jurusan": "Desain Komunikasi Visual",
+    "angkatan": "2022",
+    "email": "dita123@gmail.com",
+    "createdAt": "2026-03-25T02:27:59.222Z"
+  },
+  {
+    "nim": "2211102114",
+    "nama": "Nisa",
+    "jurusan": "Teknik Informatika",
+    "angkatan": "2022",
+    "email": "nisa@gmail.com",
+    "createdAt": "2026-03-28T14:46:59.632Z"
+  }
+]
 ```
 Deskripsi
+
 File db.json berperan sebagai database sederhana berbasis file. Data disimpan sebagai array JSON, di mana setiap elemen merupakan objek mahasiswa dengan atribut nim, nama, jurusan, angkatan, email, dan createdAt. File ini dibaca dan ditulis langsung oleh server.js menggunakan modul fs bawaan Node.js.
 
-Halaman Form Input (public/index.html)
+# Halaman Form Input (public/index.html)
+Halaman index.html adalah halaman utama yang berfungsi sebagai form pendaftaran mahasiswa baru. Halaman ini dibangun menggunakan Bootstrap 5 untuk tampilan responsif, jQuery untuk komunikasi AJAX ke server, serta Plus Jakarta Sans sebagai font utama.
+
+Fitur yang terdapat pada halaman ini:
+* Stat card ringkasan: total mahasiswa, jumlah jurusan, jumlah angkatan
+* Form input dengan field NIM, Nama Lengkap, Jurusan (dropdown), Angkatan (dropdown), dan Email
+* Validasi wajib pada field NIM dan Nama
+* Tombol submit dengan indikator loading
+* Toast notification sukses/gagal setelah submit
+* Daftar mahasiswa terbaru (12 data terakhir) ditampilkan di bawah form
+* Navbar dengan navigasi ke halaman Input, Data, dan Dashboard
+
+Potongan kode JavaScript utama pada halaman ini:
+```
+// Submit form AJAX
+$('#formMhs').submit(function(e) {
+  e.preventDefault();
+  $.ajax({
+    url: '/mahasiswa', method: 'POST', contentType: 'application/json',
+    data: JSON.stringify({
+      nim: $('#nim').val().trim(), nama: $('#nama').val().trim(),
+      jurusan: $('#jurusan').val(), angkatan: $('#angkatan').val(),
+      email: $('#email').val().trim()
+    }),
+    success: function() {
+      showToast('Data berhasil disimpan!');
+      $('#formMhs')[0].reset();
+      loadData();
+    }
+  });
+});
 ```
 
+# Halaman Data Mahasiswa (public/data.html)
+Halaman data.html menampilkan seluruh data mahasiswa dalam tabel interaktif menggunakan jQuery DataTables. Data diambil dari endpoint /mahasiswa dalam format JSON melalui konfigurasi ajax pada DataTables.
+
+Fitur yang terdapat pada halaman ini:
+* Tabel interaktif dengan fitur pencarian, sorting kolom, dan pagination (jQuery DataTables)
+* Data ditampilkan dari endpoint JSON /mahasiswa secara otomatis
+* Tombol Edit pada setiap baris membuka modal Bootstrap untuk memperbarui data
+* Tombol Hapus dengan konfirmasi modal sebelum menghapus
+* Stat card: total mahasiswa, jumlah jurusan, jumlah angkatan
+* Toast notification setelah operasi edit atau hapus berhasil
+
+Potongan kode inisialisasi DataTables:
+```
+table = $('#tableMhs').DataTable({
+  ajax: {
+    url: '/mahasiswa',
+    dataSrc: function(json) { loadStats(json); return json; }
+  },
+  columns: [
+    { data: null, render: (d,t,r,m) => m.row + 1 },
+    { data: 'nim',      render: d => `<span class='nim-tag'>${d}</span>` },
+    { data: 'nama',     render: d => `<div class='name-cell'>...</div>` },
+    { data: 'jurusan',  render: d => `<span class='jurusan-badge'>${d}</span>` },
+    { data: 'angkatan', render: d => `<span class='angkatan-badge'>${d}</span>` },
+    { data: 'email',    render: d => `<a href='mailto:${d}'>${d}</a>` },
+    { data: null, render: d => `tombol edit & hapus` }
+  ]
+});
 ```
 
+# Halaman Dashboard (public/dashboard.html)
+Halaman dashboard.html menampilkan statistik dan visualisasi data mahasiswa menggunakan Chart.js. Halaman ini adalah halaman ketiga yang ditambahkan untuk melengkapi tiga halaman utama yang disyaratkan oleh tugas.
+
+Fitur yang terdapat pada halaman ini:
+* KPI card: total mahasiswa, jumlah jurusan, jumlah angkatan, jumlah yang memiliki email
+* Bar chart: distribusi jumlah mahasiswa per jurusan
+* Donut chart: proporsi persentase mahasiswa per jurusan dengan legend
+* Line chart: tren penerimaan mahasiswa per tahun angkatan
+* Ranking jurusan: top 6 jurusan dengan progress bar animasi dan medal
+* Grid sebaran angkatan: chip per tahun angkatan beserta jumlah mahasiswa
+* Tombol Refresh dan timestamp waktu update terakhir
+* Demo mode: jika endpoint belum tersedia, grafik tetap tampil menggunakan data contoh
+
+Potongan kode inisialisasi chart pada dashboard:
+```
+// Bar Chart per Jurusan
+function renderBarJurusan(data) {
+  const grouped = groupBy(data, 'jurusan');
+  const entries = sortedEntries(grouped);
+  chartJurusan = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: entries.map(e=>e[0]), datasets: [{
+      data: entries.map(e=>e[1]),
+      backgroundColor: PALETTE.map(c => hexToRgba(c, 0.85)),
+      borderRadius: 7
+    }]},
+    options: { responsive: true, maintainAspectRatio: false }
+```
 
 # Alur CRUD pada Aplikasi
 1. Create (Tambah Data)
@@ -241,9 +354,9 @@ Pengguna menekan tombol Hapus pada baris data. Modal konfirmasi Bootstrap muncul
 
 2. Halaman Data Mahasiswa (data.html)
 
-3. Modal Edit Data Mahasiswa
+3. Edit Data Mahasiswa
    
-5. Modal Konfirmasi Hapus Data
+5. Hapus Data
    
 7. Halaman Dashboard Statistik (dashboard.html)
 
