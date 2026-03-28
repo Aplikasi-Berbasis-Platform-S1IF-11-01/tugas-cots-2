@@ -1,0 +1,39 @@
+<%- include("partials/header") %>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-success text-white">
+    <h4 class="mb-0">Form Input Mahasiswa</h4>
+  </div>
+  <div class="card-body">
+    <form action="/mahasiswa" method="POST" id="formMahasiswa">
+      <div class="mb-3">
+        <label class="form-label">NIM</label>
+        <input type="text" name="nim" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Nama</label>
+        <input type="text" name="nama" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Jurusan</label>
+        <input type="text" name="jurusan" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Angkatan</label>
+        <input type="number" name="angkatan" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+
+      <button type="submit" class="btn btn-success">Simpan</button>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

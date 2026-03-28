@@ -1,0 +1,39 @@
+<%- include("partials/header") %>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-warning">
+    <h4 class="mb-0">Edit Data Mahasiswa</h4>
+  </div>
+  <div class="card-body">
+    <form action="/mahasiswa/<%= mahasiswa.id %>?_method=PUT" method="POST" id="formEditMahasiswa">
+      <div class="mb-3">
+        <label class="form-label">NIM</label>
+        <input type="text" name="nim" class="form-control" value="<%= mahasiswa.nim %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Nama</label>
+        <input type="text" name="nama" class="form-control" value="<%= mahasiswa.nama %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Jurusan</label>
+        <input type="text" name="jurusan" class="form-control" value="<%= mahasiswa.jurusan %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Angkatan</label>
+        <input type="number" name="angkatan" class="form-control" value="<%= mahasiswa.angkatan %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" value="<%= mahasiswa.email %>" required>
+      </div>
+
+      <button type="submit" class="btn btn-warning">Update</button>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

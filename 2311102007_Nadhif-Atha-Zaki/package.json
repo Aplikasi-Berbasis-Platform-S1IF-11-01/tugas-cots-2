@@ -1,0 +1,16 @@
+{
+  "name": "tugas2-praktikum-express",
+  "version": "1.0.0",
+  "description": "Tugas cots 2",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Nadhif Atha Zaki - 2311102007",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0"
+  }
+}
