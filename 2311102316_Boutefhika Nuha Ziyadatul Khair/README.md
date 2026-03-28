@@ -356,13 +356,13 @@ Pengguna menekan tombol Hapus pada baris data. Modal konfirmasi Bootstrap muncul
    ![Gambar 3](Images/Gambar3.png)
    
 3. Halaman Data Mahasiswa (data.html)
-   ![Gambar 4](Images/Gambar 4.png)
+   ![Gambar 4](Images/Gambar4.png)
    
 5. Edit Data Mahasiswa
-   ![Gambar 7](Images/Gambar 7.png)
+   ![Gambar 7](Images/Gambar7.png)
    
 7. Hapus Data
-   ![Gambar 8](Images/Gambar 8.png)
+   ![Gambar 8](Images/Gambar8.png)
    
 9. Halaman Dashboard Statistik (dashboard.html)
    ![Gambar 5](Images/Gambar5.png)
