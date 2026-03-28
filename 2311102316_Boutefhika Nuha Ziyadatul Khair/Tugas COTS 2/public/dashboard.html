@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PuTi — Dashboard</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+        :root {
+            --blue-50:   #eff6ff;
+            --blue-100:  #dbeafe;
+            --blue-200:  #bfdbfe;
+            --blue-400:  #60a5fa;
+            --blue-500:  #3b82f6;
+            --blue-600:  #2563eb;
+            --blue-700:  #1d4ed8;
+            --teal-400:  #2dd4bf;
+            --teal-500:  #14b8a6;
+            --orange-400:#fb923c;
+            --orange-500:#f97316;
+            --violet-500:#8b5cf6;
+            --violet-400:#a78bfa;
+            --green-500: #22c55e;
+            --green-400: #4ade80;
+            --red-500:   #ef4444;
+            --slate-50:  #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-800);
+            min-height: 100vh;
+        }
+
+        /* ─── NAVBAR ─────────────────────────────── */
+        .puti-navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1030;
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid var(--slate-200);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 1px 4px rgba(15,23,42,.05);
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 0.6rem;
+            text-decoration: none;
+            font-size: 1rem; font-weight: 800; color: var(--slate-900);
+        }
+        .nav-brand .logo {
+            width: 34px; height: 34px;
+            background: var(--blue-600);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .nav-brand .wordmark { color: var(--blue-600); }
+        .nav-links { display: flex; gap: 4px; }
+        .nav-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 8px;
+            font-size: 0.82rem; font-weight: 600;
+            text-decoration: none; color: var(--slate-500);
+            transition: all .15s;
+        }
+        .nav-btn:hover { background: var(--slate-100); color: var(--slate-700); }
+        .nav-btn.active { background: var(--blue-600); color: white !important; }
+        .nav-btn i { font-size: 0.85rem; }
+
+        /* ─── PAGE ───────────────────────────────── */
+        .page { padding-top: 80px; padding-bottom: 3rem; }
+
+        /* ─── PAGE HEADER ────────────────────────── */
+        .page-header {
+            padding: 1.75rem 0 1.5rem;
+            border-bottom: 1px solid var(--slate-200);
+            margin-bottom: 1.5rem;
+        }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+            color: var(--blue-600);
+            background: var(--blue-50);
+            border: 1px solid var(--blue-200);
+            border-radius: 6px;
+            padding: 3px 10px;
+            margin-bottom: 0.65rem;
+        }
+        .page-header h1 { font-size: 1.55rem; font-weight: 800; color: var(--slate-900); line-height: 1.25; }
+        .page-header p  { font-size: 0.83rem; color: var(--slate-500); margin-top: 0.3rem; margin-bottom: 0; }
+
+        /* ─── STAT CARDS ─────────────────────────── */
+        .stat-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 0.9rem;
+            height: 100%;
+            transition: box-shadow .2s;
+        }
+        .stat-card:hover { box-shadow: 0 4px 16px rgba(15,23,42,.08); }
+        .stat-icon {
+            width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+        .si-blue   { background: var(--blue-50);  color: var(--blue-600); }
+        .si-teal   { background: #f0fdfa;          color: var(--teal-500); }
+        .si-slate  { background: var(--slate-100); color: var(--slate-600); }
+        .si-orange { background: #fff7ed;           color: var(--orange-500); }
+        .si-violet { background: #f5f3ff;           color: var(--violet-500); }
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.65rem; font-weight: 700;
+            line-height: 1; color: var(--slate-900);
+        }
+        .stat-label {
+            font-size: 0.68rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .06em;
+            color: var(--slate-400); margin-top: 3px;
+        }
+        .stat-trend {
+            display: inline-flex; align-items: center; gap: 3px;
+            font-size: 0.72rem; font-weight: 600;
+            margin-top: 4px;
+        }
+        .trend-up   { color: var(--green-500); }
+        .trend-down { color: var(--red-500); }
+
+        /* ─── PUTI CARD ──────────────────────────── */
+        .puti-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .puti-card-head {
+            display: flex; align-items: center; gap: 8px;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--slate-100);
+        }
+        .card-head-icon {
+            width: 28px; height: 28px; border-radius: 7px;
+            background: var(--blue-50); color: var(--blue-600);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; flex-shrink: 0;
+        }
+        .card-head-title {
+            font-size: 0.83rem; font-weight: 700; color: var(--slate-700);
+            text-transform: uppercase; letter-spacing: .05em;
+        }
+        .card-head-sub {
+            font-size: 0.75rem; color: var(--slate-400); font-weight: 400;
+            text-transform: none; letter-spacing: 0; margin-left: 6px;
+        }
+        .card-body-pad { padding: 1.25rem 1.5rem; }
+
+        /* ─── CHART CONTAINERS ───────────────────── */
+        .chart-wrap { position: relative; width: 100%; }
+        .chart-wrap canvas { max-width: 100%; }
+
+        /* ─── LOADING SKELETON ───────────────────── */
+        .skeleton {
+            background: linear-gradient(90deg, var(--slate-100) 25%, var(--slate-50) 50%, var(--slate-100) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 6px;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* ─── TOP LIST ───────────────────────────── */
+        .top-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--slate-100);
+        }
+        .top-item:last-child { border-bottom: none; }
+        .top-rank {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem; font-weight: 700;
+            width: 22px; text-align: center;
+            color: var(--slate-400); flex-shrink: 0;
+        }
+        .top-rank.gold   { color: #f59e0b; }
+        .top-rank.silver { color: var(--slate-400); }
+        .top-rank.bronze { color: #b45309; }
+        .top-bar-wrap { flex: 1; }
+        .top-label { font-size: 0.82rem; font-weight: 600; color: var(--slate-700); margin-bottom: 4px; }
+        .top-bar-bg { height: 6px; background: var(--slate-100); border-radius: 99px; overflow: hidden; }
+        .top-bar-fill {
+            height: 100%; border-radius: 99px;
+            background: linear-gradient(90deg, var(--blue-500), var(--blue-400));
+            transition: width 1s cubic-bezier(.34,1.56,.64,1);
+        }
+        .top-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem; font-weight: 700;
+            color: var(--slate-600); flex-shrink: 0;
+        }
+
+        /* ─── ANGKATAN GRID ──────────────────────── */
+        .angkatan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 8px;
+        }
+        .angkatan-chip {
+            background: var(--slate-50);
+            border: 1.5px solid var(--slate-200);
+            border-radius: 10px;
+            padding: 10px 6px;
+            text-align: center;
+            transition: all .15s;
+        }
+        .angkatan-chip:hover { border-color: var(--blue-300); background: var(--blue-50); }
+        .angkatan-year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem; font-weight: 700;
+            color: var(--slate-700);
+        }
+        .angkatan-count {
+            font-size: 0.7rem; color: var(--slate-400); font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* ─── DONUT LEGEND ───────────────────────── */
+        .legend-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 0;
+        }
+        .legend-dot {
+            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+        }
+        .legend-label { font-size: 0.8rem; color: var(--slate-600); flex: 1; }
+        .legend-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem; font-weight: 700;
+            color: var(--slate-700);
+        }
+        .legend-pct {
+            font-size: 0.72rem; color: var(--slate-400); margin-left: 4px;
+        }
+
+        /* ─── EMPTY STATE ────────────────────────── */
+        .empty-dash { padding: 2.5rem; text-align: center; color: var(--slate-400); }
+        .empty-dash i { font-size: 1.8rem; display: block; margin-bottom: 8px; opacity: .35; }
+        .empty-dash p { font-size: 0.82rem; }
+
+        /* ─── TOAST ──────────────────────────────── */
+        .toast-wrap {
+            position: fixed; top: 68px; right: 1.25rem;
+            z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+            pointer-events: none;
+        }
+
+        /* ─── REFRESH BTN ────────────────────────── */
+        .btn-refresh {
+            display: inline-flex; align-items: center; gap: 5px;
+            height: 30px; padding: 0 12px;
+            background: var(--slate-100); color: var(--slate-600);
+            border: none; border-radius: 7px;
+            font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; transition: all .15s;
+        }
+        .btn-refresh:hover { background: var(--blue-50); color: var(--blue-600); }
+        .btn-refresh.spinning i { animation: spin .7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ─── TIMESTAMP ──────────────────────────── */
+        .ts-badge {
+            font-size: 0.72rem; color: var(--slate-400);
+            display: flex; align-items: center; gap: 4px;
+        }
+        .ts-badge i { font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="puti-navbar">
+    <a href="/" class="nav-brand">
+        <div class="logo">🎓</div>
+        <span class="wordmark">PuTi</span>
+    </a>
+    <div class="nav-links">
+        <a href="index.html" class="nav-btn"><i class="bi bi-plus-circle-fill"></i> Input</a>
+        <a href="data.html" class="nav-btn"><i class="bi bi-table"></i> Data</a>
+        <a href="dashboard.html" class="nav-btn active"><i class="bi bi-bar-chart-fill"></i> Dashboard</a>
+    </div>
+</nav>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<div class="container page" style="max-width:960px">
+
+    <!-- Page Header -->
+    <div class="page-header d-flex align-items-end justify-content-between flex-wrap gap-3">
+        <div>
+            <div class="eyebrow"><i class="bi bi-bar-chart-fill"></i> Statistik & Analitik</div>
+            <h1>Dashboard Mahasiswa</h1>
+            <p>Ringkasan data dan visualisasi statistik seluruh mahasiswa terdaftar.</p>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="ts-badge" id="lastUpdate"><i class="bi bi-clock"></i> Memuat...</div>
+            <button class="btn-refresh" id="btnRefresh" onclick="loadAll()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Stats Row -->
+    <div class="row g-3 mb-4" id="kpiRow">
+        <div class="col-6 col-sm-3">
+            <div class="stat-card">
+                <div class="stat-icon si-blue"><i class="bi bi-people-fill"></i></div>
+                <div>
+                    <div class="stat-num" id="kpiTotal">—</div>
+                    <div class="stat-label">Total Mahasiswa</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-3">
+            <div class="stat-card">
+                <div class="stat-icon si-teal"><i class="bi bi-building"></i></div>
+                <div>
+                    <div class="stat-num" id="kpiJurusan">—</div>
+                    <div class="stat-label">Jurusan</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-3">
+            <div class="stat-card">
+                <div class="stat-icon si-orange"><i class="bi bi-calendar3"></i></div>
+                <div>
+                    <div class="stat-num" id="kpiAngkatan">—</div>
+                    <div class="stat-label">Angkatan</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-3">
+            <div class="stat-card">
+                <div class="stat-icon si-violet"><i class="bi bi-envelope-fill"></i></div>
+                <div>
+                    <div class="stat-num" id="kpiEmail">—</div>
+                    <div class="stat-label">Punya Email</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 1: Bar Chart + Donut Chart -->
+    <div class="row g-3 mb-3">
+        <!-- Bar: Mahasiswa per Jurusan -->
+        <div class="col-12 col-md-7">
+            <div class="puti-card h-100">
+                <div class="puti-card-head">
+                    <div class="card-head-icon"><i class="bi bi-bar-chart-fill"></i></div>
+                    <div>
+                        <span class="card-head-title">Mahasiswa per Jurusan</span>
+                    </div>
+                </div>
+                <div class="card-body-pad">
+                    <div class="chart-wrap" style="height:260px">
+                        <canvas id="chartJurusan"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donut: Distribusi Jurusan -->
+        <div class="col-12 col-md-5">
+            <div class="puti-card h-100">
+                <div class="puti-card-head">
+                    <div class="card-head-icon"><i class="bi bi-pie-chart-fill"></i></div>
+                    <div><span class="card-head-title">Proporsi Jurusan</span></div>
+                </div>
+                <div class="card-body-pad">
+                    <div class="chart-wrap" style="height:160px; margin-bottom:12px">
+                        <canvas id="chartDonut"></canvas>
+                    </div>
+                    <div id="legendDonut"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2: Line Chart Angkatan + Top Jurusan List -->
+    <div class="row g-3 mb-3">
+        <!-- Line: Tren per Angkatan -->
+        <div class="col-12 col-md-7">
+            <div class="puti-card h-100">
+                <div class="puti-card-head">
+                    <div class="card-head-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div><span class="card-head-title">Tren Penerimaan per Angkatan</span></div>
+                </div>
+                <div class="card-body-pad">
+                    <div class="chart-wrap" style="height:220px">
+                        <canvas id="chartAngkatan"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Jurusan Ranking -->
+        <div class="col-12 col-md-5">
+            <div class="puti-card h-100">
+                <div class="puti-card-head">
+                    <div class="card-head-icon"><i class="bi bi-trophy-fill"></i></div>
+                    <div><span class="card-head-title">Ranking Jurusan</span></div>
+                </div>
+                <div class="card-body-pad" id="topJurusanList">
+                    <div class="empty-dash"><i class="bi bi-hourglass-split"></i><p>Memuat data...</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 3: Angkatan Grid -->
+    <div class="puti-card">
+        <div class="puti-card-head">
+            <div class="card-head-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+            <div><span class="card-head-title">Sebaran Angkatan</span></div>
+        </div>
+        <div class="card-body-pad">
+            <div class="angkatan-grid" id="angkatanGrid">
+                <div class="empty-dash" style="grid-column:1/-1"><i class="bi bi-hourglass-split"></i><p>Memuat...</p></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // ── Chart instances ───────────────────────────
+    let chartJurusan = null, chartDonut = null, chartAngkatan = null;
+
+    // ── Color palette ─────────────────────────────
+    const PALETTE = [
+        '#3b82f6','#14b8a6','#f97316','#8b5cf6',
+        '#22c55e','#ef4444','#eab308','#06b6d4',
+        '#ec4899','#64748b'
+    ];
+
+    function hexToRgba(hex, a) {
+        const r = parseInt(hex.slice(1,3),16);
+        const g = parseInt(hex.slice(3,5),16);
+        const b = parseInt(hex.slice(5,7),16);
+        return `rgba(${r},${g},${b},${a})`;
+    }
+
+    // ── Chart defaults ────────────────────────────
+    Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+    Chart.defaults.color = '#94a3b8';
+
+    // ── Helpers ───────────────────────────────────
+    function groupBy(arr, key) {
+        return arr.reduce((acc, item) => {
+            const k = item[key] || '—';
+            acc[k] = (acc[k] || 0) + 1;
+            return acc;
+        }, {});
+    }
+
+    function sortedEntries(obj, dir = 'desc') {
+        return Object.entries(obj).sort((a, b) => dir === 'desc' ? b[1] - a[1] : a[1] - b[1]);
+    }
+
+    // ── Render KPIs ───────────────────────────────
+    function renderKPI(data) {
+        $('#kpiTotal').text(data.length);
+        $('#kpiJurusan').text([...new Set(data.map(m => m.jurusan).filter(Boolean))].length);
+        $('#kpiAngkatan').text([...new Set(data.map(m => m.angkatan).filter(Boolean))].length);
+        $('#kpiEmail').text(data.filter(m => m.email && m.email.trim()).length);
+
+        const now = new Date();
+        $('#lastUpdate').html(`<i class="bi bi-clock"></i> ${now.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'})}`);
+    }
+
+    // ── Bar Chart: per Jurusan ────────────────────
+    function renderBarJurusan(data) {
+        const grouped = groupBy(data, 'jurusan');
+        const entries = sortedEntries(grouped);
+        const labels  = entries.map(e => e[0]);
+        const values  = entries.map(e => e[1]);
+        const colors  = labels.map((_, i) => PALETTE[i % PALETTE.length]);
+
+        if (chartJurusan) chartJurusan.destroy();
+        const ctx = document.getElementById('chartJurusan').getContext('2d');
+        chartJurusan = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Mahasiswa',
+                    data: values,
+                    backgroundColor: colors.map(c => hexToRgba(c, 0.85)),
+                    borderColor: colors,
+                    borderWidth: 1.5,
+                    borderRadius: 7,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#94a3b8',
+                        bodyColor: '#f8fafc',
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: ctx => ` ${ctx.parsed.y} mahasiswa`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10 }, maxRotation: 30 }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { stepSize: 1, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    }
+
+    // ── Donut Chart: proporsi ─────────────────────
+    function renderDonut(data) {
+        const grouped = groupBy(data, 'jurusan');
+        const entries = sortedEntries(grouped).slice(0, 6);
+        const labels  = entries.map(e => e[0]);
+        const values  = entries.map(e => e[1]);
+        const total   = values.reduce((a, b) => a + b, 0);
+        const colors  = labels.map((_, i) => PALETTE[i % PALETTE.length]);
+
+        if (chartDonut) chartDonut.destroy();
+        const ctx = document.getElementById('chartDonut').getContext('2d');
+        chartDonut = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: colors.map(c => hexToRgba(c, 0.88)),
+                    borderColor: '#ffffff',
+                    borderWidth: 3,
+                    hoverOffset: 6,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                cutout: '68%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#94a3b8',
+                        bodyColor: '#f8fafc',
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: ctx => ` ${ctx.parsed} mahasiswa (${Math.round(ctx.parsed / total * 100)}%)`
+                        }
+                    }
+                }
+            }
+        });
+
+        // Legend
+        const html = entries.map((e, i) => `
+            <div class="legend-item">
+                <div class="legend-dot" style="background:${colors[i]}"></div>
+                <div class="legend-label">${e[0]}</div>
+                <span class="legend-val">${e[1]}</span>
+                <span class="legend-pct">${Math.round(e[1] / total * 100)}%</span>
+            </div>
+        `).join('');
+        $('#legendDonut').html(html);
+    }
+
+    // ── Line Chart: tren angkatan ─────────────────
+    function renderLineAngkatan(data) {
+        const grouped = groupBy(data, 'angkatan');
+        const entries = Object.entries(grouped)
+            .filter(e => e[0] !== '—')
+            .sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+        const labels = entries.map(e => e[0]);
+        const values = entries.map(e => e[1]);
+
+        if (chartAngkatan) chartAngkatan.destroy();
+        if (!labels.length) return;
+
+        const ctx = document.getElementById('chartAngkatan').getContext('2d');
+        const grad = ctx.createLinearGradient(0, 0, 0, 220);
+        grad.addColorStop(0, 'rgba(59,130,246,0.25)');
+        grad.addColorStop(1, 'rgba(59,130,246,0.01)');
+
+        chartAngkatan = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Mahasiswa',
+                    data: values,
+                    borderColor: '#3b82f6',
+                    backgroundColor: grad,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#3b82f6',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.4,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#94a3b8',
+                        bodyColor: '#f8fafc',
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: ctx => ` ${ctx.parsed.y} mahasiswa`
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { stepSize: 1, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    }
+
+    // ── Top Jurusan Ranking List ──────────────────
+    function renderTopJurusan(data) {
+        const grouped = groupBy(data, 'jurusan');
+        const entries = sortedEntries(grouped).slice(0, 6);
+        if (!entries.length) {
+            $('#topJurusanList').html('<div class="empty-dash"><i class="bi bi-inbox"></i><p>Belum ada data.</p></div>');
+            return;
+        }
+        const max = entries[0][1];
+        const rankClasses = ['gold','silver','bronze','','',''];
+        const rankIcons   = ['🥇','🥈','🥉','4','5','6'];
+        const html = entries.map((e, i) => `
+            <div class="top-item">
+                <div class="top-rank ${rankClasses[i]}">${rankIcons[i]}</div>
+                <div class="top-bar-wrap">
+                    <div class="top-label">${e[0]}</div>
+                    <div class="top-bar-bg">
+                        <div class="top-bar-fill" data-width="${Math.round(e[1]/max*100)}%" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="top-count">${e[1]}</div>
+            </div>
+        `).join('');
+        $('#topJurusanList').html(html);
+        // Animate bars
+        setTimeout(() => {
+            $('.top-bar-fill').each(function() {
+                $(this).css('width', $(this).data('width'));
+            });
+        }, 80);
+    }
+
+    // ── Angkatan Grid ─────────────────────────────
+    function renderAngkatanGrid(data) {
+        const grouped = groupBy(data, 'angkatan');
+        const entries = Object.entries(grouped)
+            .filter(e => e[0] !== '—')
+            .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+        if (!entries.length) {
+            $('#angkatanGrid').html('<div class="empty-dash" style="grid-column:1/-1"><i class="bi bi-inbox"></i><p>Belum ada data angkatan.</p></div>');
+            return;
+        }
+        const html = entries.map(e => `
+            <div class="angkatan-chip">
+                <div class="angkatan-year">${e[0]}</div>
+                <div class="angkatan-count">${e[1]} mhs</div>
+            </div>
+        `).join('');
+        $('#angkatanGrid').html(html);
+    }
+
+    // ── MAIN LOAD ─────────────────────────────────
+    function loadAll() {
+        const $btn = $('#btnRefresh');
+        $btn.addClass('spinning');
+        $.get('/mahasiswa', function(data) {
+            renderKPI(data);
+            if (!data.length) {
+                $('#chartJurusan').closest('.puti-card').find('.card-body-pad').html(
+                    '<div class="empty-dash"><i class="bi bi-inbox"></i><p>Belum ada data mahasiswa.</p></div>'
+                );
+                return;
+            }
+            renderBarJurusan(data);
+            renderDonut(data);
+            renderLineAngkatan(data);
+            renderTopJurusan(data);
+            renderAngkatanGrid(data);
+        }).fail(function() {
+            // Demo mode: tampilkan data contoh jika endpoint belum ada
+            const demo = [
+                {nim:'2021001',nama:'Andi',jurusan:'Teknik Informatika',angkatan:'2021',email:'andi@mail.com'},
+                {nim:'2021002',nama:'Budi',jurusan:'Sistem Informasi',angkatan:'2021',email:'budi@mail.com'},
+                {nim:'2022001',nama:'Citra',jurusan:'Teknik Informatika',angkatan:'2022',email:'citra@mail.com'},
+                {nim:'2022002',nama:'Dina',jurusan:'Sains Data',angkatan:'2022',email:''},
+                {nim:'2023001',nama:'Eko',jurusan:'Teknik Elektro',angkatan:'2023',email:'eko@mail.com'},
+                {nim:'2023002',nama:'Fani',jurusan:'Teknik Informatika',angkatan:'2023',email:'fani@mail.com'},
+                {nim:'2023003',nama:'Galih',jurusan:'Sistem Informasi',angkatan:'2023',email:''},
+                {nim:'2024001',nama:'Hana',jurusan:'Sains Data',angkatan:'2024',email:'hana@mail.com'},
+                {nim:'2024002',nama:'Ivan',jurusan:'Teknik Telekomunikasi',angkatan:'2024',email:'ivan@mail.com'},
+                {nim:'2024003',nama:'Joko',jurusan:'Teknik Informatika',angkatan:'2024',email:'joko@mail.com'},
+                {nim:'2025001',nama:'Kiki',jurusan:'Desain Komunikasi Visual',angkatan:'2025',email:'kiki@mail.com'},
+                {nim:'2025002',nama:'Lina',jurusan:'Teknik Industri',angkatan:'2025',email:''},
+            ];
+            renderKPI(demo);
+            renderBarJurusan(demo);
+            renderDonut(demo);
+            renderLineAngkatan(demo);
+            renderTopJurusan(demo);
+            renderAngkatanGrid(demo);
+        }).always(function() {
+            $btn.removeClass('spinning');
+        });
+    }
+
+    $(document).ready(function() {
+        loadAll();
+    });
+</script>
+</body>
+</html>
