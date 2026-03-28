@@ -377,4 +377,5 @@ Fitur CRUD berjalan dengan baik: Create melalui form input AJAX, Read melalui ta
 Halaman Dashboard menambahkan nilai lebih pada aplikasi dengan menampilkan visualisasi statistik menggunakan Chart.js, sehingga data mahasiswa dapat dianalisis secara visual. Walaupun data masih disimpan dalam file JSON, aplikasi ini sudah menunjukkan implementasi dasar konsep CRUD dan REST API berbasis client-server yang baik.
 
 # Link Video Presentasi
-📂 [Google Drive Project](https://drive.google.com/Mydrive/folders/1Xy5cpqwUPMM2Xx1dRw43V2Lf8CmAFvFb?usp=sharing)
+📂 [Video Presentasi_2311102316_Boutefhika Nuha Z. K](https://drive.google.com/drive/folders/1Xy5cpqwUPMM2Xx1dRw43V2Lf8CmAFvFb?usp=sharing)
+
