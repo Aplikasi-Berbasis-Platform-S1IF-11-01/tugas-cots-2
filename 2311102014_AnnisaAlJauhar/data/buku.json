@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1774173467813",
+    "judul": "Laskar Pelangi",
+    "pengarang": "Andrea Hirata",
+    "tahun": "2005",
+    "genre": "Fiksi",
+    "stok": "13"
+  },
+  {
+    "id": "1774173533853",
+    "judul": "Bumi Manusia",
+    "pengarang": "Pramoedya Ananta Toe",
+    "tahun": "1980",
+    "genre": "Fiksi",
+    "stok": "11"
+  },
+  {
+    "id": "1774173761453",
+    "judul": "Soekarno: Peran dan Sumbangsihnya bagi Indonesia",
+    "pengarang": "Yandra Danendra",
+    "tahun": "2024",
+    "genre": "Biografi",
+    "stok": "3"
+  }
+]

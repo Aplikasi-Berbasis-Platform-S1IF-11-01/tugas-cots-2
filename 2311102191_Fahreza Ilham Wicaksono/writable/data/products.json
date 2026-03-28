@@ -1,0 +1,32 @@
+[
+    {
+        "product_name": "Samsung Odysey",
+        "category": "monitor",
+        "price": "2000000",
+        "id": "69c472f651bfd"
+    },
+    {
+        "product_name": "KZ Q35",
+        "category": "iem",
+        "price": "150000",
+        "id": "69c4737b925df"
+    },
+    {
+        "product_name": "Fantech KANATAS",
+        "category": "mouse",
+        "price": "180000",
+        "id": "69c473a7bdc23"
+    },
+    {
+        "product_name": "Rexus K-M1465",
+        "category": "keyboard",
+        "price": "100000",
+        "id": "69c474f40bc90"
+    },
+    {
+        "product_name": "Fantech THOR X9",
+        "category": "mouse",
+        "price": "120000",
+        "id": "69c58a893c507"
+    }
+]
