@@ -79,7 +79,7 @@ Fitur utama dari aplikasi ini adalah:
 * REST API endpoint untuk operasi CRUD
 
 # Struktur Folder Project
-![Gambar 1](Images/Gambar 1.png)
+![Gambar 1](Images/Gambar1.png)
 
 | File / Folder            | Keterangan |
 |-------------------------|-----------|
@@ -351,15 +351,24 @@ Pengguna menekan tombol Hapus pada baris data. Modal konfirmasi Bootstrap muncul
 
 # Screenshot Website
 1. Halaman Form Input Mahasiswa (index.html)
-
-2. Halaman Data Mahasiswa (data.html)
-
-3. Edit Data Mahasiswa
+   ![Gambar 2](Images/Gambar2.png)
    
-5. Hapus Data
+   ![Gambar 3](Images/Gambar3.png)
    
-7. Halaman Dashboard Statistik (dashboard.html)
-
+3. Halaman Data Mahasiswa (data.html)
+   ![Gambar 4](Images/Gambar 4.png)
+   
+5. Edit Data Mahasiswa
+   ![Gambar 7](Images/Gambar 7.png)
+   
+7. Hapus Data
+   ![Gambar 8](Images/Gambar 8.png)
+   
+9. Halaman Dashboard Statistik (dashboard.html)
+   ![Gambar 5](Images/Gambar5.png)
+   
+   ![Gambar 6](Images/Gambar6.png)
+   
 # Kesimpulan
 Pada tugas COTS-2 ini telah berhasil dibuat aplikasi web bertema Sistem Data Mahasiswa (PuTi) menggunakan Express JS, Bootstrap 5, jQuery, jQuery DataTables, dan Chart.js. Aplikasi ini telah memenuhi seluruh ketentuan tugas praktikum karena memiliki tiga halaman utama fungsional, yaitu halaman Form Input, halaman Data Mahasiswa, dan halaman Dashboard Statistik.
 
