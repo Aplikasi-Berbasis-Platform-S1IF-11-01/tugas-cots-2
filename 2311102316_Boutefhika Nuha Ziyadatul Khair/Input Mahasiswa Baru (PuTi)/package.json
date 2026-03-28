@@ -1,19 +1,20 @@
 {
-  "name": "project-crud",
+  "name": "puti-(input-mahasiswa-baru)",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tugas COTS 2",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Boutefhika Nuha Ziyadatul Khair - 2311102316",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "express": "^5.2.1"
-  }
+  },
+  "devDependencies": {}
 }
