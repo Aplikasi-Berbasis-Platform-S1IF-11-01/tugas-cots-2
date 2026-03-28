@@ -79,7 +79,7 @@ Fitur utama dari aplikasi ini adalah:
 * REST API endpoint untuk operasi CRUD
 
 # Struktur Folder Project
-
+![Gambar 1](Images/Gambar 1.png)
 
 | File / Folder            | Keterangan |
 |-------------------------|-----------|
