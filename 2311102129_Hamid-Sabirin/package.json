@@ -1,0 +1,13 @@
+{
+  "name": "tugas-2-praktikum",
+  "version": "1.0.0",
+  "description": "Tugas 2 Praktikum Web Applications",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

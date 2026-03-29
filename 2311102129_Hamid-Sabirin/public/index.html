@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Baris 20 sampai 28: Bagian Header (Navigasi Atas Minimalis) khusus muncul di Layar HP -->
+    <div class="mobile-header d-lg-none sticky-top shadow-sm border-bottom">
+        <a class="navbar-brand d-flex align-items-center gap-2 mb-0 text-decoration-none" href="index.html">
+            <i class="bi bi-hexagon-fill text-primary"></i> <span class="fw-bold fs-4 text-dark">Inventory</span>
+        </a>
+        <button class="btn btn-light shadow-none" type="button" onclick="document.getElementById('sidebar').classList.toggle('show')">
+            <i class="bi bi-list fs-3"></i>
+        </button>
+    </div>
+
+    <!-- Baris 30 sampai 56: Kolom Navigasi Menu Samping Kiri (untuk Layar Laptop / Komputer PC) -->
+    <div class="sidebar d-none d-lg-flex flex-column" id="sidebar">
+        <div class="d-flex justify-content-between align-items-center px-2 mb-4">
+            <a class="navbar-brand d-flex align-items-center gap-2 mb-0 text-decoration-none" href="index.html">
+                <i class="bi bi-hexagon-fill text-primary"></i> <span class="fw-bold fs-4 text-dark">Inventory</span>
+            </a>
+            <button class="btn btn-close d-lg-none" onclick="document.getElementById('sidebar').classList.remove('show')"></button>
+        </div>
+
+        <ul class="nav flex-column mb-auto gap-1">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link active">
+                    <i class="bi bi-grid-fill me-3 fs-5"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="data.html" class="nav-link">
+                    <i class="bi bi-box-seam-fill me-3 fs-5"></i> Data Produk
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="form.html" class="nav-link">
+                    <i class="bi bi-clipboard2-plus-fill me-3 fs-5"></i> Form Entri
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Baris 59 sampai 160: Kotak Kanvas Utama menampilkan seluruh Laporan / Ringkasan Dasbor -->
+    <div class="main-content p-0">
+        <!-- Baris 61 sampai 68: Kotak Pita Navigasi (menampilkan nama Mahasiswa Hamid Sabirin) di Atas Kanan -->
+        <nav class="navbar navbar-expand-lg bg-white border-bottom px-4 py-3 sticky-top" style="z-index: 1020;">
+            <div class="container-fluid d-flex justify-content-end">
+                <div class="watermark-badge d-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="background: rgba(79, 70, 229, 0.05); border: 1px solid rgba(79, 70, 229, 0.1);">
+                    <i class="bi bi-person-badge-fill text-primary"></i>
+                    <span class="fw-bold text-primary" style="font-size: 0.85rem; letter-spacing: 0.5px;">HAMID SABIRIN (2311102129)</span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid pt-4 px-4 py-lg-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-2 mt-lg-0">
+            <div>
+                <h1 class="hero-title text-gradient" style="font-size: 2.25rem; margin-bottom: 0.25rem;">Statistik Inventori</h1>
+                <p class="text-muted" style="font-size: 1rem;">Ringkasan metrik dan status stok secara real-time.</p>
+            </div>
+            <a href="data.html" class="btn btn-custom-primary d-none d-md-flex align-items-center gap-2">
+                <i class="bi bi-box-seam"></i> Kelola Produk
+            </a>
+        </div>
+
+        <!-- Baris 82 sampai 131: Kumpulan 4 Kotak Kecil Rangkuman Data Teratas (Total Produk, Stok, dsb) -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card px-4 py-4" style="height: auto;">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="text-muted mb-0" style="font-size: 0.95rem;">Total Produk</h6>
+                        <div class="feature-icon-wrapper m-0" style="width: 45px; height: 45px; font-size: 1.25rem;">
+                            <i class="bi bi-box-fill"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-dark fw-bold mb-0" id="stat-total-products">0</h2>
+                    <p class="text-success small mt-2 mb-0"><i class="bi bi-arrow-up-right me-1"></i>Varian teregistrasi</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card px-4 py-4" style="height: auto;">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="text-muted mb-0" style="font-size: 0.95rem;">Total Stok</h6>
+                        <div class="feature-icon-wrapper m-0" style="color: #a855f7; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border-color: rgba(168, 85, 247, 0.2); width: 45px; height: 45px; font-size: 1.25rem;">
+                            <i class="bi bi-boxes"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-dark fw-bold mb-0" id="stat-total-stock">0</h2>
+                    <p class="text-info small mt-2 mb-0"><i class="bi bi-check-circle me-1"></i>Unit tersedia</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card px-4 py-4" style="height: auto;">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="text-muted mb-0" style="font-size: 0.95rem;">Total Nilai Aset</h6>
+                        <div class="feature-icon-wrapper m-0" style="color: #10b981; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); border-color: rgba(16, 185, 129, 0.2); width: 45px; height: 45px; font-size: 1.25rem;">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-dark fw-bold mb-0" id="stat-total-value">Rp 0</h2>
+                    <p class="text-muted small mt-2 mb-0">Estimasi nilai stok</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card px-4 py-4" style="height: auto;">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="text-muted mb-0" style="font-size: 0.95rem;">Stok Kritis</h6>
+                        <div class="feature-icon-wrapper m-0" style="color: #ef4444; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%); border-color: rgba(239, 68, 68, 0.2); width: 45px; height: 45px; font-size: 1.25rem;">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-dark fw-bold mb-0" id="stat-low-stock">0</h2>
+                    <p class="text-danger small mt-2 mb-0"><i class="bi bi-shield-exclamation me-1"></i>Kurang dari 10 unit</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Baris 134 sampai 158: Bagian Kotak Lebar untuk Grafik Chart.js dan Tabel Sisi Stok Menipis -->
+        <div class="row g-4 mb-3">
+            <div class="col-lg-8">
+                <div class="feature-card h-100 p-4" style="height: 100% !important;">
+                    <h5 class="feature-title mb-4">Sebaran Kategori Produk</h5>
+                    <div style="height: 320px; position: relative;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="feature-card h-100 p-4" style="height: 100% !important;">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="feature-title mb-0">Waspada Stok (< 10)</h5>
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle rounded-pill" id="badge-alert-count">0</span>
+                    </div>
+                    <div class="overflow-auto pe-2 custom-scroll" style="height: 320px;" id="lowStockList">
+                        <!-- List Goes Here -->
+                        <div class="text-center text-muted h-100 d-flex flex-column align-items-center justify-content-center">
+                            <div class="spinner-border text-primary border-2 mb-3" role="status"></div>
+                            <span>Menyinkronkan data...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- Closing main-content -->
+
+    <!-- Bootstrap JS & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js for Graphics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- External Main Dashboard Logic -->
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

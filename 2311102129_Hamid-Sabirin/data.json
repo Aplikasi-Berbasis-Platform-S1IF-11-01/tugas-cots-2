@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "sku": "PRD-001",
+    "name": "Premium Wireless Headphones",
+    "category": "Furniture",
+    "price": "1250000",
+    "stock": "45"
+  },
+  {
+    "id": 2,
+    "sku": "PRD-002",
+    "name": "Ergonomic Office Chair",
+    "category": "Furniture",
+    "price": "2400000",
+    "stock": "9"
+  },
+  {
+    "id": 3,
+    "sku": "PRD-003",
+    "name": "Mechanical Keyboard RGB",
+    "category": "Aksesoris Komputer",
+    "price": "850000",
+    "stock": "30"
+  },
+  {
+    "id": 4,
+    "sku": "PRD-004",
+    "name": "Smartwatch Series X",
+    "category": "Kebutuhan Rumah",
+    "price": "3200000",
+    "stock": "25"
+  },
+  {
+    "id": 5,
+    "sku": "PRD-00111",
+    "name": "Yuchan",
+    "category": "Kebutuhan Rumah",
+    "price": "123",
+    "stock": "123"
+  }
+]

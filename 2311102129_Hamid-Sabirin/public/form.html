@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - Form Produk</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Baris 20 sampai 28: Kotak Bagian Atas Minimalis yang tampil jika web dibuka lewat Layar Handphone -->
+    <div class="mobile-header">
+        <a class="navbar-brand d-flex align-items-center gap-2 mb-0 text-decoration-none" href="index.html">
+            <i class="bi bi-hexagon-fill text-primary"></i> <span class="fw-bold fs-4 text-dark">Inventory</span>
+        </a>
+        <button class="btn btn-light shadow-none" type="button" onclick="document.getElementById('sidebar').classList.toggle('show')">
+            <i class="bi bi-list fs-3"></i>
+        </button>
+    </div>
+
+    <!-- Baris 30 sampai 56: Blok Kolom Navigasi Kiri (Menu Utama Aplikasi) untuk tampilan Layar Laptop -->
+    <div class="sidebar" id="sidebar">
+        <div class="d-flex justify-content-between align-items-center px-2 mb-4">
+            <a class="navbar-brand d-flex align-items-center gap-2 mb-0 text-decoration-none" href="index.html">
+                <i class="bi bi-hexagon-fill text-primary"></i> <span class="fw-bold fs-4 text-dark">Inventory</span>
+            </a>
+            <button class="btn btn-close d-lg-none" onclick="document.getElementById('sidebar').classList.remove('show')"></button>
+        </div>
+
+        <ul class="nav flex-column mb-auto gap-1">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="bi bi-grid-fill me-3 fs-5"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="data.html" class="nav-link">
+                    <i class="bi bi-box-seam-fill me-3 fs-5"></i> Data Produk
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="form.html" class="nav-link active">
+                    <i class="bi bi-clipboard2-plus-fill me-3 fs-5"></i> Form Entri
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Baris 58 sampai 169: Halaman Tengah Pusat yang menampung Kotak Isian (Form) Entri dan Edit -->
+    <div class="main-content p-0">
+        <!-- Baris 60 sampai 67: Bagian Label Nama Identitas (Hamid Sabirin) yang menempel diam saat layarnya digulir ke bawah -->
+        <nav class="navbar navbar-expand-lg bg-white border-bottom px-4 py-3 sticky-top" style="z-index: 1020;">
+            <div class="container-fluid d-flex justify-content-end">
+                <div class="watermark-badge d-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="background: rgba(79, 70, 229, 0.05); border: 1px solid rgba(79, 70, 229, 0.1);">
+                    <i class="bi bi-person-badge-fill text-primary"></i>
+                    <span class="fw-bold text-primary" style="font-size: 0.85rem; letter-spacing: 0.5px;">HAMID SABIRIN (2311102129)</span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid pt-4 px-4 py-lg-4">
+                <div class="mb-4 d-flex align-items-center gap-3 px-1">
+                    <a href="data.html" class="btn btn-sm btn-light border rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-arrow-left text-dark fs-5"></i>
+                    </a>
+                    <div>
+                        <h2 class="mb-0 fw-bold text-dark" id="formTitle">Entri Produk Baru</h2>
+                        <span class="text-muted" style="font-size: 0.95rem;">Lengkapi atau perbarui informasi detail inventori produk.</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-card border-0 shadow-sm" style="background-color: #ffffff; border: 1px solid var(--border-color) !important;">
+                    <div class="card-header-fluid bg-transparent p-4 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="stat-icon m-0">
+                                <i class="bi bi-box-seam-fill"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold text-dark">Form Detail Item</h5>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body-fluid p-4">
+                        <form id="productForm">
+                            <input type="hidden" id="productId" name="id">
+                            
+                            <div class="row g-4 mt-1">
+                                <!-- SKU -->
+                                <div class="col-md-6">
+                                    <label for="sku" class="form-label"><i class="bi bi-upc-scan" style="color:var(--primary);"></i> Nomor SKU</label>
+                                    <input type="text" class="form-control" id="sku" name="sku" required placeholder="Contoh: PRD-1001" style="text-transform: uppercase;">
+                                    <div class="form-text mt-1 text-muted" style="font-size: 0.8rem;">Kode unik identifikasi stok.</div>
+                                </div>
+                                
+                                <!-- Kategori -->
+                                <div class="col-md-6">
+                                    <label for="category" class="form-label"><i class="bi bi-tags-fill" style="color:var(--secondary);"></i> Kategori Sistem</label>
+                                    <select class="form-select" id="category" name="category" required>
+                                        <option value="" selected disabled>-- Pilih Kategori --</option>
+                                        <option value="Elektronik">Elektronik</option>
+                                        <option value="Furniture">Furniture</option>
+                                        <option value="Kebutuhan Rumah">Kebutuhan Rumah</option>
+                                        <option value="Pakaian & Mode">Pakaian & Mode</option>
+                                        <option value="Aksesoris Komputer">Aksesoris Komputer</option>
+                                        <option value="Alat Kesehatan">Alat Kesehatan</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+
+                                <!-- Nama Produk -->
+                                <div class="col-md-12">
+                                    <label for="name" class="form-label"><i class="bi bi-card-text" style="color:#8b5cf6;"></i> Nama Deskriptif Produk</label>
+                                    <input type="text" class="form-control" id="name" name="name" required placeholder="Masukkan nama lengkap produk">
+                                </div>
+                                
+                                <!-- Harga -->
+                                <div class="col-md-6">
+                                    <label for="price" class="form-label"><i class="bi bi-cash-stack" style="color:#10b981;"></i> Harga Satuan</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text fw-bold">Rp</span>
+                                        <input type="number" class="form-control" id="price" name="price" required min="0" placeholder="0">
+                                    </div>
+                                </div>
+
+                                <!-- Stok -->
+                                <div class="col-md-6">
+                                    <label for="stock" class="form-label"><i class="bi bi-boxes" style="color:#f59e0b;"></i> Kuantitas Stok</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="stock" name="stock" required min="0" placeholder="0">
+                                        <span class="input-group-text">Unit</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-5" style="border-color: rgba(255,255,255,0.1);">
+
+                            <div class="d-flex justify-content-end gap-3">
+                                <a href="data.html" class="btn btn-cancel d-flex align-items-center gap-2">
+                                    Batal
+                                </a>
+                                <button type="submit" class="btn btn-submit d-flex align-items-center gap-2" id="btnSubmit">
+                                    <i class="bi bi-cloud-arrow-up-fill"></i> Simpan Data
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+    </div>
+
+    <!-- Peringatan Toast/Alert disembunyikan dalam JS -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast align-items-center text-bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body fw-medium" id="toastMessage">
+            Sistem diperbarui: Data berhasil disimpan!
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+    </div> <!-- Closing main-content -->
+
+    <!-- jQuery, Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="/js/form.js"></script>
+</body>
+</html>
