@@ -1,0 +1,89 @@
+<%- include('partials/header', {title: 'Edit Buku', page: 'buku'}) %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4 shadow-sm border-0">
+      <h4 class="fw-bold mb-4 text-primary"><i class="fas fa-edit me-2"></i>Edit Data Buku</h4>
+      <form id="formEditBuku">
+        <input type="hidden" id="bukuId" value="<%= item.id %>" />
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Judul Buku</label>
+          <input
+            type="text"
+            name="judul"
+            class="form-control rounded-3"
+            value="<%= item.judul %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Kategori</label>
+          <select name="kategori" class="form-select rounded-3" required>
+            <option value="Fiksi" <%= item.kategori === 'Fiksi' ? 'selected' : '' %>>Fiksi</option>
+            <option value="Non-Fiksi" <%= item.kategori === 'Non-Fiksi' ? 'selected' : '' %>>Non-Fiksi</option>
+            <option value="Teknologi" <%= item.kategori === 'Teknologi' ? 'selected' : '' %>>Teknologi</option>
+            <option value="Sains" <%= item.kategori === 'Sains' ? 'selected' : '' %>>Sains</option>
+            <option value="Komik" <%= item.kategori === 'Komik' ? 'selected' : '' %>>Komik</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Pengarang</label>
+          <input
+            type="text"
+            name="pengarang"
+            class="form-control rounded-3"
+            value="<%= item.pengarang %>"
+            required
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Tahun Terbit</label>
+          <input
+            type="number"
+            name="tahun"
+            class="form-control rounded-3"
+            value="<%= item.tahun %>"
+            required
+          />
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary fw-bold py-2 shadow-sm">
+            <i class="fas fa-save me-2"></i>Simpan Perubahan
+          </button>
+          <a href="/buku" class="btn btn-light border py-2">Batal</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+  $(document).ready(function () {
+    $("#formEditBuku").on("submit", function (e) {
+      e.preventDefault();
+
+      const id = $("#bukuId").val();
+      const formData = $(this).serialize();
+
+      $.ajax({
+        url: "/api/buku/" + id, // Endpoint diarahkan ke API buku
+        type: "PUT",
+        data: formData,
+        success: function (response) {
+          alert("Berhasil memperbarui data buku!");
+          window.location.href = "/buku"; // Redirect ke daftar buku
+        },
+        error: function (err) {
+          alert("Gagal update data buku.");
+        },
+      });
+    });
+  });
+</script>

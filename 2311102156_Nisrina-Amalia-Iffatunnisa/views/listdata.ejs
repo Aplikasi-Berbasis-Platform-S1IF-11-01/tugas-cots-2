@@ -1,0 +1,67 @@
+<%- include('partials/header', {page: 'buku'}) %>
+
+<div class="mb-4 d-flex justify-content-between align-items-center">
+    <h2 class="fw-bold">Daftar Koleksi Buku</h2>
+    <a href="/tambah" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Tambah Buku</a>
+</div>
+
+<div class="card p-4 shadow-sm border-0">
+    <table id="myTable" class="table table-hover w-100">
+        <thead>
+            <tr>
+                <th>Judul Buku</th>
+                <th>Kategori</th>
+                <th>Pengarang</th>
+                <th>Tahun</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+    $(document).ready(function() {
+        $("#myTable").DataTable({
+            // Endpoint diganti ke API buku
+            ajax: "/api/buku", 
+            columns: [
+                { data: "judul" },
+                { data: "kategori" },
+                { data: "pengarang" },
+                { data: "tahun" },
+                {
+                    data: "id",
+                    render: function(data) {
+                        return `
+                            <a href="/edit/${data}" class="btn btn-sm btn-warning text-white">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <button onclick="hapusData('${data}')" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        `;
+                    }
+                }
+            ]
+        });
+    });
+
+    function hapusData(id) {
+        if(confirm("Apakah Anda yakin ingin menghapus buku ini?")) {
+            $.ajax({
+                // Endpoint DELETE juga disesuaikan
+                url: "/api/buku/" + id, 
+                type: "DELETE",
+                success: function(res) { 
+                    alert(res.message);
+                    location.reload(); 
+                },
+                error: function() {
+                    alert("Gagal menghapus data.");
+                }
+            });
+        }
+    }
+</script>
