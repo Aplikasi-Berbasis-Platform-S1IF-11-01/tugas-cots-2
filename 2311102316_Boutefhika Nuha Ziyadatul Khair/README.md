@@ -370,11 +370,7 @@ Pengguna menekan tombol Hapus pada baris data. Modal konfirmasi Bootstrap muncul
    ![Gambar 6](Images/Gambar6.png)
    
 # Kesimpulan
-Pada tugas COTS-2 ini telah berhasil dibuat aplikasi web bertema Sistem Data Mahasiswa (PuTi) menggunakan Express JS, Bootstrap 5, jQuery, jQuery DataTables, dan Chart.js. Aplikasi ini telah memenuhi seluruh ketentuan tugas praktikum karena memiliki tiga halaman utama fungsional, yaitu halaman Form Input, halaman Data Mahasiswa, dan halaman Dashboard Statistik.
-
-Fitur CRUD berjalan dengan baik: Create melalui form input AJAX, Read melalui tabel DataTables yang mengambil data JSON dari endpoint, Update melalui modal edit Bootstrap, dan Delete melalui modal konfirmasi dengan AJAX DELETE. Semua operasi dilakukan secara asinkron tanpa reload halaman.
-
-Halaman Dashboard menambahkan nilai lebih pada aplikasi dengan menampilkan visualisasi statistik menggunakan Chart.js, sehingga data mahasiswa dapat dianalisis secara visual. Walaupun data masih disimpan dalam file JSON, aplikasi ini sudah menunjukkan implementasi dasar konsep CRUD dan REST API berbasis client-server yang baik.
+Aplikasi ini berbasis web Sistem Data Mahasiswa (PuTi) yang menggunakan Express JS, Bootstrap 5, jQuery, jQuery DataTables, dan Chart.js. Memiliki tiga halaman utama fungsional, yaitu halaman Form Input, halaman Data Mahasiswa, dan halaman Dashboard Statistik. Adanya Fitur CRUD: Create melalui form input AJAX, Read melalui tabel DataTables yang mengambil data JSON dari endpoint, Update melalui modal edit Bootstrap, dan Delete melalui modal konfirmasi dengan AJAX DELETE. Semua operasi dilakukan secara asinkron tanpa reload halaman. Halaman Dashboard menambahkan nilai lebih pada aplikasi dengan menampilkan visualisasi statistik menggunakan Chart.js, sehingga data mahasiswa dapat dianalisis secara visual. Walaupun data masih disimpan dalam file JSON, aplikasi ini sudah menunjukkan implementasi dasar konsep CRUD dan REST API berbasis client-server yang baik.
 
 # Link Video Presentasi
 📂 [Video Presentasi_2311102316_Boutefhika Nuha Z. K](https://drive.google.com/drive/folders/1Xy5cpqwUPMM2Xx1dRw43V2Lf8CmAFvFb?usp=sharing)
