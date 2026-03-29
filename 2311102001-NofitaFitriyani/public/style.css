@@ -1,0 +1,132 @@
+body {
+  background: linear-gradient(135deg, #eef7f2, #f8fbff);
+  min-height: 100vh;
+  color: #1f2937;
+}
+
+.navbar {
+  background: linear-gradient(90deg, #198754, #20c997) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.logo-posbindu {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #ffffff;
+  padding: 3px;
+}
+
+.hero-box {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,255,248,0.95));
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 10px 30px rgba(25, 135, 84, 0.12);
+  border: 1px solid rgba(25, 135, 84, 0.08);
+}
+
+.hero-badge {
+  display: inline-block;
+  background-color: #d1fae5;
+  color: #065f46;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.hero-title {
+  font-weight: 800;
+  font-size: 2.2rem;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.hero-text {
+  color: #4b5563;
+  max-width: 700px;
+  margin-bottom: 24px;
+}
+
+.info-card {
+  border: none;
+  border-radius: 20px;
+  padding: 24px;
+  background: white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  height: 100%;
+}
+
+.feature-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+
+.card {
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.card-header {
+  font-weight: 700;
+  padding: 16px 20px;
+}
+
+.form-control {
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.btn {
+  border-radius: 12px;
+}
+
+.table-actions .btn {
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.stat-box {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.stat-box h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #198754;
+}
+
+.stat-box p {
+  margin: 6px 0 0;
+  color: #6b7280;
+}

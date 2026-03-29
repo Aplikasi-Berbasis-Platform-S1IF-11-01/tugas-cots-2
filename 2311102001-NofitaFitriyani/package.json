@@ -1,0 +1,15 @@
+{
+  "name": "tugas2-cots",
+  "version": "1.0.0",
+  "description": "Aplikasi CRUD sederhana menggunakan Node.js, Express, Bootstrap, jQuery, dan DataTables",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}
