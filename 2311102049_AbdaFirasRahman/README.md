@@ -87,6 +87,7 @@ DataTables adalah plugin berbasis jQuery yang digunakan untuk meningkatkan fungs
 ├── package-lock.json     # File pengunci versi dependensi
 ├── package.json          # Manifest proyek & daftar library
 └── README.md             # Dokumentasi laporan praktikum nya
+```
 
 ### Kode program
 ### File server.js
