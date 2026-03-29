@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1774702898,
+        "nama": "Mie",
+        "kategori": "Makanan",
+        "harga": "100000"
+    },
+    {
+        "id": 1774702911,
+        "nama": "Telur",
+        "kategori": "Makanan",
+        "harga": "1000"
+    }
+]
