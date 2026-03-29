@@ -1,0 +1,212 @@
+<%
+  locals.activePage = 'statistik';
+%>
+<%- include('header') %>
+
+<!-- ── Stat Summary Cards ── -->
+<div class="row g-3 mb-4">
+  <% const cards = [
+    { icon:'bi-people-fill', color:'primary', val: stats.total, label:'Total Mahasiswa' },
+    { icon:'bi-bar-chart-fill', color:'info', val: stats.avg, label:'Rata-rata IPK' },
+    { icon:'bi-arrow-up-circle-fill', color:'success', val: stats.max, label:'IPK Tertinggi' },
+    { icon:'bi-arrow-down-circle-fill', color:'warning', val: stats.min, label:'IPK Terendah' },
+    { icon:'bi-activity', color:'secondary', val: stats.median, label:'Median IPK' },
+  ]; %>
+  <% cards.forEach(c => { %>
+  <div class="col-6 col-xl">
+    <div class="stat-card stat-<%= c.color %>">
+      <div class="stat-icon"><i class="bi <%= c.icon %>"></i></div>
+      <div class="stat-value"><%= c.val %></div>
+      <div class="stat-label"><%= c.label %></div>
+    </div>
+  </div>
+  <% }) %>
+</div>
+
+<% if (totalData === 0) { %>
+<div class="card-custom text-center py-5">
+  <i class="bi bi-bar-chart fs-1 text-muted d-block mb-3"></i>
+  <h5 class="text-muted">Belum ada data mahasiswa</h5>
+  <a href="/tambah" class="btn btn-primary mt-2"><i class="bi bi-plus-lg me-1"></i>Tambah Mahasiswa</a>
+</div>
+<% } else { %>
+
+<!-- ── Row 1: Distribusi IPK + Status ── -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-7">
+    <div class="card-custom h-100">
+      <div class="card-custom-header">
+        <div>
+          <h5 class="card-custom-title"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Distribusi IPK Mahasiswa</h5>
+          <p class="card-custom-subtitle">Sebaran predikat kelulusan berdasarkan IPK</p>
+        </div>
+      </div>
+      <div class="card-custom-body" style="height:280px">
+        <canvas id="chartDistribusi"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card-custom h-100">
+      <div class="card-custom-header">
+        <div>
+          <h5 class="card-custom-title"><i class="bi bi-pie-chart-fill me-2 text-success"></i>Status Mahasiswa</h5>
+          <p class="card-custom-subtitle">Komposisi status akademik</p>
+        </div>
+      </div>
+      <div class="card-custom-body d-flex align-items-center justify-content-center" style="height:280px">
+        <canvas id="chartStatus"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Row 2: IPK per Jurusan + Top 5 ── -->
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div>
+          <h5 class="card-custom-title"><i class="bi bi-building me-2 text-info"></i>Rata-rata IPK per Jurusan</h5>
+          <p class="card-custom-subtitle">Perbandingan rata-rata IPK antar program studi</p>
+        </div>
+      </div>
+      <div class="card-custom-body" style="height:300px">
+        <canvas id="chartJurusan"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div>
+          <h5 class="card-custom-title"><i class="bi bi-trophy-fill me-2 text-warning"></i>Top 5 Mahasiswa IPK Tertinggi</h5>
+          <p class="card-custom-subtitle">Mahasiswa berprestasi terbaik</p>
+        </div>
+      </div>
+      <div class="card-custom-body p-0">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="text-center ps-3" width="50">Rank</th>
+              <th>Mahasiswa</th>
+              <th>Jurusan</th>
+              <th class="text-center">IPK</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% stats.top5.forEach((m, i) => {
+              const medals = ['🥇','🥈','🥉','🏅','🏅'];
+              let ipkCls = 'ipk-danger';
+              if (m.ipk >= 3.5) ipkCls = 'ipk-success';
+              else if (m.ipk >= 3.0) ipkCls = 'ipk-primary';
+              else if (m.ipk >= 2.0) ipkCls = 'ipk-warning';
+            %>
+            <tr>
+              <td class="text-center ps-3 fs-5"><%= medals[i] %></td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#4361ee,#7c3aed);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">
+                    <%= m.nama.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase() %>
+                  </div>
+                  <div>
+                    <div class="fw-600 text-sm"><%= m.nama %></div>
+                    <div class="text-xs text-muted"><%= m.nim %></div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-xs text-muted"><%= m.jurusan %></td>
+              <td class="text-center"><span class="ipk-pill <%= ipkCls %>"><%= m.ipk.toFixed(2) %></span></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const distribusiData  = <%- JSON.stringify(stats.distribusi || {}) %>;
+const perJurusanData  = <%- JSON.stringify(stats.perJurusan || []) %>;
+const statusDistData  = <%- JSON.stringify(stats.statusDist || {}) %>;
+
+Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+
+// ── Chart 1: Distribusi IPK ──
+const distLabels = Object.keys(distribusiData);
+const distVals   = Object.values(distribusiData);
+new Chart(document.getElementById('chartDistribusi').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: distLabels,
+    datasets: [{
+      label: 'Jumlah Mahasiswa',
+      data: distVals,
+      backgroundColor: ['#ef476f','#f7a325','#4361ee','#06d6a0'],
+      borderRadius: 8, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#f1f5f9' } },
+      x: { grid: { display: false }, ticks: { maxRotation: 15, font: { size: 10 } } }
+    }
+  }
+});
+
+// ── Chart 2: Status Donut ──
+const statusLabels = Object.keys(statusDistData).filter(k=>statusDistData[k]>0);
+const statusVals   = statusLabels.map(k=>statusDistData[k]);
+new Chart(document.getElementById('chartStatus').getContext('2d'), {
+  type: 'doughnut',
+  data: {
+    labels: statusLabels,
+    datasets: [{
+      data: statusVals,
+      backgroundColor: ['#4361ee','#f7a325','#06d6a0'],
+      borderWidth: 3, borderColor: '#fff', hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } }
+    }
+  }
+});
+
+// ── Chart 3: IPK per Jurusan (horizontal bar) ──
+const jLabels = perJurusanData.map(j => j.nama);
+const jVals   = perJurusanData.map(j => parseFloat(j.avg));
+const jColors = ['#4361ee','#7c3aed','#06d6a0','#f7a325','#ef476f','#0ea5e9'];
+new Chart(document.getElementById('chartJurusan').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: jLabels,
+    datasets: [{
+      label: 'Rata-rata IPK',
+      data: jVals,
+      backgroundColor: jColors.slice(0, jLabels.length),
+      borderRadius: 6, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, max: 4.0, grid: { color: '#f1f5f9' }, ticks: { callback: v => v.toFixed(1) } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+
+<%- include('footer') %>

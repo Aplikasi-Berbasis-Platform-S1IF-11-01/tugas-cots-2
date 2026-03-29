@@ -1,0 +1,101 @@
+<%
+  locals.activePage = 'dashboard';
+%>
+<%- include('header') %>
+
+<!-- ── Flash Messages ── -->
+<% if (locals.query && query.success) { %>
+<% const msgs = { tambah: 'Data mahasiswa berhasil ditambahkan!', edit: 'Data mahasiswa berhasil diperbarui!' }; %>
+<div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4" role="alert">
+  <i class="bi bi-check-circle-fill fs-5"></i>
+  <span><%= msgs[query.success] || 'Operasi berhasil!' %></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<% } %>
+
+<!-- ── Stats Cards ── -->
+<div class="row g-4 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-primary">
+      <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="stat-value"><%= stats.total %></div>
+      <div class="stat-label">Total Mahasiswa</div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-success">
+      <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
+      <div class="stat-value"><%= stats.aktif %></div>
+      <div class="stat-label">Mahasiswa Aktif</div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-warning">
+      <div class="stat-icon"><i class="bi bi-person-dash-fill"></i></div>
+      <div class="stat-value"><%= stats.cuti %></div>
+      <div class="stat-label">Mahasiswa Cuti</div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-info">
+      <div class="stat-icon"><i class="bi bi-star-fill"></i></div>
+      <div class="stat-value"><%= stats.avgIpk %></div>
+      <div class="stat-label">Rata-rata IPK</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Data Table Card ── -->
+<div class="card-custom">
+  <div class="card-custom-header">
+    <div>
+      <h5 class="card-custom-title"><i class="bi bi-table me-2"></i>Daftar Mahasiswa</h5>
+      <p class="card-custom-subtitle">Data mahasiswa terdaftar dalam format JSON via API</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="btn btn-outline-secondary btn-sm" id="btnRefresh" title="Refresh Data">
+        <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+      </button>
+      <a href="/tambah" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-lg me-1"></i> Tambah Mahasiswa
+      </a>
+    </div>
+  </div>
+  <div class="card-custom-body">
+    <div id="loadingState" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <div class="mt-2 text-muted">Memuat data dari API...</div>
+    </div>
+    <div id="tableWrapper" style="display:none;">
+      <table id="tableMahasiswa" class="table table-hover align-middle w-100">
+        <thead>
+          <tr>
+            <th class="text-center" width="50">No</th>
+            <th>NIM</th>
+            <th>Nama Mahasiswa</th>
+            <th>Jurusan</th>
+            <th class="text-center">Semester</th>
+            <th class="text-center">IPK</th>
+            <th class="text-center">Status</th>
+            <th class="text-center" width="140">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// URL params untuk flash messages
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'tambah') showToast('Data mahasiswa berhasil ditambahkan!', 'success');
+  if (params.get('success') === 'edit')   showToast('Data mahasiswa berhasil diperbarui!', 'success');
+  if (params.get('error') === 'not_found') showToast('Data tidak ditemukan!', 'danger');
+  // Bersihkan URL params
+  if (params.toString()) window.history.replaceState({}, '', '/');
+})();
+</script>
+
+<%- include('footer') %>

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "mhs-001",
+    "nim": "2021001001",
+    "nama": "Andi Saputra",
+    "jurusan": "Teknik Informatika",
+    "semester": 6,
+    "ipk": 3.75,
+    "email": "andi.saputra@mahasiswa.ac.id",
+    "status": "Aktif",
+    "createdAt": "2024-01-15"
+  },
+  {
+    "id": "mhs-002",
+    "nim": "2021001002",
+    "nama": "Bunga Ramadhani",
+    "jurusan": "Sistem Informasi",
+    "semester": 4,
+    "ipk": 3.92,
+    "email": "bunga.ramadhani@mahasiswa.ac.id",
+    "status": "Aktif",
+    "createdAt": "2024-01-16"
+  },
+  {
+    "id": "mhs-003",
+    "nim": "2020001003",
+    "nama": "Candra Wijaya",
+    "jurusan": "Teknik Elektro",
+    "semester": 8,
+    "ipk": 3.45,
+    "email": "candra.wijaya@mahasiswa.ac.id",
+    "status": "Aktif",
+    "createdAt": "2024-01-17"
+  },
+  {
+    "id": "mhs-004",
+    "nim": "2022001004",
+    "nama": "Dewi Kartika",
+    "jurusan": "Ilmu Komputer",
+    "semester": 2,
+    "ipk": 3.6,
+    "email": "dewi.kartika@mahasiswa.ac.id",
+    "status": "Aktif",
+    "createdAt": "2024-01-18"
+  },
+  {
+    "id": "mhs-005",
+    "nim": "2019001005",
+    "nama": "Eko Prasetyo",
+    "jurusan": "Teknik Informatika",
+    "semester": 10,
+    "ipk": 3.2,
+    "email": "eko.prasetyo@mahasiswa.ac.id",
+    "status": "Cuti",
+    "createdAt": "2024-01-19"
+  },
+  {
+    "id": "mhs-02c9e9b9",
+    "nim": "2311102030",
+    "nama": "Jack de owi",
+    "jurusan": "Teknologi Informasi",
+    "semester": 14,
+    "ipk": 2.3,
+    "email": "jackdeowi69@gmail.com",
+    "status": "Drop Out",
+    "createdAt": "2026-03-26"
+  }
+]

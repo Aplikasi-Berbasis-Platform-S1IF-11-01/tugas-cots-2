@@ -1,0 +1,223 @@
+<%
+  locals.activePage = mahasiswa ? 'edit' : 'tambah';
+  const isEdit = !!mahasiswa;
+%>
+<%- include('header') %>
+
+<!-- Breadcrumb -->
+<nav class="mb-4" aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-custom">
+    <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-fill"></i> Dashboard</a></li>
+    <li class="breadcrumb-item active"><%= isEdit ? 'Edit Mahasiswa' : 'Tambah Mahasiswa' %></li>
+  </ol>
+</nav>
+
+<div class="row justify-content-center">
+  <div class="col-xl-8 col-lg-10">
+
+    <!-- Error Alert -->
+    <% if (locals.error) { %>
+    <div class="alert alert-danger d-flex align-items-center gap-2 mb-4" role="alert">
+      <i class="bi bi-x-circle-fill fs-5"></i>
+      <span><%= error %></span>
+    </div>
+    <% } %>
+
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div>
+          <h5 class="card-custom-title">
+            <i class="bi bi-<%= isEdit ? 'pencil-square' : 'person-plus-fill' %> me-2"></i>
+            <%= isEdit ? 'Edit Data Mahasiswa' : 'Tambah Mahasiswa Baru' %>
+          </h5>
+          <p class="card-custom-subtitle">
+            <%= isEdit ? 'Perbarui informasi mahasiswa di bawah ini' : 'Isi formulir untuk mendaftarkan mahasiswa baru' %>
+          </p>
+        </div>
+        <% if (isEdit) { %>
+        <span class="badge-nim"><i class="bi bi-hash"></i> <%= mahasiswa.nim %></span>
+        <% } %>
+      </div>
+
+      <div class="card-custom-body">
+        <form id="formMahasiswa" action="<%= action %>" method="POST" novalidate>
+
+          <!-- Row 1: NIM & Nama -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-5">
+              <label class="form-label required-label">NIM</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                <input type="text" class="form-control" name="nim" id="nim"
+                  value="<%= mahasiswa ? mahasiswa.nim : '' %>"
+                  placeholder="Contoh: 2024001001"
+                  maxlength="12" required />
+              </div>
+              <div class="invalid-feedback">NIM wajib diisi (10-12 digit angka)</div>
+            </div>
+            <div class="col-md-7">
+              <label class="form-label required-label">Nama Lengkap</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" name="nama" id="nama"
+                  value="<%= mahasiswa ? mahasiswa.nama : '' %>"
+                  placeholder="Nama lengkap mahasiswa" required />
+              </div>
+              <div class="invalid-feedback">Nama wajib diisi</div>
+            </div>
+          </div>
+
+          <!-- Row 2: Jurusan -->
+          <div class="mb-3">
+            <label class="form-label required-label">Jurusan / Program Studi</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-building"></i></span>
+              <select class="form-select" name="jurusan" id="jurusan" required>
+                <option value="">-- Pilih Jurusan --</option>
+                <% const jurusanList = ['Teknik Informatika', 'Sistem Informasi', 'Teknik Elektro', 'Manajemen Informatika', 'Teknik Komputer', 'Ilmu Komputer', 'Teknologi Informasi']; %>
+                <% jurusanList.forEach(j => { %>
+                <option value="<%= j %>" <%= mahasiswa && mahasiswa.jurusan === j ? 'selected' : '' %>><%= j %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="invalid-feedback">Pilih jurusan terlebih dahulu</div>
+          </div>
+
+          <!-- Row 3: Semester, IPK, Email -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-3">
+              <label class="form-label required-label">Semester</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-calendar2"></i></span>
+                <input type="number" class="form-control" name="semester" id="semester"
+                  value="<%= mahasiswa ? mahasiswa.semester : '' %>"
+                  min="1" max="14" placeholder="1-14" required />
+              </div>
+              <div class="invalid-feedback">Semester 1-14</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label required-label">IPK</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-star"></i></span>
+                <input type="number" class="form-control" name="ipk" id="ipk"
+                  value="<%= mahasiswa ? mahasiswa.ipk : '' %>"
+                  min="0" max="4" step="0.01" placeholder="0.00 - 4.00" required />
+              </div>
+              <div class="invalid-feedback">IPK antara 0.00 - 4.00</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label required-label">Email</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input type="email" class="form-control" name="email" id="email"
+                  value="<%= mahasiswa ? mahasiswa.email : '' %>"
+                  placeholder="email@mahasiswa.ac.id" required />
+              </div>
+              <div class="invalid-feedback">Masukkan email yang valid</div>
+            </div>
+          </div>
+
+          <!-- Row 4: Status -->
+          <div class="mb-4">
+            <label class="form-label required-label">Status Mahasiswa</label>
+            <div class="d-flex gap-3 flex-wrap">
+              <% const statusList = ['Aktif', 'Cuti', 'Lulus', 'Drop Out']; %>
+              <% statusList.forEach(s => { %>
+              <div class="form-check form-check-custom">
+                <input class="form-check-input" type="radio" name="status" id="status_<%= s %>"
+                  value="<%= s %>"
+                  <%= (!mahasiswa && s === 'Aktif') || (mahasiswa && mahasiswa.status === s) ? 'checked' : '' %> required/>
+                <label class="form-check-label" for="status_<%= s %>">
+                  <span class="status-dot status-<%= s.toLowerCase().replace(' ','') %>"></span>
+                  <%= s %>
+                </label>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+
+          <!-- IPK Preview Bar -->
+          <div class="ipk-preview mb-4" id="ipkPreview" style="display:none;">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <small class="text-muted">Visualisasi IPK</small>
+              <small id="ipkLabel" class="fw-600"></small>
+            </div>
+            <div class="progress" style="height:8px; border-radius:4px;">
+              <div class="progress-bar" id="ipkBar" role="progressbar" style="width:0%; transition: width .4s ease;"></div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2 justify-content-end pt-2 border-top">
+            <a href="/" class="btn btn-outline-secondary px-4">
+              <i class="bi bi-x-lg me-1"></i> Batal
+            </a>
+            <button type="reset" class="btn btn-light px-4">
+              <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+            </button>
+            <button type="submit" class="btn btn-primary px-5" id="btnSubmit">
+              <i class="bi bi-<%= isEdit ? 'check-lg' : 'plus-lg' %> me-1"></i>
+              <%= isEdit ? 'Simpan Perubahan' : 'Tambah Mahasiswa' %>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+$(function () {
+  // jQuery Validate
+  $('#formMahasiswa').validate({
+    rules: {
+      nim:      { required: true, minlength: 10, maxlength: 12, digits: true },
+      nama:     { required: true, minlength: 3 },
+      jurusan:  { required: true },
+      semester: { required: true, min: 1, max: 14, digits: true },
+      ipk:      { required: true, min: 0, max: 4, number: true },
+      email:    { required: true, email: true },
+    },
+    messages: {
+      nim:      { required: 'NIM wajib diisi', digits: 'NIM hanya boleh berisi angka', minlength: 'Minimal 10 digit' },
+      nama:     { required: 'Nama wajib diisi', minlength: 'Minimal 3 karakter' },
+      jurusan:  { required: 'Pilih jurusan' },
+      semester: { required: 'Semester wajib diisi', min: 'Min semester 1', max: 'Maks semester 14' },
+      ipk:      { required: 'IPK wajib diisi', min: 'Min IPK 0', max: 'Maks IPK 4.00' },
+      email:    { required: 'Email wajib diisi', email: 'Format email tidak valid' },
+    },
+    errorElement: 'div',
+    errorClass: 'invalid-feedback d-block',
+    highlight: el => $(el).addClass('is-invalid'),
+    unhighlight: el => $(el).removeClass('is-invalid'),
+    submitHandler: function(form) {
+      $('#btnSubmit').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>Menyimpan...');
+      form.submit();
+    }
+  });
+
+  // IPK preview bar
+  function updateIpkBar() {
+    const val = parseFloat($('#ipk').val());
+    if (!isNaN(val) && val >= 0 && val <= 4) {
+      const pct = (val / 4) * 100;
+      let cls = 'bg-danger', label = 'Kurang Memuaskan';
+      if (val >= 3.5) { cls = 'bg-success'; label = 'Cumlaude 🏆'; }
+      else if (val >= 3.0) { cls = 'bg-primary'; label = 'Sangat Memuaskan'; }
+      else if (val >= 2.5) { cls = 'bg-info'; label = 'Memuaskan'; }
+      else if (val >= 2.0) { cls = 'bg-warning'; label = 'Cukup'; }
+      $('#ipkPreview').show();
+      $('#ipkBar').css('width', pct + '%').removeClass('bg-danger bg-warning bg-info bg-primary bg-success').addClass(cls);
+      $('#ipkLabel').text(`${val.toFixed(2)} — ${label}`);
+    } else {
+      $('#ipkPreview').hide();
+    }
+  }
+  $('#ipk').on('input', updateIpkBar);
+  updateIpkBar(); // init on edit
+});
+</script>
+
+<%- include('footer') %>

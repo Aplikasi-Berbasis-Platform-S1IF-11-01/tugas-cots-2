@@ -1,0 +1,184 @@
+<%
+  locals.activePage = 'ekspor';
+%>
+<%- include('header') %>
+
+<div class="row g-4">
+  <!-- ── Panel Filter ── -->
+  <div class="col-lg-4">
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div>
+          <h5 class="card-custom-title"><i class="bi bi-funnel-fill me-2 text-primary"></i>Filter Laporan</h5>
+          <p class="card-custom-subtitle">Opsional — kosongkan untuk ekspor semua data</p>
+        </div>
+      </div>
+      <div class="card-custom-body">
+        <form id="filterForm">
+          <div class="mb-3">
+            <label class="form-label fw-600 text-sm">Program Studi</label>
+            <select class="form-select form-select-sm" id="filterJurusan" name="jurusan">
+              <option value="">— Semua Jurusan —</option>
+              <% jurusanList.forEach(j => { %>
+              <option value="<%= j %>"><%= j %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-600 text-sm">Status Mahasiswa</label>
+            <select class="form-select form-select-sm" id="filterStatus" name="status">
+              <option value="">— Semua Status —</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Cuti">Cuti</option>
+              <option value="Lulus">Lulus</option>
+            </select>
+          </div>
+          <div class="p-3 rounded-3 mb-1" style="background:#f0f4ff">
+            <div class="text-xs text-muted mb-1">Total data tersedia</div>
+            <div class="fw-700 text-primary fs-4"><%= totalData %></div>
+            <div class="text-xs text-muted">mahasiswa</div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Panel Ekspor ── -->
+  <div class="col-lg-8">
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div>
+          <h5 class="card-custom-title"><i class="bi bi-download me-2 text-success"></i>Pilih Format Ekspor</h5>
+          <p class="card-custom-subtitle">Unduh laporan data mahasiswa dalam berbagai format</p>
+        </div>
+      </div>
+      <div class="card-custom-body">
+        <div class="row g-3">
+
+          <!-- CSV -->
+          <div class="col-md-4">
+            <div class="ekspor-card" onclick="doEkspor('csv')">
+              <div class="ekspor-icon" style="background:linear-gradient(135deg,#06d6a0,#0ea5e9)">
+                <i class="bi bi-filetype-csv"></i>
+              </div>
+              <div class="ekspor-title">CSV</div>
+              <div class="ekspor-desc">Comma-Separated Values — cocok untuk Google Sheets, Excel, dan pengolahan data</div>
+              <div class="ekspor-btn">
+                <i class="bi bi-download me-1"></i> Unduh CSV
+              </div>
+            </div>
+          </div>
+
+          <!-- EXCEL -->
+          <div class="col-md-4">
+            <div class="ekspor-card" onclick="doEkspor('excel')">
+              <div class="ekspor-icon" style="background:linear-gradient(135deg,#217346,#42b776)">
+                <i class="bi bi-file-earmark-excel-fill"></i>
+              </div>
+              <div class="ekspor-title">Excel (XLSX)</div>
+              <div class="ekspor-desc">Spreadsheet Microsoft Excel — termasuk sheet statistik ringkasan otomatis</div>
+              <div class="ekspor-btn" style="background:linear-gradient(135deg,#217346,#42b776)">
+                <i class="bi bi-download me-1"></i> Unduh Excel
+              </div>
+            </div>
+          </div>
+
+          <!-- PDF -->
+          <div class="col-md-4">
+            <div class="ekspor-card" onclick="doEkspor('pdf')">
+              <div class="ekspor-icon" style="background:linear-gradient(135deg,#ef476f,#f7a325)">
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+              </div>
+              <div class="ekspor-title">PDF</div>
+              <div class="ekspor-desc">Laporan resmi format PDF — layout landscape dengan statistik ringkasan</div>
+              <div class="ekspor-btn" style="background:linear-gradient(135deg,#ef476f,#f7a325)">
+                <i class="bi bi-download me-1"></i> Unduh PDF
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="alert alert-info d-flex align-items-start gap-2 mt-4 mb-0 border-0 rounded-3" style="background:#eff6ff">
+          <i class="bi bi-info-circle-fill text-primary mt-1 flex-shrink-0"></i>
+          <div class="text-sm">
+            <strong>Catatan:</strong> Format Excel dan PDF memerlukan package tambahan. Jalankan
+            <code class="bg-white px-1 rounded">npm install xlsx pdfkit</code> jika belum diinstall.
+            Format CSV tidak membutuhkan dependensi tambahan.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Riwayat unduhan sesi ini -->
+    <div id="riwayatCard" class="card-custom mt-4" style="display:none">
+      <div class="card-custom-header">
+        <h5 class="card-custom-title"><i class="bi bi-clock-history me-2 text-secondary"></i>Riwayat Unduhan</h5>
+      </div>
+      <div class="card-custom-body p-0">
+        <ul class="list-group list-group-flush rounded-bottom-3" id="riwayatList"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.ekspor-card {
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px 16px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.ekspor-card:hover { border-color: #4361ee; box-shadow: 0 4px 20px rgba(67,97,238,.15); transform: translateY(-2px); }
+.ekspor-icon { width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff; }
+.ekspor-title { font-weight:700;font-size:1rem;color:#1e293b; }
+.ekspor-desc { font-size:.78rem;color:#64748b;line-height:1.4;flex:1; }
+.ekspor-btn { display:inline-flex;align-items:center;font-size:.8rem;font-weight:600;color:#fff;background:linear-gradient(135deg,#4361ee,#7c3aed);padding:7px 18px;border-radius:8px;margin-top:4px;transition:opacity .2s; }
+.ekspor-card:hover .ekspor-btn { opacity:.85; }
+</style>
+
+<script>
+function getQueryString() {
+  const j = document.getElementById('filterJurusan').value;
+  const s = document.getElementById('filterStatus').value;
+  const parts = [];
+  if (j) parts.push(`jurusan=${encodeURIComponent(j)}`);
+  if (s) parts.push(`status=${encodeURIComponent(s)}`);
+  return parts.length ? '?' + parts.join('&') : '';
+}
+
+const formatLabels = { csv:'CSV', excel:'Excel (XLSX)', pdf:'PDF' };
+const formatIcons  = { csv:'bi-filetype-csv text-info', excel:'bi-file-earmark-excel-fill text-success', pdf:'bi-file-earmark-pdf-fill text-danger' };
+
+function doEkspor(fmt) {
+  const qs = getQueryString();
+  const url = `/ekspor/${fmt}${qs}`;
+  window.location.href = url;
+
+  // Log ke riwayat
+  const now = new Date().toLocaleTimeString('id-ID');
+  const jurusan = document.getElementById('filterJurusan').value || 'Semua Jurusan';
+  const status  = document.getElementById('filterStatus').value  || 'Semua Status';
+  const li = document.createElement('li');
+  li.className = 'list-group-item d-flex align-items-center gap-3 px-4 py-3';
+  li.innerHTML = `
+    <i class="bi ${formatIcons[fmt]} fs-5"></i>
+    <div class="flex-grow-1">
+      <div class="fw-600 text-sm">${formatLabels[fmt]} — ${jurusan}, ${status}</div>
+      <div class="text-xs text-muted">${now}</div>
+    </div>
+    <span class="badge bg-success-subtle text-success rounded-pill px-3">Berhasil</span>`;
+  document.getElementById('riwayatList').prepend(li);
+  document.getElementById('riwayatCard').style.display = '';
+  showToast(`Mengunduh laporan ${formatLabels[fmt]}...`, 'success');
+}
+</script>
+
+<%- include('footer') %>
