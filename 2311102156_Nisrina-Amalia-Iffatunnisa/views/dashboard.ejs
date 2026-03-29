@@ -1,0 +1,49 @@
+<%- include('partials/header', {page: 'dashboard'}) %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold m-0">Dashboard Buku</h2>
+</div>
+
+<div class="row g-3">
+
+    <!-- Total Buku -->
+    <div class="col-lg-4 col-6">
+        <div class="card border-0 text-white shadow-sm" style="background-color: #0d6efd;">
+            <div class="card-body">
+                <h2 class="fw-bold"><%= total %></h2>
+                <p class="mb-0">Total Buku</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jumlah Kategori -->
+    <div class="col-lg-4 col-6">
+        <div class="card border-0 text-white shadow-sm" style="background-color: #198754;">
+            <div class="card-body">
+                <h2 class="fw-bold"><%= jumlahKategori %></h2>
+                <p class="mb-0">Jumlah Kategori</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buku Baru -->
+    <div class="col-lg-4 col-6">
+        <div class="card border-0 text-dark shadow-sm" style="background-color: #ffc107;">
+            <div class="card-body">
+                <h2 class="fw-bold"><%= bukuBaru %></h2>
+                <p class="mb-0">Buku Terbit ≥ 2020</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="mt-5 text-center p-5 bg-white border rounded shadow-sm">
+    <h3 class="fw-semibold">Selamat Datang di Sistem Manajemen Buku 📚</h3>
+    <p class="text-muted">Gunakan menu di samping untuk mengelola data buku.</p>
+    <a href="/buku" class="btn btn-primary mt-3">
+        Lihat Daftar Buku
+    </a>
+</div>
+
+<%- include('partials/footer') %>

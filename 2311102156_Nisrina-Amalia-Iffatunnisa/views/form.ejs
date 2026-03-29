@@ -1,0 +1,67 @@
+<%- include('partials/header', {title: 'Tambah Buku', page: 'tambah'}) %>
+
+<div class="mb-4 pb-2 border-bottom">
+    <h2 class="fw-bold mb-1 text-dark">Tambah Koleksi Buku</h2>
+    <p class="text-muted m-0">Input data buku terbaru ke dalam sistem perpustakaan</p>
+</div>
+
+<div class="row">
+    <div class="col-xl-7 col-lg-9">
+        <div class="card card-custom p-4 p-md-5">
+            <h4 class="fw-semibold mb-4 text-primary"></i>Form Input Buku</h4>
+            <form id="addForm">
+                <div class="form-floating mb-3">
+                    <input type="text" name="judul" class="form-control rounded-3" id="fJudul" placeholder="Judul Buku" required>
+                    <label for="fJudul"></i>Judul Buku</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select name="kategori" class="form-select rounded-3" id="fKategori" required>
+                        <option value="" selected disabled>Pilih Kategori</option>
+                        <option value="Fiksi">Fiksi</option>
+                        <option value="Non-Fiksi">Non-Fiksi</option>
+                        <option value="Teknologi">Teknologi</option>
+                        <option value="Sains">Sains</option>
+                        <option value="Komik">Komik</option>
+                    </select>
+                    <label for="fKategori"></i>Kategori</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="pengarang" class="form-control rounded-3" id="fPengarang" placeholder="Nama Pengarang" required>
+                    <label for="fPengarang"></i>Pengarang</label>
+                </div>
+
+                <div class="form-floating mb-4">
+                    <input type="number" name="tahun" class="form-control rounded-3" id="fTahun" placeholder="2024" required>
+                    <label for="fTahun"></i>Tahun Terbit</label>
+                </div>
+                
+                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                    <a href="/" class="btn btn-light px-4">Batal</a>
+                    <button type="submit" class="btn btn-success px-5 fw-500 rounded-3 shadow-sm">
+                        <i class="fas fa-save me-2"></i>Simpan Buku
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+$('#addForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    // Pastikan endpoint diarahkan ke /api/buku sesuai app.js terbaru
+    $.post('/api/buku', $(this).serialize(), function(res) {
+        if (res.status === 'success') {
+            alert(res.message); 
+            window.location.href = '/buku'; // Redirect ke daftar buku
+        }
+    }).fail(function() {
+        alert("Waduh, gagal simpan data buku!");
+    });
+});
+</script>

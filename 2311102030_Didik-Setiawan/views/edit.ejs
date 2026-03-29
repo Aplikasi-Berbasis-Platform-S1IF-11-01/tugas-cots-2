@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Mahasiswa</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h3>Edit Mahasiswa</h3>
+
+    <p class="text-muted">
+        Sedang mengedit: <strong><%= mhs.nama %></strong> (ID: <%= mhs.id %>)
+    </p>
+
+    <form id="formEdit" action="/api/edit/<%= mhs.id %>" method="POST">
+
+        <div class="mb-3">
+            <label class="form-label">NIM</label>
+            <input type="text" name="nim" class="form-control" value="<%= mhs.nim %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nama</label>
+            <input type="text" name="nama" class="form-control" value="<%= mhs.nama %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Jurusan</label>
+            <select name="jurusan" class="form-select" required>
+                <option value="">-- Pilih Jurusan --</option>
+
+                <% const jurusanList = ['Teknik Informatika','Sistem Informasi','Teknik Elektro','Teknik Industri','Manajemen']; %>
+                <% jurusanList.forEach(function(j) { %>
+                    <option value="<%= j %>" <%= mhs.jurusan === j ? 'selected' : '' %>>
+                        <%= j %>
+                    </option>
+                <% }); %>
+
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Data</button>
+        <a href="/" class="btn btn-secondary">batal</a>
+
+    </form>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- jQuery Validate -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#formEdit').validate({
+        rules: {
+            nim: { required: true, minlength: 3 },
+            nama: { required: true, minlength: 3 },
+            jurusan: { required: true }
+        },
+        messages: {
+            nim: "NIM wajib diisi",
+            nama: "Nama wajib diisi",
+            jurusan: "Jurusan wajib dipilih"
+        },
+        errorClass: "text-danger",
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
