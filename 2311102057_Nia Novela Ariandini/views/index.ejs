@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novel Glow Skin | Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <style>
+        :root {
+            --pink-soft: #fff8fa;
+            --pink-light: #ffe4ec;
+            --pink-lighter: #fff2f6;
+            --pink-bold: #ff8fa3;
+            --pink-dark: #d63384;
+            --pink-deep: #c92b78;
+            --text-main: #4b4b4b;
+            --text-muted: #8b7b82;
+            --white: #ffffff;
+            --danger-soft: #fff1f2;
+            --danger: #dc3545;
+            --shadow-soft: 0 14px 35px rgba(214, 51, 132, 0.08);
+            --shadow-light: 0 8px 20px rgba(214, 51, 132, 0.05);
+            --radius-lg: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left, rgba(255, 196, 214, 0.20), transparent 24%),
+                linear-gradient(to bottom, #fffafb, #fff7f9);
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid #f6dbe3;
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-title {
+            color: var(--pink-dark);
+            font-weight: 600;
+            font-size: 1.08rem;
+            letter-spacing: 0.3px;
+            margin: 0;
+        }
+
+        .brand-title i {
+            font-size: 0.92rem;
+        }
+
+        .main-wrapper {
+            padding: 34px 0 56px;
+        }
+
+        .card-main {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(246, 219, 227, 0.95);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-main::before {
+            content: "";
+            position: absolute;
+            top: -28px;
+            right: -28px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 214, 226, 0.45), transparent 68%);
+            pointer-events: none;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            color: var(--pink-deep);
+            font-weight: 600;
+            font-size: 1.7rem;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            margin: 8px 0 0;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .btn-pink {
+            background: linear-gradient(135deg, #fda4b5, #ff8fa3);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 20px rgba(255, 143, 163, 0.18);
+            white-space: nowrap;
+        }
+
+        .btn-pink:hover {
+            background: linear-gradient(135deg, #ff93a8, #f87594);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-pink i {
+            font-size: 0.82rem;
+        }
+
+        .top-meta {
+            margin-bottom: 18px;
+        }
+
+        .table-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .summary-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 12px;
+            background: #fff7fa;
+            border: 1px solid #f7dde6;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            color: #8f6976;
+            font-weight: 500;
+            box-shadow: var(--shadow-light);
+        }
+
+        .summary-chip i {
+            color: var(--pink-bold);
+            font-size: 0.72rem;
+        }
+
+        .table-wrap {
+            margin-top: 8px;
+        }
+
+        .table-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 0;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #f2cad6;
+            border-radius: 14px;
+            padding: 8px 12px;
+            background: #fff;
+            outline: none;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            height: 46px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ff8fa3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 12px center !important;
+            background-size: 16px !important;
+            background-color: #ffffff !important;
+            padding: 0 35px 0 15px !important;
+            border: 1px solid #f2cad6 !important;
+            border-radius: 14px !important;
+            height: 40px !important;
+            min-width: 80px !important;
+            cursor: pointer !important;
+            color: var(--text-main) !important;
+            font-family: 'Poppins', sans-serif !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select:hover {
+            border-color: var(--pink-bold) !important;
+            background-color: #fffafc !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: var(--pink-bold) !important;
+            box-shadow: 0 0 0 3px rgba(255, 143, 163, 0.1) !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 230px;
+            margin-left: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter label {
+            justify-content: flex-end;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus,
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: var(--pink-bold);
+            box-shadow: 0 0 0 0.15rem rgba(255, 143, 163, 0.12);
+        }
+
+        table.dataTable {
+            width: 100% !important;
+            table-layout: fixed;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            border: 1px solid #f4d7e0 !important;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-top: 0 !important;
+            margin-bottom: 14px !important;
+            background: #fff;
+        }
+
+        table.dataTable th:nth-child(1),
+        table.dataTable td:nth-child(1) {
+            width: 42% !important;
+        }
+
+        table.dataTable th:nth-child(2),
+        table.dataTable td:nth-child(2) {
+            width: 15% !important;
+        }
+
+        table.dataTable th:nth-child(3),
+        table.dataTable td:nth-child(3) {
+            width: 15% !important;
+        }
+
+        table.dataTable th:nth-child(4),
+        table.dataTable td:nth-child(4) {
+            width: 20% !important;
+            text-align: left !important;
+        }
+
+        table.dataTable th:nth-child(5),
+        table.dataTable td:nth-child(5) {
+            width: 8% !important;
+            text-align: center !important;
+        }
+
+        .text-price {
+            text-align: left !important;
+            padding-left: 15px !important;
+        }
+
+        table.dataTable thead th {
+            background: #fff1f5 !important;
+            color: var(--pink-dark) !important;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 13px 16px !important;
+            border-bottom: 1px solid #f3d1db !important;
+            border-right: 1px solid #f6dde4 !important;
+            text-align: left !important;
+            vertical-align: middle;
+        }
+
+        table.dataTable thead th:last-child {
+            border-right: none !important;
+        }
+
+        table.dataTable tbody td {
+            padding: 12px 14px !important;
+            border-bottom: 1px solid #f8ebf0 !important;
+            border-right: 1px solid #f9eff3 !important;
+            vertical-align: middle !important;
+            background: #fff;
+            font-size: 0.88rem;
+            font-weight: 400;
+            color: var(--text-main);
+            text-align: left !important;
+        }
+
+        table.dataTable tbody td:last-child {
+            border-right: none !important;
+        }
+
+        table.dataTable tbody tr:hover td {
+            background: #fffafc !important;
+        }
+
+        .badge-kategori {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 98px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: #fff7fa;
+            border: 1px solid #f1d3dd;
+            color: #8a5a67;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .aksi-group {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            text-decoration: none;
+            border: none;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .btn-edit-icon {
+            color: #ff8fa3;
+            background: #fff1f5;
+        }
+
+        .btn-edit-icon:hover {
+            background: #ff8fa3;
+            color: #fff;
+        }
+
+        .btn-delete-icon {
+            color: var(--danger);
+            background: var(--danger-soft);
+        }
+
+        .btn-delete-icon:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .text-price {
+            font-weight: 500;
+            color: #4a4a4a;
+            white-space: nowrap;
+        }
+
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 8px;
+            color: var(--text-muted) !important;
+            font-size: 0.82rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: 10px !important;
+            font-size: 0.82rem;
+        }
+
+        @media (max-width: 768px) {
+            .section-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .brand-title {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.35rem;
+            }
+
+            .section-subtitle {
+                font-size: 0.84rem;
+            }
+
+            .card-main {
+                padding: 20px 16px;
+                border-radius: 18px;
+            }
+
+            .btn-pink {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .table-summary {
+                gap: 6px;
+            }
+
+            .table-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dataTables_wrapper .dataTables_filter label,
+            .dataTables_wrapper .dataTables_length label {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                min-width: 100%;
+                width: 100%;
+            }
+
+            table.dataTable {
+                min-width: 760px;
+            }
+
+            table.dataTable tbody td,
+            table.dataTable thead th {
+                padding: 12px !important;
+            }
+
+            .aksi-group {
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar-custom">
+        <div class="container text-center">
+            <h1 class="brand-title">
+                <i class="fa-solid fa-wand-magic-sparkles me-2"></i>NOVEL GLOW SKIN
+            </h1>
+        </div>
+    </nav>
+
+    <div class="container main-wrapper">
+        <div class="card-main">
+            <div class="content-layer">
+                <div class="section-head">
+                    <div>
+                        <h2 class="section-title">Product Catalog</h2>
+                        <p class="section-subtitle">Daftar produk yang tersedia di katalog Novel Glow Skin.</p>
+                    </div>
+
+                    <a href="/add" class="btn btn-pink d-inline-flex align-items-center">
+                        <i class="fa-solid fa-plus me-2"></i>Tambah Produk
+                    </a>
+                </div>
+
+                <div class="top-meta">
+                    <div class="table-summary">
+                        <div class="summary-chip">
+                            <i class="fa-solid fa-box-open"></i>
+                            Produk
+                        </div>
+                        <div class="summary-chip">
+                            <i class="fa-solid fa-tags"></i>
+                            Skincare
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table id="productTable" class="display table align-middle" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Nama Produk</th>
+                                <th>Brand</th>
+                                <th>Kategori</th>
+                                <th>Harga</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#productTable').DataTable({
+                ajax: '/api/skincare',
+                responsive: false,
+                autoWidth: false,
+                processing: true,
+                deferRender: true,
+                pageLength: 5,
+                lengthMenu: [5, 10, 20],
+                dom: '<"table-toolbar"lf>rt<"bottom"ip>',
+                columns: [
+                    {
+                        data: 'nama'
+                    },
+                    {
+                        data: 'brand'
+                    },
+                    {
+                        data: 'kategori',
+                        render: function (data) {
+                            return `<span class="badge-kategori">${data}</span>`;
+                        }
+                    },
+                    {
+                        data: 'harga',
+                        className: 'text-price',
+                        render: function (data) {
+                            const harga = Number(data);
+                            return Number.isNaN(harga) ? 'Rp 0' : `Rp ${harga.toLocaleString('id-ID')}`;
+                        }
+                    },
+                    {
+                        data: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data) {
+                            return `
+                                <div class="aksi-group">
+                                    <a href="/edit/${data}" class="btn-action btn-edit-icon" title="Edit">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <button type="button" onclick="confirmDelete('${data}')" class="btn-action btn-delete-icon" title="Hapus">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                ],
+                language: {
+                    processing: 'Memuat data...',
+                    search: 'Cari',
+                    lengthMenu: '_MENU_ entries',
+                    info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ produk',
+                    paginate: {
+                        previous: 'Sebelumnya',
+                        next: 'Selanjutnya'
+                    },
+                    emptyTable: 'Belum ada data produk.',
+                    zeroRecords: 'Data tidak ditemukan'
+                }
+            });
+        });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Hapus produk?',
+                text: 'Produk yang dihapus tidak akan tampil lagi di katalog.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff8fa3',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/delete/' + id;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

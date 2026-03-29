@@ -1,0 +1,18 @@
+{
+  "name": "tugas-cots---2",
+  "version": "1.0.0",
+  "description": "Aplikasi web CRUD produk skincare Novel Glow Skin menggunakan Express, EJS, Bootstrap, jQuery, dan DataTables",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1"
+  }
+}
