@@ -2302,7 +2302,7 @@ Tampilan aplikasi JerseyStore-2311102034 sebagai berikut :
 
 ![Tambah Jersey - Tambah Jersey Berhasil](assets-README/6-Tambah-Jersey.png)
 
-![Edit Jersey - Tampilan Edit Jersey](assets-README/7-Edit-Jersey.png)
+![Edit Jersey - Tampilan Edit Jersey](assets-README/7-Edit-jersey.png)
 
 ![Hapus Jersey - Tampilan Hapus Jersey](assets-README/8-Hapus-Jersey.png)
 
