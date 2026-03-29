@@ -1,0 +1,142 @@
+[
+    {
+        "id": 1700000001,
+        "name": "Galaxy Buds2 Pro",
+        "brand": "Samsung",
+        "price": 1999000,
+        "battery": "8 jam"
+    },
+    {
+        "id": 1700000002,
+        "name": "AirPods Pro 2",
+        "brand": "Apple",
+        "price": 3299000,
+        "battery": "6 jam"
+    },
+    {
+        "id": 1700000003,
+        "name": "WF-1000XM5",
+        "brand": "Sony",
+        "price": 3499000,
+        "battery": "8 jam"
+    },
+    {
+        "id": 1700000004,
+        "name": "Liberty 4 NC",
+        "brand": "Anker Soundcore",
+        "price": 1299000,
+        "battery": "10 jam"
+    },
+    {
+        "id": 1700000005,
+        "name": "TWS1 Pro 2",
+        "brand": "Edifier",
+        "price": 449000,
+        "battery": "9 jam"
+    },
+    {
+        "id": 1700000006,
+        "name": "Redmi Buds 4 Pro",
+        "brand": "Xiaomi",
+        "price": 699000,
+        "battery": "9 jam"
+    },
+    {
+        "id": 1700000007,
+        "name": "Tune 230NC",
+        "brand": "JBL",
+        "price": 899000,
+        "battery": "10 jam"
+    },
+    {
+        "id": 1700000008,
+        "name": "Air4 Pro",
+        "brand": "SoundPEATS",
+        "price": 599000,
+        "battery": "6.5 jam"
+    },
+    {
+        "id": 1700000009,
+        "name": "Ear (1)",
+        "brand": "Nothing",
+        "price": 1299000,
+        "battery": "5.7 jam"
+    },
+    {
+        "id": 1700000010,
+        "name": "FreeBuds Pro 2",
+        "brand": "Huawei",
+        "price": 2499000,
+        "battery": "6.5 jam"
+    },
+    {
+        "id": 1700000011,
+        "name": "Enco X2",
+        "brand": "Oppo",
+        "price": 1799000,
+        "battery": "9 jam"
+    },
+    {
+        "id": 1700000012,
+        "name": "Buds Air 3",
+        "brand": "Realme",
+        "price": 549000,
+        "battery": "7 jam"
+    },
+    {
+        "id": 1700000013,
+        "name": "Buds Z2",
+        "brand": "OnePlus",
+        "price": 799000,
+        "battery": "7 jam"
+    },
+    {
+        "id": 1700000014,
+        "name": "QuietComfort Earbuds II",
+        "brand": "Bose",
+        "price": 3999000,
+        "battery": "6 jam"
+    },
+    {
+        "id": 1700000015,
+        "name": "Momentum True Wireless 3",
+        "brand": "Sennheiser",
+        "price": 3899000,
+        "battery": "7 jam"
+    },
+    {
+        "id": 1700000016,
+        "name": "Beoplay EX",
+        "brand": "Bang & Olufsen",
+        "price": 4999000,
+        "battery": "8 jam"
+    },
+    {
+        "id": 1700000017,
+        "name": "LinkBuds S",
+        "brand": "Sony",
+        "price": 1999000,
+        "battery": "6 jam"
+    },
+    {
+        "id": 1700000018,
+        "name": "Free2 Classic",
+        "brand": "Edifier",
+        "price": 349000,
+        "battery": "7 jam"
+    },
+    {
+        "id": 1700000019,
+        "name": "Galaxy Buds FE",
+        "brand": "Samsung",
+        "price": 999000,
+        "battery": "8.5 jam"
+    },
+    {
+        "id": 1700000020,
+        "name": "AirDots 3 Pro",
+        "brand": "Xiaomi",
+        "price": 599000,
+        "battery": "6 jam"
+    }
+]
