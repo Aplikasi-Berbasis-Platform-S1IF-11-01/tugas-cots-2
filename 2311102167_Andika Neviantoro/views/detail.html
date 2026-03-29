@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SportZone — Detail Produk</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
+  <link href="/css/style.css" rel="stylesheet"/>
+  <style>
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .detail-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+    .detail-item .lbl {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .35rem;
+    }
+    .detail-item .val {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .detail-item.full { grid-column: 1 / -1; }
+    .id-badge {
+      display: inline-block;
+      background: rgba(232,255,0,.08);
+      border: 1px solid rgba(232,255,0,.2);
+      color: var(--primary);
+      font-family: monospace;
+      font-size: .85rem;
+      padding: .2rem .7rem;
+      border-radius: 6px;
+    }
+    .stok-badge {
+      display: inline-block;
+      padding: .25rem .75rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: .85rem;
+    }
+    .stok-ok     { background: rgba(0,230,118,.1);  color: var(--success); border: 1px solid rgba(0,230,118,.25); }
+    .stok-low    { background: rgba(255,193,7,.1);   color: #FFC107;        border: 1px solid rgba(255,193,7,.25); }
+    .stok-empty  { background: rgba(255,77,0,.1);    color: var(--accent);  border: 1px solid rgba(255,77,0,.25); }
+  </style>
+</head>
+<body>
+
+<div id="navbar"></div>
+
+<!-- Page Header -->
+<div class="page-header" data-bg="DETAIL">
+  <h1>Detail Produk</h1>
+  <p><i class="fa fa-magnifying-glass me-1"></i> Informasi lengkap produk</p>
+</div>
+
+<div class="container py-4" style="max-width:780px;">
+
+  <!-- Loading -->
+  <div id="loadingState" class="text-center py-5">
+    <i class="fa fa-spinner fa-spin" style="color:var(--primary);font-size:2.5rem;"></i>
+    <p style="color:var(--muted);margin-top:.75rem;">Memuat data produk...</p>
+  </div>
+
+  <!-- Content -->
+  <div id="contentArea" style="display:none;">
+
+    <!-- Header card -->
+    <div class="sz-card mb-3">
+      <div class="sz-card-header" style="justify-content:space-between;">
+        <div class="d-flex align-items-center gap-2">
+          <div class="icon" style="background:var(--primary);color:var(--dark);">
+            <i class="fa fa-box"></i>
+          </div>
+          <h2 id="produkNama">—</h2>
+        </div>
+        <span id="produkKategoriBadge"></span>
+      </div>
+      <div class="sz-card-body">
+        <div class="detail-grid">
+
+          <div class="detail-item">
+            <div class="lbl">ID Produk</div>
+            <div class="val"><span id="produkId" class="id-badge">—</span></div>
+          </div>
+
+          <div class="detail-item">
+            <div class="lbl">Kategori</div>
+            <div class="val" id="produkKategori">—</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="lbl">Harga</div>
+            <div class="val price-cell" id="produkHarga">—</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="lbl">Stok Tersedia</div>
+            <div class="val"><span id="produkStok" class="stok-badge">—</span></div>
+          </div>
+
+          <div class="detail-item full">
+            <div class="lbl">Tanggal Ditambahkan</div>
+            <div class="val" id="produkDate">—</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="d-flex gap-2">
+      <a href="/" class="btn-sz-outline text-decoration-none">
+        <i class="fa fa-arrow-left"></i> Kembali ke Daftar
+      </a>
+      <button class="btn-sz" id="btnEdit">
+        <i class="fa fa-pen"></i> Edit Produk
+      </button>
+      <button class="btn-sz-danger" id="btnHapus" style="padding:.6rem 1.2rem;font-size:.85rem;border-radius:10px;">
+        <i class="fa fa-trash"></i> Hapus Produk
+      </button>
+    </div>
+
+  </div><!-- /contentArea -->
+
+</div>
+
+<div id="toastZone" class="toast-zone"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="/js/shared.js"></script>
+<script>
+  renderNavbar('');
+
+  // Ambil ID dari URL  /detail/3
+  const pathParts = window.location.pathname.split('/');
+  const productId = parseInt(pathParts[pathParts.length - 1]);
+
+  if (!productId || isNaN(productId)) window.location.href = '/';
+
+  // ── Load data produk ─────────────────────────────────────────
+  $.get(`/api/products/${productId}`, function (p) {
+
+    $('#produkNama').text(p.nama);
+    $('#produkId').text('#' + String(p.id).padStart(3, '0'));
+    $('#produkKategori').text(p.kategori);
+    $('#produkHarga').text(formatRupiah(p.harga));
+    $('#produkDate').text(p.createdAt);
+
+    // Badge kategori
+    $('#produkKategoriBadge').html(
+      `<span class="cat-badge cat-${p.kategori}">${p.kategori}</span>`
+    );
+
+    // Badge stok
+    let stokClass = 'stok-ok', stokLabel = p.stok + ' unit';
+    if (p.stok === 0)      { stokClass = 'stok-empty'; stokLabel = 'Habis'; }
+    else if (p.stok <= 5)  { stokClass = 'stok-low';   stokLabel = p.stok + ' unit (Hampir Habis)'; }
+    $('#produkStok').text(stokLabel).removeClass().addClass(`stok-badge ${stokClass}`);
+
+    // Sembunyikan loading, tampilkan konten
+    $('#loadingState').hide();
+    $('#contentArea').show();
+
+  }).fail(function () {
+    showToast('Produk tidak ditemukan.', 'error');
+    setTimeout(() => window.location.href = '/', 1500);
+  });
+
+  // ── Tombol Edit ───────────────────────────────────────────────
+  $('#btnEdit').on('click', function () {
+    window.location.href = `/edit/${productId}`;
+  });
+
+  // ── Tombol Hapus ──────────────────────────────────────────────
+  $('#btnHapus').on('click', function () {
+    if (!confirm('Yakin ingin menghapus produk ini?')) return;
+    $.ajax({
+      url: `/api/products/${productId}`,
+      type: 'DELETE',
+      success: function (res) {
+        showToast(`"${res.data.nama}" berhasil dihapus.`, 'error');
+        setTimeout(() => window.location.href = '/', 1200);
+      },
+      error: function () {
+        showToast('Gagal menghapus produk.', 'error');
+      }
+    });
+  });
+</script>
+</body>
+</html>

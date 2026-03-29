@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SportZone — Edit Produk</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
+  <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="navbar"></div>
+
+<!-- Page Header -->
+<div class="page-header" data-bg="EDIT">
+  <h1>Edit Produk</h1>
+  <p><i class="fa fa-pen me-1"></i> Perbarui informasi produk yang sudah ada</p>
+</div>
+
+<div class="container py-4" style="max-width:680px;">
+
+  <!-- Edit Indicator -->
+  <div id="editIndicator" style="display:none;"
+       class="d-flex align-items-center gap-2 mb-3 px-3 py-2"
+       style="background:rgba(255,77,0,.1);border:1px solid rgba(255,77,0,.3);border-radius:10px;">
+    <i class="fa fa-pen" style="color:var(--accent);"></i>
+    <span style="color:var(--accent);font-size:.85rem;font-weight:600;">
+      Mode Edit Aktif — <span id="editLabel"></span>
+    </span>
+  </div>
+
+  <div class="sz-card">
+    <div class="sz-card-header">
+      <div class="icon" style="background:var(--accent);color:#fff;"><i class="fa fa-pen"></i></div>
+      <h2>Edit Data Produk</h2>
+    </div>
+    <div class="sz-card-body">
+
+      <!-- Loading state -->
+      <div id="loadingState" class="text-center py-4">
+        <i class="fa fa-spinner fa-spin" style="color:var(--primary);font-size:2rem;"></i>
+        <p style="color:var(--muted);margin-top:.5rem;font-size:.85rem;">Memuat data produk...</p>
+      </div>
+
+      <!-- Form (hidden saat loading) -->
+      <div id="formArea" style="display:none;">
+
+        <div id="alertBox"></div>
+
+        <input type="hidden" id="productId"/>
+
+        <div class="mb-3">
+          <label class="form-label">Nama Produk <span style="color:var(--accent)">*</span></label>
+          <input type="text" id="inputNama" class="form-control"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Kategori <span style="color:var(--accent)">*</span></label>
+          <select id="inputKategori" class="form-select">
+            <option value="">— Pilih Kategori —</option>
+            <option value="Sepatu">Sepatu</option>
+            <option value="Pakaian">Pakaian</option>
+            <option value="Perlengkapan">Perlengkapan</option>
+            <option value="Aksesoris">Aksesoris</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-7">
+            <label class="form-label">Harga (Rp) <span style="color:var(--accent)">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text">Rp</span>
+              <input type="number" id="inputHarga" class="form-control" min="0"/>
+            </div>
+          </div>
+          <div class="col-5">
+            <label class="form-label">Stok <span style="color:var(--accent)">*</span></label>
+            <input type="number" id="inputStok" class="form-control" min="0"/>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn-sz flex-grow-1" id="btnUpdate">
+            <i class="fa fa-floppy-disk"></i> Update Produk
+          </button>
+          <a href="/" class="btn-sz-outline text-decoration-none">
+            <i class="fa fa-arrow-left"></i> Batal
+          </a>
+        </div>
+
+      </div><!-- /formArea -->
+
+    </div>
+  </div>
+</div>
+
+<div id="toastZone" class="toast-zone"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="/js/shared.js"></script>
+<script>
+  renderNavbar('');   // tidak ada halaman aktif saat edit
+
+  // Ambil ID dari URL path  /edit/5  → id = 5
+  const pathParts = window.location.pathname.split('/');
+  const productId = parseInt(pathParts[pathParts.length - 1]);
+
+  if (!productId || isNaN(productId)) {
+    window.location.href = '/';
+  }
+
+  // ── Load data produk dari API ─────────────────────────────────
+  $.get(`/api/products/${productId}`, function (p) {
+    $('#productId').val(p.id);
+    $('#inputNama').val(p.nama);
+    $('#inputKategori').val(p.kategori);
+    $('#inputHarga').val(p.harga);
+    $('#inputStok').val(p.stok);
+
+    // Tampilkan edit indicator
+    $('#editLabel').text(`#${String(p.id).padStart(3,'0')} — ${p.nama}`);
+    $('#editIndicator').css({
+      display: 'flex',
+      background: 'rgba(255,77,0,.1)',
+      border: '1px solid rgba(255,77,0,.3)',
+      borderRadius: '10px',
+      padding: '.5rem 1rem',
+      marginBottom: '1rem'
+    });
+
+    // Sembunyikan loading, tampilkan form
+    $('#loadingState').hide();
+    $('#formArea').show();
+
+  }).fail(function () {
+    showToast('Produk tidak ditemukan.', 'error');
+    setTimeout(() => window.location.href = '/', 1500);
+  });
+
+  // ── Submit UPDATE ─────────────────────────────────────────────
+  $('#btnUpdate').on('click', function () {
+    const nama     = $('#inputNama').val().trim();
+    const kategori = $('#inputKategori').val();
+    const harga    = $('#inputHarga').val();
+    const stok     = $('#inputStok').val();
+
+    if (!nama || !kategori || !harga || !stok) {
+      $('#alertBox').html(`
+        <div class="d-flex align-items-center gap-2 mb-3 px-3 py-2"
+             style="background:rgba(255,77,0,.1);border:1px solid rgba(255,77,0,.3);
+                    color:var(--accent);border-radius:10px;">
+          <i class="fa fa-triangle-exclamation"></i>
+          <span style="font-size:.85rem;">Semua field wajib diisi!</span>
+        </div>`);
+      return;
+    }
+    $('#alertBox').html('');
+
+    $.ajax({
+      url: `/api/products/${productId}`,
+      type: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify({ nama, kategori, harga: parseInt(harga), stok: parseInt(stok) }),
+      success: function (res) {
+        showToast(`"${res.data.nama}" berhasil diupdate!`, 'info');
+        setTimeout(() => window.location.href = '/', 1200);
+      },
+      error: function (xhr) {
+        const msg = xhr.responseJSON?.error || 'Gagal mengupdate produk.';
+        showToast(msg, 'error');
+      }
+    });
+  });
+
+  $(document).on('keydown', 'input, select', function (e) {
+    if (e.key === 'Enter') $('#btnUpdate').click();
+  });
+</script>
+</body>
+</html>

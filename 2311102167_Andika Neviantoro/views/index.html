@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SportZone — Data Produk</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
+  <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="navbar"></div>
+
+<!-- Page Header -->
+<div class="page-header" data-bg="DATA PRODUK">
+  <h1>Data Produk</h1>
+  <p><i class="fa fa-database me-1"></i> Kelola seluruh inventaris produk olahraga SportZone</p>
+</div>
+
+<div class="container-fluid px-4 py-4" style="max-width:1400px;">
+
+  <!-- Stats -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="val" id="statTotal">—</div>
+      <div class="lbl">Total Produk</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="statKategori">—</div>
+      <div class="lbl">Kategori</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="statNilai">—</div>
+      <div class="lbl">Nilai (jt)</div>
+    </div>
+  </div>
+
+  <!-- Tabel -->
+  <div class="sz-card">
+    <div class="sz-card-header" style="justify-content:space-between;">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon" style="background:var(--accent);color:#fff;"><i class="fa fa-list"></i></div>
+        <h2>Daftar Produk</h2>
+      </div>
+      <a href="/tambah" class="btn-sz text-decoration-none">
+        <i class="fa fa-plus"></i> Tambah Produk
+      </a>
+    </div>
+    <div class="sz-card-body">
+      <div class="table-responsive">
+        <table id="tblProduk" class="table" style="width:100%">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama Produk</th>
+              <th>Kategori</th>
+              <th>Harga</th>
+              <th>Stok</th>
+              <th>Ditambahkan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toastZone" class="toast-zone"></div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap5.min.js"></script>
+<script src="/js/shared.js"></script>
+<script>
+  renderNavbar('/');
+
+  let dt;
+
+  // ── Inisialisasi DataTable dengan sumber data JSON dari API
+  $(document).ready(function () {
+    dt = $('#tblProduk').DataTable({
+      ajax: {
+        url: '/api/products',
+        type: 'GET',
+        dataSrc: 'data'   // ambil array dari field "data" di response JSON
+      },
+      columns: [
+        { data: 'id',        render: d => `<span class="id-cell">#${String(d).padStart(3,'0')}</span>` },
+        { data: 'nama',      render: d => `<strong style="color:#111;">${d}</strong>` },
+        { data: 'kategori',  render: d => `<span class="cat-badge cat-${d}">${d}</span>` },
+        { data: 'harga',     render: d => `<span class="price-cell">${formatRupiah(d)}</span>` },
+        { data: 'stok',      render: d => `<span style="color:#111;font-weight:600;">${d}</span>` },
+        { data: 'createdAt', render: d => `<span style="color:#555;font-size:.82rem;">${d}</span>` },
+        {
+          data: 'id',
+          orderable: false,
+          searchable: false,
+          render: id => `
+            <div class="d-flex gap-1">
+              <button class="btn-sz-edit btn-detail" data-id="${id}" title="Detail" style="background:rgba(100,180,255,.08);color:#64B5F6;border:1px solid rgba(100,180,255,.2);">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button class="btn-sz-edit btn-edit" data-id="${id}" title="Edit">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn-sz-danger btn-hapus" data-id="${id}" title="Hapus">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>`
+        }
+      ],
+      language: {
+        search: 'Cari:',
+        lengthMenu: 'Tampilkan _MENU_ produk',
+        info: 'Menampilkan _START_–_END_ dari _TOTAL_ produk',
+        infoEmpty: 'Tidak ada produk',
+        zeroRecords: 'Produk tidak ditemukan',
+        paginate: { previous: '‹', next: '›' }
+      },
+      pageLength: 5,
+      lengthMenu: [5, 10, 25, 50],
+      order: [[0, 'desc']],
+      drawCallback: bindButtons
+    });
+  });
+
+  // ── Bind tombol edit & hapus setelah DataTable render ────────
+  function bindButtons() {
+  // Detail → redirect ke halaman detail
+    $('.btn-detail').off('click').on('click', function () {
+      const id = $(this).data('id');
+      window.location.href = `/detail/${id}`;
+    });
+
+    // Edit → redirect ke halaman edit
+    $('.btn-edit').off('click').on('click', function () {
+      const id = $(this).data('id');
+      window.location.href = `/edit/${id}`;
+    });
+
+    // Hapus → DELETE via AJAX
+    $('.btn-hapus').off('click').on('click', function () {
+      const id = $(this).data('id');
+      if (!confirm('Yakin ingin menghapus produk ini?')) return;
+
+      $.ajax({
+        url: `/api/products/${id}`,
+        type: 'DELETE',
+        success: function (res) {
+          showToast(`"${res.data.nama}" berhasil dihapus.`, 'error');
+          dt.ajax.reload(updateStats, false);   // reload tabel + update stats
+        },
+        error: function () {
+          showToast('Gagal menghapus produk.', 'error');
+        }
+      });
+    });
+  }
+
+  // ── Update kartu statistik ────────────────────────────────────
+  function updateStats() {
+    $.get('/api/products', function (res) {
+      const all   = res.data;
+      const total = all.length;
+      const cats  = new Set(all.map(p => p.kategori)).size;
+      const nilai = all.reduce((s, p) => s + p.harga, 0) / 1e6;
+      $('#statTotal').text(total);
+      $('#statKategori').text(cats);
+      $('#statNilai').text(nilai >= 1 ? nilai.toFixed(1) : (nilai * 1000).toFixed(0) + 'rb');
+    });
+  }
+
+  updateStats();
+</script>
+</body>
+</html>
