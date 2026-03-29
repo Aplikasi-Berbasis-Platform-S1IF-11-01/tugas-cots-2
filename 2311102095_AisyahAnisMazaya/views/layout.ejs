@@ -1,0 +1,116 @@
+<%# 
+  Nama  : Aisyah Anis Mazaya
+  NIM   : 2311102095
+  Kelas : IF-11-REG01
+%>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Picu Muj Muj</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #FFF0F3;
+            color: #4A4A4A;
+        }
+
+        .pink-header {
+            background-color: #FF85A1;
+            padding: 20px;
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(255, 133, 161, 0.3);
+            text-align: center;
+        }
+        .pink-header h1 { font-weight: 700; font-size: 2rem; letter-spacing: 0.5px; }
+        .pink-header p { font-weight: 500; opacity: 0.9; }
+
+        .pink-nav {
+            margin-top: -15px;
+            margin-bottom: 25px;
+            background: white;
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .nav-link {
+            color: #FF85A1;
+            font-weight: 600;
+            margin: 0 5px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: #FFE5EC;
+            color: #E05D7A !important;
+        }
+
+        .card-pink {
+            background: white;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #FF85A1;
+        }
+        
+        .btn-pink {
+            background-color: #FF85A1;
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 8px 20px;
+            transition: all 0.3s;
+        }
+        .btn-pink:hover {
+            background-color: #E05D7A;
+            color: white;
+        }
+
+        table.dataTable thead th {
+            background-color: #FFF0F3 !important;
+            color: #E05D7A !important;
+            border-bottom: 2px solid #FFE5EC !important;
+            font-weight: 700;
+        }
+        
+        .table {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pink-header mb-4">
+        <h1><i class="bi bi-shop-window"></i> Toko Picu Muj Muj</h1>
+        <p><i class="bi bi-stars"></i> Aplikasi Manajemen Produk </p>
+    </div>
+
+    <div class="container mb-5">
+        <div class="pink-nav d-flex justify-content-center mx-auto" style="max-width: 450px;">
+            <a class="nav-link text-center px-4" href="/"><i class="bi bi-table"></i> Daftar Data</a>
+            <a class="nav-link text-center px-4" href="/form"><i class="bi bi-plus-square"></i> Input Data</a>
+        </div>
+
+        <%- body %>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/script.js"></script>
+</body>
+</html>

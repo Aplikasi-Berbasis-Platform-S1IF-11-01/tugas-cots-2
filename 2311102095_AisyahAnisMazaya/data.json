@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1774774060708,
+    "name": "sabun muka Mandi wardah",
+    "category": "Skincare",
+    "price": "40000",
+    "jumlah": "153"
+  },
+  {
+    "id": 1774774225389,
+    "name": "pulpen kucing",
+    "category": "Alat Tulis",
+    "price": "20000",
+    "jumlah": "123"
+  },
+  {
+    "id": 1774774269402,
+    "name": "pensil kelinci",
+    "category": "Alat Tulis",
+    "price": "40000",
+    "jumlah": "2131"
+  }
+]

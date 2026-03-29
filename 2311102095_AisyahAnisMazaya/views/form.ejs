@@ -1,0 +1,62 @@
+<%# 
+  Nama  : Aisyah Anis Mazaya
+  NIM   : 2311102095
+  Kelas : IF-11-REG01
+%>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card-pink p-3">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4" style="color: #E05D7A; font-weight: 600;">
+                    <i class="bi bi-box-seam"></i> 
+                    <%= productData ? 'Edit Data Produk' : 'Input Data Baru' %>
+                </h3>
+            
+                <form id="productForm">
+                    <input type="hidden" name="id" id="productId" value="<%= productData ? productData.id : '' %>">
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Nama Produk</label>
+                        <input type="text" name="name" class="form-control" placeholder="Contoh: Sabun Cuci Muka" 
+                               value="<%= productData ? productData.name : '' %>" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Kategori</label>
+                        <select name="category" class="form-select">
+                            <option value="Skincare" <%= (productData && productData.category === 'Skincare') ? 'selected' : '' %>>Skincare</option>
+                            <option value="Aksesoris" <%= (productData && productData.category === 'Aksesoris') ? 'selected' : '' %>>Aksesoris</option>
+                            <option value="Alat Tulis" <%= (productData && productData.category === 'Alat Tulis') ? 'selected' : '' %>>Alat Tulis</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Harga</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted">Rp</span>
+                            <input type="number" name="price" class="form-control" placeholder="0" 
+                                   value="<%= productData ? productData.price : '' %>" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted">Jumlah / Stok</label>
+                        <input type="number" name="jumlah" class="form-control" placeholder="0" 
+                               value="<%= productData ? productData.jumlah : '' %>" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-pink">
+                            <i class="bi bi-floppy"></i> 
+                            <%= productData ? 'Simpan Perubahan' : 'Simpan Data' %>
+                        </button>
+                        <% if (productData) { %>
+                            <a href="/" class="btn btn-outline-secondary btn-sm mt-2">Batal</a>
+                        <% } %>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
