@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <title>Tugas COTS 2 - Data Mahasiswa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+   <style>
+    .dataTables_length select {
+        background-color: #ffffff !important;
+    }
+    .dataTables_filter input {
+        background-color: #ffffff !important; 
+    }
+   </style>
+</head>
+
+<body class="bg-dark text-light">
+    <div class="container mt-5">
+        <div class="card shadow bg-dark text-white border-0">
+            <div class="card-header bg-black text-white p-3">
+                <h3 class="mb-0 text-center fw-bold">Tugas COTS 2: Daftar Mahasiswa</h3>
+            </div>
+            <div class="card-body">
+                <a href="/tambah" class="btn btn-success fw-bold mb-3">+ Tambah Data</a>
+
+                <table id="tabelTugas"
+                    class="table table-light table-striped table-hover table-bordered border-dark">
+                    <thead>
+                        <tr class="table-active">
+                            <th>Nama</th>
+                            <th>NIM</th>
+                            <th>Kelas</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <p class="text-center text-white-50 mt-3"><small>&copy; 2026 Tugas COTS 2 Praktikum - Avrizal Setyo Aji Nugroho</small></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tabelTugas').DataTable({
+                "ajax": "/api/data",
+                "columns": [
+                    { "data": "nama" },
+                    { "data": "nim" },
+                    { "data": "kelas" },
+                    // Di dalam script DataTable, bagian columns:
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            return `
+                            <a href="/edit/${data}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="/hapus/${data}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</a>
+                        `;
+                        }
+                    }
+                ]
+                
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "tugas-2-praktikum",
+  "version": "1.0.0",
+  "description": "COTS 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Avrizal Setyo Aji Nugroho - 2311102145",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1"
+  }
+}
