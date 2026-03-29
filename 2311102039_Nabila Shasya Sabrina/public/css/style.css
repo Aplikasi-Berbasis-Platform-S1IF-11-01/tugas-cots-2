@@ -1,0 +1,56 @@
+body {
+  background: linear-gradient(to bottom, #f5eee6, #f3e5dc);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background: #800000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.navbar-brand {
+  color: #fff !important;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Card */
+.card {
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  padding: 20px;
+  background: #fffaf5;
+}
+
+/* Button */
+.btn-primary {
+  background: #800000;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #a00000;
+  transform: scale(1.05);
+}
+
+/* Table */
+table.dataTable {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+/* Title */
+h2, h3 {
+  font-weight: 600;
+  color: #5a0000;
+}
