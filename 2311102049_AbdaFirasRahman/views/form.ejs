@@ -1,0 +1,69 @@
+<%# 
+  Nama  : Abda Firas Rahman
+  NIM   : 2311102049
+  Kelas : IF-11-REG01
+%>
+
+<%- include('header') -%>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom">
+            <div class="card-header-custom">
+                <h5 class="mb-0 fw-bold text-dark">
+                    <i class="bi bi-pen me-2"></i><%= item ? 'Perbarui Data Aset' : 'Registrasi Aset Baru' %>
+                </h5>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <form action="/simpan" method="POST">
+                    <input type="hidden" name="id" value="<%= item ? item.id : '' %>">
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold text-secondary small">Kode Inventaris</label>
+                            <input type="text" class="form-control form-control-lg fs-6" name="kode" value="<%= item ? item.kode : '' %>" placeholder="LAB-..." required>
+                        </div>
+                        <div class="col-md-8 mt-3 mt-md-0">
+                            <label class="form-label fw-semibold text-secondary small">Nama Perangkat</label>
+                            <input type="text" class="form-control form-control-lg fs-6" name="nama" value="<%= item ? item.nama : '' %>" placeholder="Contoh: Cisco Switch 2960" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold text-secondary small">Kategori Alat</label>
+                            <select class="form-select form-select-lg fs-6" name="kategori" required>
+                                <option value="" disabled <%= !item ? 'selected' : '' %>>-- Pilih --</option>
+                                <option value="Hardware" <%= item && item.kategori == 'Hardware' ? 'selected' : '' %>>Hardware</option>
+                                <option value="Aksesoris" <%= item && item.kategori == 'Aksesoris' ? 'selected' : '' %>>Aksesoris</option>
+                                <option value="Jaringan" <%= item && item.kategori == 'Jaringan' ? 'selected' : '' %>>Perangkat Jaringan</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mt-3 mt-md-0">
+                            <label class="form-label fw-semibold text-secondary small">Jumlah</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control form-control-lg fs-6" name="jumlah" value="<%= item ? item.jumlah : '1' %>" min="1" required>
+                                <span class="input-group-text bg-light">Unit</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mt-3 mt-md-0">
+                            <label class="form-label fw-semibold text-secondary small">Kondisi Fisik</label>
+                            <select class="form-select form-select-lg fs-6" name="kondisi" required>
+                                <option value="Baik" <%= item && item.kondisi == 'Baik' ? 'selected' : '' %>>🟢 Berfungsi Baik</option>
+                                <option value="Rusak Ringan" <%= item && item.kondisi == 'Rusak Ringan' ? 'selected' : '' %>>🟡 Rusak Ringan</option>
+                                <option value="Rusak Berat" <%= item && item.kondisi == 'Rusak Berat' ? 'selected' : '' %>>🔴 Rusak Berat</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2 border-top pt-4">
+                        <button type="submit" class="btn btn-primary btn-custom px-4" style="background-color: #2c5364; border: none;">
+                            <i class="bi bi-save me-2"></i>Simpan Data
+                        </button>
+                        <a href="/data" class="btn btn-light btn-custom text-secondary border">Batal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('footer') -%>

@@ -1,0 +1,86 @@
+<%# 
+  Nama  : Abda Firas Rahman
+  NIM   : 2311102049
+  Kelas : IF-11-REG01
+%>
+
+<%- include('header') -%>
+<div class="card card-custom">
+    <div class="card-header-custom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-list-columns me-2"></i>Daftar Aset Laboratorium</h5>
+        <a href="/form" class="btn btn-success btn-custom btn-sm px-3">
+            <i class="bi bi-plus-circle me-1"></i> Tambah Aset
+        </a>
+    </div>
+    <div class="card-body p-4">
+        <div class="table-responsive">
+            <table id="tabelInventaris" class="table table-hover table-custom" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Kode Aset</th>
+                        <th>Nama Perangkat</th>
+                        <th>Kategori</th>
+                        <th class="text-center">Jumlah</th>
+                        <th>Status</th>
+                        <th class="text-center" style="width: 120px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#tabelInventaris').DataTable({
+            "ajax": {
+                "url": "/api/inventaris",
+                "dataSrc": ""
+            },
+            "language": {
+                "search": "Cari Aset:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ aset",
+                "emptyTable": "Belum ada data inventaris."
+            },
+            "columns": [
+                { "data": "kode", "className": "fw-bold text-secondary" },
+                { "data": "nama" },
+                { "data": "kategori" },
+                { 
+                    "data": "jumlah",
+                    "className": "text-center fw-semibold text-primary",
+                    "render": function(data) {
+                        return data + ' Unit'; // Tambahan tulisan "Unit" otomatis
+                    }
+                },
+                { 
+                    "data": "kondisi",
+                    "render": function(data) {
+                        let color = data === 'Baik' ? 'success' : (data === 'Rusak Ringan' ? 'warning' : 'danger');
+                        let icon = data === 'Baik' ? 'check-circle' : (data === 'Rusak Ringan' ? 'exclamation-circle' : 'x-circle');
+                        return `<span class="badge bg-${color}-subtle text-${color} px-3 py-2 rounded-pill border border-${color}-subtle">
+                                    <i class="bi bi-${icon} me-1"></i>${data}
+                                </span>`;
+                    }
+                },
+                { 
+                  "data": null,
+                  "className": "text-center",
+                  "render": function(data, type, row) {
+                      return `
+                        <a href="/edit/${row.id}" class="btn btn-light btn-sm text-primary border-0 me-1 shadow-sm" title="Edit Data">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a href="/hapus/${row.id}" class="btn btn-light btn-sm text-danger border-0 shadow-sm" title="Hapus Data" onclick="return confirm('Anda yakin ingin menghapus aset ${row.nama}?')">
+                            <i class="bi bi-trash3-fill"></i>
+                        </a>
+                      `;
+                  }
+                }
+            ]
+        });
+    });
+</script>
+<%- include('footer') -%>
