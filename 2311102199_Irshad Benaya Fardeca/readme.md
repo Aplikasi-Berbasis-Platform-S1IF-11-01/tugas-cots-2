@@ -337,7 +337,6 @@ public function delete($id) {
     <title>Tambah TWS | TWS Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { background: #f2f4f8; font-family: Segoe UI, sans-serif; }
         .card { border-radius: 12px; border: none; }
@@ -371,28 +370,25 @@ public function delete($id) {
 
                 <form action="<?= base_url('tws/save') ?>" method="post">
                     <?= csrf_field() ?>
-                    <?php if (isset($tws)): ?>
-                        <input type="hidden" name="id" value="<?= $tws['id'] ?>">
-                    <?php endif; ?>
 
                     <div class="mb-3">
                         <label>Nama TWS</label>
-                        <input type="text" name="name" class="form-control" value="<?= old('name', $tws['name'] ?? '') ?>" required>
+                        <input type="text" name="name" class="form-control" value="<?= old('name') ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Merek</label>
-                        <input type="text" name="brand" class="form-control" value="<?= old('brand', $tws['brand'] ?? '') ?>" required>
+                        <input type="text" name="brand" class="form-control" value="<?= old('brand') ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Harga (Rp)</label>
-                        <input type="number" name="price" class="form-control" value="<?= old('price', $tws['price'] ?? '') ?>" required>
+                        <input type="number" name="price" class="form-control" value="<?= old('price') ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Baterai (misal: 8 jam)</label>
-                        <input type="text" name="battery" class="form-control" value="<?= old('battery', $tws['battery'] ?? '') ?>" placeholder="Contoh: 8 jam">
+                        <input type="text" name="battery" class="form-control" value="<?= old('battery') ?>" placeholder="Contoh: 8 jam">
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">
@@ -404,20 +400,7 @@ public function delete($id) {
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<?php if (session()->getFlashdata('success')): ?>
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: '<?= session()->getFlashdata('success') ?>',
-            timer: 2000,
-            showConfirmButton: false
-        });
-    </script>
-<?php endif; ?>
 
 </body>
 </html>
@@ -432,7 +415,6 @@ public function delete($id) {
     <title>Edit TWS | TWS Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { background: #f2f4f8; font-family: Segoe UI, sans-serif; }
         .card { border-radius: 12px; border: none; }
@@ -466,28 +448,26 @@ public function delete($id) {
 
                 <form action="<?= base_url('tws/save') ?>" method="post">
                     <?= csrf_field() ?>
-                    <?php if (isset($tws)): ?>
-                        <input type="hidden" name="id" value="<?= $tws['id'] ?>">
-                    <?php endif; ?>
+                    <input type="hidden" name="id" value="<?= $tws['id'] ?>">
 
                     <div class="mb-3">
                         <label>Nama TWS</label>
-                        <input type="text" name="name" class="form-control" value="<?= old('name', $tws['name'] ?? '') ?>" required>
+                        <input type="text" name="name" class="form-control" value="<?= old('name', $tws['name']) ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Merek</label>
-                        <input type="text" name="brand" class="form-control" value="<?= old('brand', $tws['brand'] ?? '') ?>" required>
+                        <input type="text" name="brand" class="form-control" value="<?= old('brand', $tws['brand']) ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Harga (Rp)</label>
-                        <input type="number" name="price" class="form-control" value="<?= old('price', $tws['price'] ?? '') ?>" required>
+                        <input type="number" name="price" class="form-control" value="<?= old('price', $tws['price']) ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Baterai (misal: 8 jam)</label>
-                        <input type="text" name="battery" class="form-control" value="<?= old('battery', $tws['battery'] ?? '') ?>" placeholder="Contoh: 8 jam">
+                        <input type="text" name="battery" class="form-control" value="<?= old('battery', $tws['battery']) ?>" placeholder="Contoh: 8 jam">
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">
@@ -499,42 +479,34 @@ public function delete($id) {
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<?php if (session()->getFlashdata('success')): ?>
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: '<?= session()->getFlashdata('success') ?>',
-            timer: 2000,
-            showConfirmButton: false
-        });
-    </script>
-<?php endif; ?>
 
 </body>
 </html>
 ```
 
-cerate.php merupakan tampilan untuk tambah data baru sedangkan edit.php untuk mengedit data lama atau yang sudah ada.
+`create.php` merupakan tampilan untuk tambah data baru sedangkan `edit.php` untuk mengedit data yang sudah ada.
 
 ### Hidden Input ID (khusus `edit.php`)
 ```html
 <input type="hidden" name="id" value="<?= $tws['id'] ?>">
 ```
-Field tersembunyi ini yang memberitahu `save()` di Controller bahwa ini adalah operasi update, bukan data baru.
+Field tersembunyi ini memberitahu fungsi `save()` di Controller bahwa operasi yang dilakukan adalah **update**, bukan insert data baru.
 
 ### Fungsi `old()`
+**Pada `create.php`:**
 ```php
-old('name', $tws['name'] ?? '')
+old('name')
 ```
-Fungsi `old()` mengembalikan nilai yang sebelumnya diketik pengguna jika form gagal validasi (agar tidak perlu ketik ulang). Jika tidak ada, gunakan nilai dari `$tws` (mode edit) atau string kosong (mode tambah).
+Mengembalikan nilai yang sebelumnya diketik pengguna jika form gagal validasi, agar tidak perlu mengetik ulang. Jika tidak ada, input akan kosong karena tidak ada data awal.
 
-### SweetAlert Sukses
-Untuk mengecek apakah ada pesan sukses di session. Jika ada, tampilkan popup notifikasi otomatis selama 2 detik.
+**Pada `edit.php`:**
+```php
+old('name', $tws['name'])
+```
+Sama seperti di atas, namun jika tidak ada nilai `old`, gunakan nilai dari `$tws` sebagai nilai awal, karena data lama perlu ditampilkan terlebih dahulu di form.
 
+### SweetAlert Sukses (khusus `index.php`)
 ```php
 <?php if (session()->getFlashdata('success')): ?>
 <script>
@@ -542,6 +514,7 @@ Untuk mengecek apakah ada pesan sukses di session. Jika ada, tampilkan popup not
 </script>
 <?php endif; ?>
 ```
+Mengecek apakah ada pesan sukses di session. Jika ada, tampilkan popup notifikasi otomatis selama 2 detik. Blok ini **tidak diletakkan** di `create.php` maupun `edit.php` karena setelah data berhasil disimpan, Controller akan melakukan `redirect()` ke halaman index — sehingga flash `success` hanya akan terpicu di sana.
 
 ---
 

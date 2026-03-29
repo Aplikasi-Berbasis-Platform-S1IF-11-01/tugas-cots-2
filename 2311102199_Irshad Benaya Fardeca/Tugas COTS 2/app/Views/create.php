@@ -6,7 +6,6 @@
     <title>Tambah TWS | TWS Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { background: #f2f4f8; font-family: Segoe UI, sans-serif; }
         .card { border-radius: 12px; border: none; }
@@ -40,28 +39,25 @@
 
                 <form action="<?= base_url('tws/save') ?>" method="post">
                     <?= csrf_field() ?>
-                    <?php if (isset($tws)): ?>
-                        <input type="hidden" name="id" value="<?= $tws['id'] ?>">
-                    <?php endif; ?>
 
                     <div class="mb-3">
                         <label>Nama TWS</label>
-                        <input type="text" name="name" class="form-control" value="<?= old('name', $tws['name'] ?? '') ?>" required>
+                        <input type="text" name="name" class="form-control" value="<?= old('name') ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Merek</label>
-                        <input type="text" name="brand" class="form-control" value="<?= old('brand', $tws['brand'] ?? '') ?>" required>
+                        <input type="text" name="brand" class="form-control" value="<?= old('brand') ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Harga (Rp)</label>
-                        <input type="number" name="price" class="form-control" value="<?= old('price', $tws['price'] ?? '') ?>" required>
+                        <input type="number" name="price" class="form-control" value="<?= old('price') ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label>Baterai (misal: 8 jam)</label>
-                        <input type="text" name="battery" class="form-control" value="<?= old('battery', $tws['battery'] ?? '') ?>" placeholder="Contoh: 8 jam">
+                        <input type="text" name="battery" class="form-control" value="<?= old('battery') ?>" placeholder="Contoh: 8 jam">
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">
@@ -73,20 +69,7 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<?php if (session()->getFlashdata('success')): ?>
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: '<?= session()->getFlashdata('success') ?>',
-            timer: 2000,
-            showConfirmButton: false
-        });
-    </script>
-<?php endif; ?>
 
 </body>
 </html>
