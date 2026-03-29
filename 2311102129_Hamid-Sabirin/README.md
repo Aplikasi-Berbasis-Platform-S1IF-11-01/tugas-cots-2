@@ -252,7 +252,10 @@ Tampilan Halaman Form dan Interaksi Alert Sukses/Hapus:
 
 ---
 
-## 4. Referensi
+## 4. Link Youtube Penjelasan Code
+[https://youtu.be/_SiCsV7jWsI](https://youtu.be/_SiCsV7jWsI)
+
+## 5. Referensi
 
 Laporan praktikum ini disusun menggunakan komponen pendukung dan wawasan dari platform terkait berikut:
 
