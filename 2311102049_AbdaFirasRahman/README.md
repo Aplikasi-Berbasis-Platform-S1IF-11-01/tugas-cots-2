@@ -73,18 +73,20 @@ DataTables & jQuery
 DataTables adalah plugin berbasis jQuery yang digunakan untuk meningkatkan fungsionalitas tabel HTML. Fitur-fitur seperti pencarian (searching), pengurutan (sorting), dan penomoran halaman (pagination) dijalankan secara otomatis. Pada sistem ini, DataTables diintegrasikan dengan endpoint API Express untuk mengambil data dalam format JSON secara asynchronous.
 
 ### Arsitektur Direktori Proyek
+```text
 2311102049_ABDAFIRASRAHMAN/
-├── views/
-│   ├── index.ejs      # Dashboard utama
-│   ├── data.ejs       # Tabel DataTables (JSON)
-│   ├── form.ejs       # Form Tambah & Edit
-│   ├── header.ejs     # Header & CSS
-│   └── footer.ejs     # Footer & Identitas
-├── server.js          # Logic Express & CRUD
-├── logo.jpeg          # Asset gambar
-├── package.json       # Metadata project
-├── package-lock.json  # Dependency lock
-└── README.md          # Laporan praktikum
+├── node_modules/         # Folder library pendukung (otomatis)
+├── views/                # Folder template tampilan aplikasi (EJS)
+│   ├── data.ejs          # Halaman tabel utama (DataTables & JSON API)
+│   ├── footer.ejs        # Komponen bawah & identitas mahasiswa
+│   ├── form.ejs          # Formulir hybrid (Tambah & Edit aset)
+│   ├── header.ejs        # Komponen atas, CSS, & script loader
+│   └── index.ejs         # Halaman dashboard / beranda utama
+├── logo.jpeg             # Asset gambar untuk identitas aplikasi
+├── server.js             # Core System (Express, Routing, & Logika CRUD)
+├── package-lock.json     # File pengunci versi dependensi
+├── package.json          # Manifest proyek & daftar library
+└── README.md             # Dokumentasi laporan praktikum nya
 
 ### Kode program
 ### File server.js
