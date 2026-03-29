@@ -243,10 +243,7 @@ File server.js bertindak sebagai pusat kendali utama atau entry point aplikasi y
 </script>
 <%- include('footer') -%>
 ```
-halaman paling krusial dalam sistem SIM-LAB. Di sini terdapat implementasi Asynchronous JavaScript menggunakan plugin DataTables. Alih-alih merender data secara langsung dari HTML, file ini mengeksekusi AJAX Request ke endpoint /api/inventaris.
-
-    JSON Data Binding: DataTables secara otomatis memetakan format JSON dari server ke dalam baris tabel.
-    Client-side Processing: Fitur pencarian, pagination, dan sorting berjalan secara otomatis pada sisi client sehingga memberikan performa yang sangat cepat bagi pengguna saat mengelola inventaris.
+Halaman data.ejs adalah tempat di mana semua data inventaris dikumpulkan dan ditampilkan dalam bentuk tabel. Yang spesial dari halaman ini adalah penggunaan fitur DataTables yang bekerja secara otomatis. Jadi, tabel ini tidak perlu diketik satu-satu isinya melainkan akan "narik" data JSON dari server tadi secara diam-diam (asynchronous). Efeknya fitur pencarian dan pengurutan barang jadi sangat cepat dan responsif karena semuanya diproses langsung di browser tanpa harus memuat ulang halaman berkali-kali.
 
 ### File footer.ejs
 ```html
@@ -265,10 +262,8 @@ halaman paling krusial dalam sistem SIM-LAB. Di sini terdapat implementasi Async
 </body>
 </html>
 ```
-Berperan sebagai penutup struktur HTML dan pengelola skrip JavaScript. Penempatan skrip di bagian bawah (bottom-loading) bertujuan untuk mempercepat proses rendering halaman awal. File ini mencakup:
+footer.ejs bertugas menutup struktur halaman di bagian paling bawah. Di file inilah semua skrip pendukung seperti jQuery dan DataTables diletakkan agar aplikasi bisa berjalan dengan lancar dan cepat saat dibuka. Selain urusan teknis file ini juga menjadi tempat untuk memasang identitas mahasiswa seperti Nama, NIM, dan Kelas. 
 
-    Library Dependency: Memuat jQuery versi 3.7.0 dan plugin DataTables yang merupakan syarat wajib tugas.
-    Watermark Identity: Menampilkan informasi Nama, NIM, dan Kelas sebagai penanda hak cipta karya mahasiswa agar tidak mudah disalahgunakan.
 ### File form.ejs
 ```html
 <%# 
@@ -342,10 +337,8 @@ Berperan sebagai penutup struktur HTML dan pengelola skrip JavaScript. Penempata
 <%- include('footer') -%>
 ```
 File ini menggunakan logika Conditional Rendering untuk menangani dua fungsi sekaligus dalam satu tampilan.
-
-    Logic Check: Sistem akan memeriksa variabel item. Jika item bernilai null, maka form akan diatur sebagai mode Input Baru. Jika item berisi data, sistem akan melakukan auto-fill pada semua input field dan beralih ke mode Update/Edit.
-
-    Input Validation: Menggunakan tipe input HTML5 yang sudah divalidasi (seperti required dan number) untuk memastikan integritas data sebelum dikirimkan ke backend (server.js).
+1. Logic Check Sistem akan memeriksa variabel item. Jika item bernilai null, maka form akan diatur sebagai mode Input Baru. Jika item berisi data, sistem akan melakukan auto-fill pada semua input field dan beralih ke mode Update/Edit.
+2. Input Validation Menggunakan tipe input HTML5 yang sudah divalidasi (seperti required dan number) untuk memastikan integritas data sebelum dikirimkan ke backend (server.js).
 
 ### File header.ejs
 ```html
@@ -440,9 +433,7 @@ File ini menggunakan logika Conditional Rendering untuk menangani dua fungsi sek
     </nav>
     <div class="container pb-5">
 ```
-File ini berfungsi sebagai kerangka atas aplikasi yang memuat seluruh metadata penting dan pemanggilan library eksternal melalui CDN (Content Delivery Network). Di dalamnya diimplementasikan:
-
-    Google Fonts Integration Menggunakan font Poppins untuk meningkatkan aspek tipografi dan user experience (UX). Bootstrap 5 Stylesheet Sebagai basis desain responsif agar tampilan tetap konsisten di berbagai ukuran layar. Custom CSS Styling: Berisi modifikasi pada navbar dengan efek gradient dan soft shadow pada elemen card untuk memberikan kesan dashboard yang premium dan modern.
+Komponen header.ejs merupakan bagian frontend yang mengusung konsep reusable component untuk mendefinisikan struktur atas seluruh halaman web. File ini memuat berbagai metadata HTML5 serta pemanggilan library eksternal seperti Bootstrap 5 melalui CDN untuk menjamin tampilan yang responsif. Integrasi aspek estetika dilakukan melalui penggunaan Google Fonts (Poppins) dan kustomisasi CSS pada elemen navbar, sehingga memberikan pengalaman visual yang modern dan konsisten bagi pengguna saat melakukan navigasi antarhalaman dalam ekosistem aplikasi SIM-LAB.
 
 ### File index.ejs
 ```html
@@ -477,7 +468,7 @@ File ini berfungsi sebagai kerangka atas aplikasi yang memuat seluruh metadata p
 </div>
 <%- include('footer') -%>
 ```
-Halaman ini bertindak sebagai wajah utama atau dashboard aplikasi. Isinya dirancang untuk memberikan navigasi cepat bagi pengguna melalui elemen Call to Action (CTA). Secara teknis, halaman ini menggunakan struktur Bootstrap Grid System untuk memastikan teks sambutan dan ikon tetap berada di posisi tengah (centered layout) memberikan kesan aplikasi yang profesional dan tertata.
+Halaman ini bertindak sebagai wajah utama atau dashboard aplikasi. Isinya dirancang untuk memberikan navigasi cepat bagi pengguna melalui elemen Call to Action (CTA). Secara teknis halaman ini menggunakan struktur Bootstrap Grid System untuk memastikan teks sambutan dan ikon tetap berada di posisi tengah (centered layout) memberikan kesan aplikasi yang profesional dan tertata.
 
 ### Hasil Program
 ### Tampilan awal dan dashboard
