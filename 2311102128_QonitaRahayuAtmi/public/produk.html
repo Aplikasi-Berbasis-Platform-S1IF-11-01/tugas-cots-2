@@ -1,0 +1,260 @@
+<!-- Qonita Rahayu Atmi - 2311102128 -->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Produk | GlowStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div id="app" class="app-wrapper">
+  <div class="main-content">
+    <!-- Bagian Topbar -->
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Data Produk</div>
+        <p class="topbar-sub">Sistem Inventori Skincare &amp; Kosmetik</p>
+      </div>
+      <div class="topbar-date"><i class="bi bi-calendar3 me-2"></i><span id="currentDate"></span></div>
+    </div>
+    <main class="page-main">
+      <!-- Bagian Header -->
+      <div class="page-header">
+        <div>
+          <h2><i class="bi bi-archive-fill me-2 text-pink"></i>Data Produk</h2>
+          <div class="breadcrumb-custom">
+            <a href="/index.html">Dashboard</a>
+            <i class="bi bi-chevron-right" style="font-size:9px;"></i>
+            <span>Data Produk</span>
+          </div>
+        </div>
+        <a href="/form.html" class="btn btn-pink" id="btn-tambah">
+          <i class="bi bi-plus-lg"></i>Tambah Produk
+        </a>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="card mb-3">
+        <div class="card-body" style="padding: 12px 18px;">
+          <div class="filter-bar">
+            <select class="filter-select" id="fKategori">
+              <option value="">Semua Kategori</option>
+              <option>Serum</option><option>Foundation</option><option>Lipstik</option>
+              <option>Moisturizer</option><option>Bedak</option><option>Toner</option>
+              <option>Blush On</option><option>Sunscreen</option><option>Maskara</option>
+              <option>Eye Shadow</option><option>Concealer</option>
+            </select>
+            <select class="filter-select" id="fMerk">
+              <option value="">Semua Merk</option>
+              <option>Somethinc</option><option>Wardah</option><option>Emina</option>
+              <option>Scarlett</option><option>Pixy</option><option>Ms Glow</option>
+              <option>Make Over</option><option>Maybelline</option><option>BLP</option>
+              <option>NYX</option>
+            </select>
+            <select class="filter-select" id="fStok">
+              <option value="">Semua Status Stok</option>
+              <option value="habis">Stok Habis</option>
+              <option value="menipis">Stok Menipis</option>
+              <option value="aman">Stok Aman</option>
+            </select>
+            <button class="btn btn-outline-secondary rounded-pill" id="btnReset" style="font-size:12px;padding:6px 14px;">
+              <i class="bi bi-arrow-counterclockwise"></i>Reset Filter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel -->
+      <div class="card">
+        <div class="card-header">
+          <h5><i class="bi bi-table"></i>Daftar Produk Skincare &amp; Kosmetik</h5>
+          <span style="font-size:11px;color:#94a3b8;">Data JSON via jQuery AJAX &middot; DataTables</span>
+        </div>
+        <div class="card-body">
+          <table id="tblProduk" class="tbl display" style="width:100%">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Kode</th>
+                <th>Nama Produk</th>
+                <th>Merk</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Status</th>
+                <th style="width:110px;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tblBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Bootstrap Modal Hapus -->
+<div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-white fw-bold" id="modalHapusLabel">
+          <i class="bi bi-trash3-fill me-2"></i>Konfirmasi Hapus
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <div class="d-flex align-items-center justify-content-center mb-3" style="width:56px;height:56px;background:#fee2e2;border-radius:50%;font-size:24px;color:#dc2626;margin:0 auto;">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <p class="text-secondary" style="font-size:13px;line-height:1.6;">Anda akan menghapus produk<br><strong class="text-danger" id="namaHapus"></strong><br>Tindakan ini tidak dapat dibatalkan.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal" id="btn-batal">Batal</button>
+        <button type="button" class="btn btn-danger rounded-pill" id="btnHapus"><i class="bi bi-trash3-fill me-1"></i>Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toastWrap" class="toast-wrap"></div>
+
+<!-- Bagian Script menggunakan JQuery dan Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/sidebar.js"></script>
+<script>
+setActiveNav('produk');
+
+var deleteId = null;
+var dt       = null;
+var bsModal  = null;
+var rawData  = [];
+
+// Inisialisasi Bootstrap Modal
+$(document).ready(function() {
+  bsModal = new bootstrap.Modal(document.getElementById('modalHapus'));
+  loadData();
+});
+
+// Fungsi untuk menutup modal
+function tutupModal() { if (bsModal) bsModal.hide(); }
+
+// Fungsi untuk menampilkan baris tabel
+function renderRow(p, idx) {
+  var si = stokInfo(p.stok);
+  return '<tr data-kat="'+p.kategori+'" data-merk="'+p.merk+'" data-stok="'+si.indCls+'">' +
+    '<td>'+(idx+1)+'</td>' +
+    '<td><span class="kode-tag">'+p.kode+'</span></td>' +
+    '<td class="cell-nama"><strong>'+p.nama+'</strong></td>' +
+    '<td><span class="badge badge-pink" style="font-size:10px;">'+p.merk+'</span></td>' +
+    '<td><span class="badge badge-purple" style="font-size:10px;">'+p.kategori+'</span></td>' +
+    '<td class="fw-600 text-pink">'+rupiah(p.harga)+'</td>' +
+    '<td class="fw-700">'+p.stok+' <span class="text-gray fw-600" style="font-size:11px;">'+p.satuan+'</span></td>' +
+    '<td><span class="badge '+si.cls+'">'+si.label+'</span></td>' +
+    '<td><div class="aksi">' +
+      '<a href="/form.html?id='+p.id+'" class="act-btn act-edit" title="Edit"><i class="bi bi-pencil-fill"></i></a>' +
+      '<button class="act-btn act-delete btn-del" data-id="'+p.id+'" data-nama="'+p.nama+'" title="Hapus"><i class="bi bi-trash3-fill"></i></button>' +
+    '</div></td>' +
+    '</tr>';
+}
+
+// Fungsi untuk memuat data
+function loadData() {
+  $.ajax({
+    url: '/api/produk',
+    success: function(res) {
+      rawData = res.data;
+      applyFilter();
+
+      if (!dt) {
+        dt = $('#tblProduk').DataTable({
+          pageLength: 10,
+          language: {
+            search: 'Cari:', lengthMenu: 'Tampilkan _MENU_ produk',
+            info: 'Data _START_-_END_ dari _TOTAL_',
+            infoEmpty: 'Tidak ada data', emptyTable: 'Belum ada produk',
+            paginate: { first:'«', last:'»', next:'›', previous:'‹' },
+            zeroRecords: 'Produk tidak ditemukan'
+          }
+        });
+      }
+    },
+    error: function() { showToast('Gagal mengambil data', 'error'); }
+  });
+}
+
+// Fungsi untuk menerapkan filter
+function applyFilter() {
+  var kat  = $('#fKategori').val();
+  var merk = $('#fMerk').val();
+  var stok = $('#fStok').val();
+
+  var filtered = rawData.filter(function(p) {
+    var si = stokInfo(p.stok);
+    return (!kat  || p.kategori === kat) &&
+           (!merk || p.merk === merk) &&
+           (!stok || si.indCls === stok);
+  });
+
+  if (dt) { dt.destroy(); dt = null; }
+  var rows = filtered.map(renderRow).join('');
+  $('#tblBody').html(rows || '<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:24px;">Tidak ada produk ditemukan</td></tr>');
+  dt = $('#tblProduk').DataTable({
+    pageLength: 10,
+    language: {
+      search: 'Cari:', lengthMenu: 'Tampilkan _MENU_ produk',
+      info: 'Data _START_-_END_ dari _TOTAL_',
+      infoEmpty: 'Tidak ada data', emptyTable: 'Belum ada produk',
+      paginate: { first:'«', last:'»', next:'›', previous:'‹' },
+      zeroRecords: 'Produk tidak ditemukan'
+    }
+  });
+}
+
+// Event filter
+$('#fKategori, #fMerk, #fStok').on('change', applyFilter);
+$('#btnReset').on('click', function() {
+  $('#fKategori, #fMerk, #fStok').val('');
+  applyFilter();
+});
+
+// Hapus
+$(document).on('click', '.btn-del', function() {
+  deleteId = $(this).data('id');
+  $('#namaHapus').text($(this).data('nama'));
+  bsModal.show();
+});
+
+$('#btnHapus').on('click', function() {
+  if (!deleteId) return;
+  var $btn = $(this).html('<i class="bi bi-hourglass-split"></i>Menghapus...').prop('disabled', true);
+  $.ajax({
+    url: '/api/produk/' + deleteId,
+    type: 'DELETE',
+    success: function(res) {
+      tutupModal();
+      showToast(res.message, 'success');
+      loadData();
+    },
+    error: function(xhr) {
+      showToast(xhr.responseJSON ? xhr.responseJSON.error : 'Gagal menghapus', 'error');
+    },
+    complete: function() {
+      $btn.html('<i class="bi bi-trash3-fill"></i>Ya, Hapus').prop('disabled', false);
+      deleteId = null;
+    }
+  });
+});
+</script>
+</body>
+</html>

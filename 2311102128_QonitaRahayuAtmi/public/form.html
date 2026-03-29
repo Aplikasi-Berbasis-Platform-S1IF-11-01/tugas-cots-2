@@ -1,0 +1,378 @@
+<!-- Qonita Rahayu Atmi - 2311102128 -->
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Produk | GlowStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app" class="app-wrapper">
+    <div class="main-content">
+      <!-- Bagian Topbar -->
+      <div class="topbar">
+        <div>
+          <div class="topbar-title" id="pageTitle">Tambah Produk</div>
+          <p class="topbar-sub">Sistem Inventori Skincare &amp; Kosmetik</p>
+        </div>
+        <div class="topbar-date"><i class="bi bi-calendar3 me-2"></i><span id="currentDate"></span></div>
+      </div>
+      <main class="page-main">
+        <!-- Bagian Header -->
+        <div class="page-header">
+          <div>
+            <h2 id="formHeading"><i class="bi bi-plus-circle-fill me-2 text-pink"></i>Tambah Produk Baru</h2>
+            <div class="breadcrumb-custom">
+              <a href="/index.html">Dashboard</a>
+              <i class="bi bi-chevron-right" style="font-size:9px;"></i>
+              <a href="/produk.html">Data Produk</a>
+              <i class="bi bi-chevron-right" style="font-size:9px;"></i>
+              <span id="breadMode">Tambah</span>
+            </div>
+          </div>
+          <a href="/produk.html" class="btn btn-outline-secondary rounded-pill d-inline-flex align-items-center gap-2" id="btn-kembali">
+            <i class="bi bi-arrow-left"></i>Kembali
+          </a>
+        </div>
+
+        <div class="row g-4">
+          <!-- Bagian Form Utama -->
+          <div class="col-lg-8">
+            <div class="card">
+              <div class="card-header">
+                <h5><i class="bi bi-clipboard2-fill"></i>Form Data Produk</h5>
+                <span style="font-size:11px;color:#94a3b8;">Tanda <span style="color:#ec4899;">*</span> wajib
+                  diisi</span>
+              </div>
+              <div class="card-body">
+                <form id="formProduk" novalidate>
+                  <input type="hidden" id="produkId">
+
+                  <!-- Baris 1: Kode + Nama -->
+                  <div class="form-row cols-13">
+                    <div class="form-group">
+                      <label class="form-label">Kode Produk <span class="req">*</span></label>
+                      <input type="text" class="form-control" id="kode" name="kode" placeholder="SKN-XXX"
+                        maxlength="20">
+                      <span class="field-error" id="err-kode"></span>
+                      <span class="form-hint">Contoh: SKN-011</span>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Nama Produk <span class="req">*</span></label>
+                      <input type="text" class="form-control" id="nama" name="nama"
+                        placeholder="Nama lengkap produk...">
+                      <span class="field-error" id="err-nama"></span>
+                    </div>
+                  </div>
+
+                  <!-- Baris 2: Merk + Kategori -->
+                  <div class="form-row cols-2">
+                    <div class="form-group">
+                      <label class="form-label">Merk / Brand <span class="req">*</span></label>
+                      <input type="text" class="form-control" id="merk" name="merk" placeholder="Nama merk..."
+                        list="listMerk">
+                      <datalist id="listMerk">
+                        <option>Wardah</option>
+                        <option>Emina</option>
+                        <option>Scarlett</option>
+                        <option>Somethinc</option>
+                        <option>Ms Glow</option>
+                        <option>Make Over</option>
+                        <option>BLP</option>
+                        <option>Pixy</option>
+                        <option>Maybelline</option>
+                        <option>NYX</option>
+                        <option>Implora</option>
+                        <option>Y.O.U</option>
+                      </datalist>
+                      <span class="field-error" id="err-merk"></span>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Kategori <span class="req">*</span></label>
+                      <select class="form-control" id="kategori" name="kategori">
+                        <option value="">-- Pilih Kategori --</option>
+                        <option>Serum</option>
+                        <option>Foundation</option>
+                        <option>Lipstik</option>
+                        <option>Moisturizer</option>
+                        <option>Bedak</option>
+                        <option>Toner</option>
+                        <option>Blush On</option>
+                        <option>Sunscreen</option>
+                        <option>Maskara</option>
+                        <option>Eye Shadow</option>
+                        <option>Concealer</option>
+                        <option>Primer</option>
+                        <option>Setting Spray</option>
+                      </select>
+                      <span class="field-error" id="err-kategori"></span>
+                    </div>
+                  </div>
+
+                  <!-- Baris 3: Harga + Stok + Satuan -->
+                  <div class="form-row cols-211">
+                    <div class="form-group">
+                      <label class="form-label">Harga (Rp) <span class="req">*</span></label>
+                      <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="0">
+                      <span class="field-error" id="err-harga"></span>
+                      <span class="form-hint" id="hargaHint">Masukkan harga tanpa titik</span>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Stok <span class="req">*</span></label>
+                      <input type="number" class="form-control" id="stok" name="stok" placeholder="0" min="0">
+                      <span class="field-error" id="err-stok"></span>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Satuan</label>
+                      <select class="form-control" id="satuan" name="satuan">
+                        <option>Pcs</option>
+                        <option>Botol</option>
+                        <option>Tube</option>
+                        <option>Box</option>
+                        <option>Set</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Baris 4: Tanggal Masuk -->
+                  <div class="form-row cols-2">
+                    <div class="form-group">
+                      <label class="form-label">Tanggal Masuk <span class="req">*</span></label>
+                      <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk">
+                      <span class="field-error" id="err-tanggal"></span>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Nilai Total Stok</label>
+                      <input type="text" class="form-control" id="nilaiTotal" readonly
+                        placeholder="Otomatis terhitung..." style="background:#fdf2f8;color:#ec4899;font-weight:700;">
+                    </div>
+                  </div>
+
+
+                  <!-- Tombol -->
+                  <div class="d-flex gap-3 mt-2">
+                    <button type="submit" class="btn-pink" id="btnSimpan">
+                      <i class="bi bi-plus-circle-fill"></i><span id="btnLabel">Simpan Produk</span>
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary rounded-pill" id="btnReset">
+                      <i class="bi bi-arrow-counterclockwise"></i>Reset
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bagian Panel Info -->
+          <div class="col-lg-4">
+            <!-- Preview Harga -->
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5><i class="bi bi-calculator"></i>Preview Harga</h5>
+              </div>
+              <div class="card-body text-center py-3">
+                <div
+                  style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
+                  Harga Per Unit</div>
+                <div class="preview-harga-big" id="prevHarga">Rp 0</div>
+              </div>
+            </div>
+
+            <!-- Preview Stok -->
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5><i class="bi bi-bar-chart-fill"></i>Status Stok</h5>
+              </div>
+              <div class="card-body py-3">
+                <div class="stok-ind" id="stokInd">
+                  <div class="stok-ind-val" id="stokVal">0</div>
+                  <div class="stok-ind-lbl" id="stokLbl">Masukkan jumlah stok</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panduan -->
+            <div class="card">
+              <div class="card-header">
+                <h5><i class="bi bi-lightbulb-fill"></i>Panduan</h5>
+              </div>
+              <div class="card-body">
+                <div class="panduan-item">
+                  <div class="panduan-no">1</div>
+                  <div>Kode produk harus unik, contoh: <b>SKN-011</b></div>
+                </div>
+                <div class="panduan-item">
+                  <div class="panduan-no">2</div>
+                  <div>Stok <b style="color:#ef4444;">= 0</b> → produk habis</div>
+                </div>
+                <div class="panduan-item">
+                  <div class="panduan-no">3</div>
+                  <div>Stok <b style="color:#d97706;">≤ 15</b> → stok menipis</div>
+                </div>
+                <div class="panduan-item" style="margin:0;">
+                  <div class="panduan-no">4</div>
+                  <div>Harga diisi angka saja (tanpa titik/koma)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div id="toastWrap" class="toast-wrap"></div>
+
+  <!-- Bagian Script menggunakan jquery dan bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"></script>
+  <script src="/js/nav.js"></script>
+  <script src="/js/sidebar.js"></script>
+  <script>
+    var isEdit = false;
+    var editId = getParam('id');
+    setActiveNav('produk');
+
+    // Menentukan apakah edit atau tambah
+    if (editId) {
+      isEdit = true;
+      setActiveNav('produk');
+      $('#pageTitle, #formHeading').html('<i class="bi bi-pencil-fill me-2"></i>Edit Data Produk');
+      $('#breadMode').text('Edit');
+      $('#btnLabel').text('Update Produk');
+
+      // Load data produk
+      $.ajax({
+        url: '/api/produk/' + editId,
+        success: function (p) {
+          $('#produkId').val(p.id);
+          $('#kode').val(p.kode).prop('readonly', true);
+          $('#nama').val(p.nama);
+          $('#merk').val(p.merk);
+          $('#kategori').val(p.kategori);
+          $('#harga').val(p.harga).trigger('input');
+          $('#stok').val(p.stok).trigger('input');
+          $('#satuan').val(p.satuan);
+          $('#tanggal_masuk').val(p.tanggal_masuk);
+        },
+        error: function () {
+          showToast('Produk tidak ditemukan', 'error');
+          setTimeout(function () { window.location.href = '/produk.html'; }, 1500);
+        }
+      });
+    } else {
+      setActiveNav('tambah');
+      // set default tanggal hari ini
+      var today = new Date().toISOString().split('T')[0];
+      $('#tanggal_masuk').val(today);
+    }
+
+    // Preview harga realtime
+    $('#harga').on('input', function () {
+      var harga = parseInt($(this).val()) || 0;
+      var stok = parseInt($('#stok').val()) || 0;
+      $('#prevHarga').text(rupiah(harga));
+      $('#nilaiTotal').val(stok > 0 ? rupiah(harga * stok) : '');
+      $('#hargaHint').text(harga > 0 ? 'Terbilang: ' + rupiah(harga) : 'Masukkan harga tanpa titik');
+    });
+
+    // Preview stok realtime
+    $('#stok').on('input', function () {
+      var stok = parseInt($(this).val()) || 0;
+      var harga = parseInt($('#harga').val()) || 0;
+      var si = stokInfo(stok);
+      $('#stokVal').text(stok);
+      $('#stokLbl').attr('class', 'stok-ind-lbl ' + si.lblCls).text(stok === 0 ? 'Belum ada stok' : si.label);
+      $('#stokInd').attr('class', 'stok-ind ' + si.indCls);
+      $('#nilaiTotal').val(stok > 0 && harga > 0 ? rupiah(harga * stok) : '');
+    });
+
+    // jQuery Validate
+    $.validator.setDefaults({ errorClass: 'field-error', errorElement: 'span' });
+
+    $('#formProduk').validate({
+      rules: {
+        kode: { required: true, minlength: 3 },
+        nama: { required: true, minlength: 3 },
+        merk: { required: true },
+        kategori: { required: true },
+        harga: { required: true, min: 0, digits: true },
+        stok: { required: true, min: 0, digits: true },
+        tanggal_masuk: { required: true }
+      },
+      messages: {
+        kode: { required: 'Kode produk wajib diisi', minlength: 'Minimal 3 karakter' },
+        nama: { required: 'Nama produk wajib diisi', minlength: 'Minimal 3 karakter' },
+        merk: { required: 'Merk wajib diisi' },
+        kategori: { required: 'Pilih kategori produk' },
+        harga: { required: 'Harga wajib diisi', min: 'Tidak boleh negatif', digits: 'Angka saja, tanpa titik' },
+        stok: { required: 'Stok wajib diisi', min: 'Tidak boleh negatif', digits: 'Angka saja' },
+        tanggal_masuk: { required: 'Tanggal masuk wajib diisi' }
+      },
+      errorPlacement: function (error, element) {
+        error.appendTo(element.closest('.form-group'));
+      },
+      highlight: function (el) { $(el).addClass('error-input'); },
+      unhighlight: function (el) { $(el).removeClass('error-input'); },
+      // Fungsi yang dijalankan ketika semua validasi berhasil 
+      submitHandler: function () {
+        var data = {
+          kode: $('#kode').val().trim(),
+          nama: $('#nama').val().trim(),
+          merk: $('#merk').val().trim(),
+          kategori: $('#kategori').val(),
+          harga: $('#harga').val(),
+          stok: $('#stok').val(),
+          satuan: $('#satuan').val(),
+          tanggal_masuk: $('#tanggal_masuk').val()
+        };
+        // Tentukan URL dan method berdasarkan mode (tambah/edit)
+        var url = isEdit ? '/api/produk/' + editId : '/api/produk';
+        var method = isEdit ? 'PUT' : 'POST';
+
+        $('#btnSimpan').prop('disabled', true).html('<i class="bi bi-hourglass-split"></i> Menyimpan...');
+        // Kirim data ke API
+        $.ajax({
+          url: url, type: method,
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          success: function (res) {
+            Swal.fire({
+              title: 'Berhasil!', text: res.message, icon: 'success',
+              confirmButtonColor: '#ec4899', timer: 2000, timerProgressBar: true
+            }).then(function () { window.location.href = '/produk.html'; });
+          },
+          error: function (xhr) {
+            var msg = xhr.responseJSON ? xhr.responseJSON.error : 'Terjadi kesalahan server';
+            Swal.fire({ title: 'Gagal!', text: msg, icon: 'error', confirmButtonColor: '#ec4899' });
+            $('#btnSimpan').prop('disabled', false).html('<i class="bi bi-' + (isEdit ? 'save' : 'plus-circle') + '-fill"></i> ' + (isEdit ? 'Update Produk' : 'Simpan Produk'));
+          }
+        });
+        return false;
+      }
+    });
+
+    // Reset button
+    $('#btnReset').on('click', function () {
+      $('#prevHarga').text('Rp 0');
+      $('#stokVal').text('0');
+      $('#stokLbl').attr('class', 'stok-ind-lbl').text('Masukkan jumlah stok');
+      $('#stokInd').attr('class', 'stok-ind');
+      $('#nilaiTotal').val('');
+      if (!isEdit) {
+        var today = new Date().toISOString().split('T')[0];
+        setTimeout(function () { $('#tanggal_masuk').val(today); }, 10);
+      }
+    });
+  </script>
+</body>
+
+</html>

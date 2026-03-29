@@ -1,0 +1,110 @@
+[
+  {
+    "id": "1",
+    "kode": "SKN-001",
+    "nama": "Hydrating Serum Niacinamide",
+    "merk": "Somethinc",
+    "kategori": "Serum",
+    "harga": 90000,
+    "stok": 41,
+    "satuan": "Pcs",
+    "deskripsi": "",
+    "tanggal_masuk": "2026-01-10"
+  },
+  {
+    "id": "2",
+    "kode": "SKN-002",
+    "nama": "Cushion Flawless Finish SPF50",
+    "merk": "Wardah",
+    "kategori": "Foundation",
+    "harga": 145000,
+    "stok": 30,
+    "satuan": "Pcs",
+    "deskripsi": "Cushion dengan coverage tinggi dan perlindungan SPF50",
+    "tanggal_masuk": "2026-01-15"
+  },
+  {
+    "id": "3",
+    "kode": "SKN-003",
+    "nama": "Lip Matte Color 04 Rose Desire",
+    "merk": "Emina",
+    "kategori": "Lipstik",
+    "harga": 42000,
+    "stok": 80,
+    "satuan": "Pcs",
+    "deskripsi": "Lipstik matte warna rose desire, tahan lama 8 jam",
+    "tanggal_masuk": "2026-01-20"
+  },
+  {
+    "id": "4",
+    "kode": "SKN-004",
+    "nama": "Brightening Day Cream SPF30",
+    "merk": "Scarlett",
+    "kategori": "Moisturizer",
+    "harga": 75000,
+    "stok": 55,
+    "satuan": "Pcs",
+    "deskripsi": "Krim siang dengan kandungan glutathione untuk kulit cerah",
+    "tanggal_masuk": "2026-02-01"
+  },
+  {
+    "id": "5",
+    "kode": "SKN-005",
+    "nama": "Loose Powder Natural Finish",
+    "merk": "Pixy",
+    "kategori": "Bedak",
+    "harga": 52000,
+    "stok": 12,
+    "satuan": "Pcs",
+    "deskripsi": "Bedak tabur untuk hasil natural dan matte sepanjang hari",
+    "tanggal_masuk": "2026-02-05"
+  },
+  {
+    "id": "6",
+    "kode": "SKN-006",
+    "nama": "Acne Toner BHA 2%",
+    "merk": "Ms Glow",
+    "kategori": "Toner",
+    "harga": 110000,
+    "stok": 38,
+    "satuan": "Pcs",
+    "deskripsi": "Toner BHA 2% untuk mengontrol minyak dan mengatasi jerawat",
+    "tanggal_masuk": "2026-02-10"
+  },
+  {
+    "id": "7",
+    "kode": "SKN-007",
+    "nama": "Blush On Baked Coral Pink",
+    "merk": "Make Over",
+    "kategori": "Blush On",
+    "harga": 135000,
+    "stok": 20,
+    "satuan": "Pcs",
+    "deskripsi": "Blush on baked dengan warna coral pink yang cantik",
+    "tanggal_masuk": "2026-02-15"
+  },
+  {
+    "id": "8",
+    "kode": "SKN-008",
+    "nama": "Ultra Sun Shield SPF50+ PA++++",
+    "merk": "Somethinc",
+    "kategori": "Sunscreen",
+    "harga": 125000,
+    "stok": 0,
+    "satuan": "Pcs",
+    "deskripsi": "Sunscreen dengan perlindungan tinggi, ringan dan tidak lengket",
+    "tanggal_masuk": "2026-03-01"
+  },
+  {
+    "id": "9",
+    "kode": "SKN-009",
+    "nama": "Volume Mascara Waterproof",
+    "merk": "Maybelline",
+    "kategori": "Maskara",
+    "harga": 98000,
+    "stok": 27,
+    "satuan": "Pcs",
+    "deskripsi": "Maskara waterproof formula, tahan 24 jam tanpa luntur",
+    "tanggal_masuk": "2026-03-05"
+  }
+]

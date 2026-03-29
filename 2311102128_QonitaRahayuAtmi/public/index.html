@@ -1,0 +1,175 @@
+<!-- Qonita Rahayu Atmi - 2311102128 -->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | GlowStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div id="app" class="app-wrapper">
+  <div class="main-content">
+    <!-- Bagian Topbar -->
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Dashboard</div>
+        <p class="topbar-sub">Sistem Inventori Skincare &amp; Kosmetik</p>
+      </div>
+      <div class="topbar-date"><i class="bi bi-calendar3 me-2"></i><span id="currentDate"></span></div>
+    </div>
+    <main class="page-main">
+      <!-- Bagian Stats -->
+      <div class="row g-3 mb-4" id="statsRow">
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card"><div class="stat-icon pink"><i class="bi bi-box-seam-fill"></i></div>
+            <div><div class="stat-value" id="sTotal">—</div><div class="stat-label">Total Produk</div></div></div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card"><div class="stat-icon rose"><i class="bi bi-stack"></i></div>
+            <div><div class="stat-value" id="sStok">—</div><div class="stat-label">Total Unit Stok</div></div></div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card"><div class="stat-icon red"><i class="bi bi-exclamation-triangle-fill"></i></div>
+            <div><div class="stat-value" id="sHabis">—</div><div class="stat-label">Stok Habis</div></div></div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card"><div class="stat-icon purple"><i class="bi bi-currency-dollar"></i></div>
+            <div><div class="stat-value" id="sNilai" style="font-size:18px;">—</div><div class="stat-label">Nilai Inventori</div></div></div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Bagian Grafik Kategori -->
+        <div class="col-lg-7">
+          <div class="card h-100">
+            <div class="card-header"><h5><i class="bi bi-pie-chart-fill"></i>Distribusi Kategori</h5></div>
+            <div class="card-body">
+              <div class="chart-wrap" id="chartKategori">
+                <div class="loading-center"><div class="spinner"></div> Memuat...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Peringatan Stok -->
+        <div class="col-lg-5">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5><i class="bi bi-bell-fill"></i>Peringatan Stok</h5>
+              <span class="badge badge-habis" id="badgeAlertCount">0 item</span>
+            </div>
+            <div class="card-body" style="padding: 14px 20px;" id="alertStok">
+              <div class="loading-center"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Produk Terbaru -->
+      <div class="card mt-4">
+        <div class="card-header">
+          <h5><i class="bi bi-clock-fill"></i>Produk Terbaru Masuk</h5>
+          <a href="/produk.html" class="btn-outline-pink"><i class="bi bi-arrow-right me-1"></i>Lihat Semua</a>
+        </div>
+        <div class="card-body">
+          <div class="row g-3" id="produkTerbaru">
+            <div class="loading-center"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div id="toastWrap" class="toast-wrap"></div>
+
+<!-- Bagian Script menggunakan JQuery dan Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/sidebar.js"></script>
+<script>
+setActiveNav('dashboard');
+
+var COLORS = ['#ec4899','#f43f5e','#be185d','#a855f7','#8b5cf6','#f97316','#14b8a6','#0ea5e9','#84cc16','#eab308'];
+
+$(document).ready(function() {
+  $.ajax({
+    url: '/api/produk',
+    success: function(res) {
+      var data = res.data;
+      var total = data.length;
+      var totalStok = data.reduce(function(s,p){ return s + parseInt(p.stok); }, 0);
+      var habis = data.filter(function(p){ return parseInt(p.stok) === 0; }).length;
+      var menipis = data.filter(function(p){ return parseInt(p.stok) > 0 && parseInt(p.stok) <= 15; }).length;
+      var nilaiTotal = data.reduce(function(s,p){ return s + (parseInt(p.harga) * parseInt(p.stok)); }, 0);
+
+      $('#sTotal').text(total);
+      $('#sStok').text(totalStok.toLocaleString('id-ID'));
+      $('#sHabis').text(habis);
+      $('#sNilai').text('Rp ' + (nilaiTotal/1000000).toFixed(1) + 'Jt');
+
+      // Chart Kategori
+      var katMap = {};
+      data.forEach(function(p) { katMap[p.kategori] = (katMap[p.kategori] || 0) + 1; });
+      var katArr = Object.entries(katMap).sort(function(a,b){ return b[1]-a[1]; });
+      var chartHTML = katArr.map(function(item, i) {
+        var pct = Math.round(item[1]/total*100);
+        return '<div class="chart-row">' +
+          '<div class="chart-lbl"><span class="chart-dot" style="background:'+COLORS[i%COLORS.length]+'"></span>'+item[0]+'</div>' +
+          '<div class="chart-track"><div class="chart-fill" style="width:'+pct+'%;background:'+COLORS[i%COLORS.length]+'">'+item[1]+' pcs</div></div>' +
+          '<div class="chart-pct">'+pct+'%</div>' +
+          '</div>';
+      }).join('');
+      $('#chartKategori').html(chartHTML);
+
+      // Alert Stok
+      var alerts = data.filter(function(p){ return parseInt(p.stok) <= 15; });
+      $('#badgeAlertCount').text((habis+menipis)+' item');
+      if (alerts.length === 0) {
+        $('#alertStok').html('<div class="loading-center" style="color:#10b981;"><i class="bi bi-check-circle-fill me-2"></i>Semua stok aman</div>');
+      } else {
+        var alertHTML = alerts.map(function(p) {
+          var si = stokInfo(p.stok);
+          return '<div class="alert-row">' +
+            '<div><div class="alert-nama">'+p.nama+'</div><div class="alert-sub">'+p.merk+' &middot; '+p.kategori+'</div></div>' +
+            '<span class="badge '+si.cls+'">'+parseInt(p.stok)+' pcs &mdash; '+si.label+'</span>' +
+            '</div>';
+        }).join('');
+        $('#alertStok').html(alertHTML);
+      }
+
+      // Produk Terbaru
+      var terbaru = data.slice(-6).reverse();
+      var terbaruHTML = terbaru.map(function(p) {
+        var si = stokInfo(p.stok);
+        var icon = KATEGORI_ICON[p.kategori] || 'box-seam-fill';
+        return '<div class="col-sm-6 col-lg-4">' +
+          '<div class="produk-mini-card">' +
+            '<div class="d-flex align-items-center gap-2 mb-2">' +
+              '<div class="pmc-icon"><i class="bi bi-'+icon+'"></i></div>' +
+              '<div><div class="pmc-merk">'+p.merk+'</div><span class="badge '+si.cls+'">'+si.label+'</span></div>' +
+            '</div>' +
+            '<div class="pmc-nama">'+p.nama+'</div>' +
+            '<div class="d-flex align-items-center justify-content-between">' +
+              '<span class="pmc-harga">'+rupiah(p.harga)+'</span>' +
+              '<span class="pmc-stok">'+p.stok+' '+p.satuan+'</span>' +
+            '</div>' +
+          '</div></div>';
+      }).join('');
+      $('#produkTerbaru').html(terbaruHTML);
+    },
+    error: function() {
+      showToast('Gagal mengambil data', 'error');
+    }
+  });
+});
+</script>
+</body>
+</html>
