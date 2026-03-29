@@ -1,0 +1,29 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "nama": "La'Vabie Satin Skirt Dusty",
+      "kategori": "Bawahan",
+      "harga": 160000
+    },
+    {
+      "id": 2,
+      "nama": "La'Vabie Maxi Square Neck Dress",
+      "kategori": "Dress",
+      "harga": 177390
+    },
+    {
+      "id": 4,
+      "nama": "La'Vabie Floral Blouse",
+      "kategori": "Atasan",
+      "harga": 119000
+    },
+    {
+      "id": 8,
+      "nama": "La'Vabie Fitted Top",
+      "kategori": "Atasan",
+      "harga": 75000
+    }
+  ],
+  "nextId": 11
+}

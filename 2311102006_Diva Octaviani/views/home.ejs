@@ -1,0 +1,58 @@
+<% title="Home" ; pageTitle="Selamat Datang di <em>La'Vabie</em>" ;
+    pageSub="Sistem Manajemen Produk Toko Busana & Fashion" ; body=` <div class="row justify-content-center g-4">
+    <div class="col-md-9">
+        <div class="row g-3 mb-4">
+            <div class="col-4">
+                <div class="stat-card">
+                    <div class="stat-card-header">TOTAL PRODUK</div>
+                    <div class="stat-card-body">
+                        <div class="stat-value" id="statTotal" style="font-size:1.3rem;">—</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="stat-card">
+                    <div class="stat-card-header">KATEGORI</div>
+                    <div class="stat-card-body">
+                        <div class="stat-value" id="statKategori" style="font-size:1.3rem;">—</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="stat-card">
+                    <div class="stat-card-header">TOTAL ASET</div>
+                    <div class="stat-card-body">
+                        <div class="stat-value" id="statNilai" style="font-size:1.3rem;">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Produk Terbaru</div>
+            <div class="card-body p-0">
+                <table class="table mb-0" id="tabelHome">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Produk</th>
+                            <th>Kategori</th>
+                            <th>Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyHome"></tbody>
+                </table>
+            </div>
+            <div class="card-footer text-end" style="background:transparent;border-top:1px solid rgba(30,63,110,.08);">
+                <a href="/produk" class="btn btn-primary btn-sm" style="width:auto;">Lihat Semua Produk →</a>
+            </div>
+        </div>
+
+        <div class="text-center mt-2">
+            <a href="/tambah" class="btn btn-primary" style="width:auto;padding:10px 32px;">＋ Tambah Produk Baru</a>
+        </div>
+    </div>
+    </div>
+    `;
+    %>
+    <%- include('layout') %>
