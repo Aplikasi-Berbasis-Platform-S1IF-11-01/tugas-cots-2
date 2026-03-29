@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>COTS 2 - Dashboard Inventory</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+  <style>
+    /* [CSS CUSTOM]: Pengaturan dasar layouting dan sidebar aplikasi */
+    body {
+      background-color: #efefef;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+    }
+
+    /* Sidebar Menu Samping */
+    .sidebar {
+      width: 260px;
+      background-color: #212529;
+      height: 100vh;
+      z-index: 100;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .sidebar .nav-link:hover {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: #ff0000;
+      color: white;
+      box-shadow: 0 4px 6px rgba(255, 0, 0, 0.3);
+    }
+
+    /* Area Konten Utama */
+    .main-content {
+      flex-grow: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-color: #efefef;
+    }
+
+    .content-scrollable {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding-bottom: 30px;
+    }
+
+    /* Pewarnaan Kartu Statistik Dashboard (Bootstrap Card Customization) */
+    .bg-card-1 {
+      background-color: #6f42c1;
+      color: white;
+    }
+
+    .bg-card-2 {
+      background-color: #eb8cf2;
+      color: white;
+    }
+
+    .bg-card-3 {
+      background-color: #0dcaf0;
+      color: white;
+    }
+
+    .bg-card-4 {
+      background-color: #20c997;
+      color: white;
+    }
+
+    /* Efek Visual Hover pada Kartu Ringkasan */
+    .summary-icon {
+      font-size: 2.5rem;
+      opacity: 0.8;
+    }
+
+    .card-summary {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .card-summary:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Box Judul Halaman */
+    .title-box {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 25px 30px;
+      border-left: 6px solid #ff0000;
+      width: 100%;
+    }
+
+    /* [STYLE DINAMIS]: Pengaturan warna badge berdasarkan kategori yang ada di database */
+    .bg-Jersey {
+      background-color: #6f42c1 !important;
+    }
+
+    .bg-Rompi {
+      background-color: #8f8cf2 !important;
+    }
+
+    .bg-Sepatu {
+      background-color: #0dcaf0 !important;
+    }
+
+    .bg-KaosKaki {
+      background-color: #20c997 !important;
+    }
+
+    .bg-SarungTangan {
+      background-color: #0a8bfc !important;
+    }
+
+    .bg-Lainnya {
+      background-color: #2f00ff !important;
+    }
+  </style>
+</head>
+
+<body class="d-flex">
+  <div class="sidebar d-flex flex-column flex-shrink-0 text-white shadow">
+    <div class="p-3 flex-grow-1">
+      <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+        <i class="fa-solid fa-shield-halved fs-3 me-2 text-danger"></i>
+        <span class="fs-5 fw-bold letter-spacing-1">YNWA INVENTORY</span>
+      </a>
+      <hr class="border-secondary" />
+      <ul class="nav nav-pills flex-column mb-auto mt-2">
+        <li class="nav-item">
+          <a href="/" class="nav-link active"><i class="fa-solid fa-house me-3 w-20px text-center"></i>Dashboard</a>
+        </li>
+        <li>
+          <a href="/tabel" class="nav-link"><i class="fa-solid fa-box-open me-3 w-20px text-center"></i>Tabel
+            Produk</a>
+        </li>
+        <li>
+          <a href="/tambah" class="nav-link"><i class="fa-solid fa-circle-plus me-3 w-20px text-center"></i>Tambah
+            Produk</a>
+        </li>
+      </ul>
+    </div>
+    <div class="border-top border-secondary d-flex align-items-center justify-content-center" style="height: 75px">
+      <div class="text-white fw-bold" style="font-size: 0.85rem">
+        &copy; 2311102138 - Rico Ade Pratama
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content w-100">
+    <div class="text-white px-4 py-3 shadow-sm w-100" style="background-color: #ff0000; z-index: 10">
+      <h5 class="mb-0 fw-bold">TUGAS COTS 2 - 2311102138_RICO ADE PRATAMA</h5>
+    </div>
+
+    <div class="content-scrollable p-4 p-md-5 pt-4">
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="title-box">
+            <h2 class="fw-bold mb-2" style="color: #ff0000 !important">
+              SISTEM MANAJEMEN INVENTARIS
+            </h2>
+            <p class="text-muted fs-5 mb-0">
+              Dashboard Pengelolaan Data Merchandise & Apparel
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="fw-bold text-secondary mb-3">
+        <i class="fa-solid fa-boxes-stacked me-2"></i> Ringkasan Stok Fisik
+      </h5>
+      <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+          <div class="card card-summary bg-card-1 p-4 h-100 d-flex justify-content-center">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1 text-uppercase fw-bold text-light" style="font-size: 0.9rem; letter-spacing: 1px">
+                  Total Seluruh Produk
+                </h6>
+                <div class="d-flex align-items-baseline">
+                  <h1 class="mb-0 fw-bold" id="sumTotal">0</h1>
+                  <span class="ms-2 fw-bold fs-4 text-white-50" id="sumStokFisik">()</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-box-open summary-icon" style="font-size: 3.5rem"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card card-summary bg-card-2 p-4 h-100">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <h6 class="mb-1 text-uppercase fw-bold text-light" style="font-size: 0.9rem; letter-spacing: 1px">
+                  Rincian Kategori
+                </h6>
+                <h4 class="mb-0 fw-bold" id="sumKategori">0 Kategori</h4>
+              </div>
+              <i class="fa-solid fa-tags summary-icon" style="font-size: 2.5rem"></i>
+            </div>
+            <div id="kategoriList" class="d-flex flex-wrap gap-2 mt-auto"></div>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="fw-bold text-secondary mb-3">
+        <i class="fa-solid fa-wallet me-2"></i> Ringkasan Finansial
+      </h5>
+      <div class="row mb-2">
+        <div class="col-md-6 mb-3">
+          <div class="card card-summary bg-card-3 p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1 text-uppercase fw-bold text-light" style="font-size: 0.9rem; letter-spacing: 1px">
+                  Harga Tertinggi
+                </h6>
+                <h2 class="mb-0 fw-bold" id="sumTertinggi">Rp 0</h2>
+              </div>
+              <i class="fa-solid fa-trophy summary-icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card card-summary bg-card-4 p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1 text-uppercase fw-bold text-light" style="font-size: 0.9rem; letter-spacing: 1px">
+                  Rata-rata Harga
+                </h6>
+                <h2 class="mb-0 fw-bold" id="sumRata">Rp 0</h2>
+              </div>
+              <i class="fa-solid fa-chart-line summary-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="border-top border-secondary d-flex align-items-center justify-content-center"
+      style="height: 75px; background-color: #efefef">
+      <div class="text-center text-muted" style="font-size: 0.85rem">
+        &copy; 2026 Tugas COTS 2 - Aplikasi Berbasis Platform - Telkom
+        University Purwokerto.
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // [POIN 5]: Mengambil data dari API Backend dalam format JSON menggunakan AJAX JQuery
+      $.get("/api/produk", function (res) {
+        let data = res.data;
+        let totalStok = 0;
+        let katCount = {};
+        let katStok = {};
+
+        // 1. Logika Perulangan: Memproses data JSON untuk statistik barang
+        data.forEach((item) => {
+          let s = parseInt(item.stok) || 0;
+          totalStok += s;
+          katCount[item.kategori] = (katCount[item.kategori] || 0) + 1;
+          katStok[item.kategori] = (katStok[item.kategori] || 0) + s;
+        });
+
+        // 2. Logika Perhitungan Finansial (Harga)
+        let harga = data.map((i) => parseInt(i.harga));
+        let max = data.length > 0 ? Math.max(...harga) : 0;
+        let avg =
+          data.length > 0
+            ? Math.round(harga.reduce((a, b) => a + b) / data.length)
+            : 0;
+        const idr = (n) => "Rp " + parseInt(n).toLocaleString("id-ID");
+
+        // 3. Manipulasi DOM JQuery: Memasukkan hasil perhitungan ke elemen Dashboard
+        $("#sumTotal").text(data.length);
+        $("#sumStokFisik").text(
+          "(" + totalStok.toLocaleString("id-ID") + " Stok)",
+        );
+        $("#sumKategori").text(Object.keys(katCount).length + " Macam");
+        $("#sumTertinggi").text(idr(max));
+        $("#sumRata").text(idr(avg));
+
+        // 4. Render Dinamis: Membuat Badge Kategori secara otomatis berdasarkan data JSON
+        let badges = "";
+        for (let k in katCount) {
+          let cls = k.replace(/\s+/g, "");
+          badges += `<span class="badge bg-${cls} p-2 border border-light shadow-sm">
+                       ${k}: ${katCount[k]} item (Stok: ${katStok[k]})</span>`;
+        }
+        $("#kategoriList").html(badges);
+      });
+    });
+  </script>
+</body>
+
+</html>

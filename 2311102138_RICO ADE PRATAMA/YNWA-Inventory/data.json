@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nama": "Jersey LFC Home 25/26",
+    "kategori": "Jersey",
+    "stok": 1000,
+    "harga": 1500000
+  },
+  {
+    "id": 3,
+    "nama": "Sarung Tangan Alisson Becker",
+    "kategori": "Sarung Tangan",
+    "stok": 15,
+    "harga": 1200000
+  },
+  {
+    "id": 4,
+    "nama": "Kaos Kaki Stadium Home",
+    "kategori": "Kaos Kaki",
+    "stok": 100,
+    "harga": 50000
+  },
+  {
+    "id": 1774797236384,
+    "nama": "Sepatu Adidas",
+    "kategori": "Sepatu",
+    "stok": 5,
+    "harga": 2000000
+  }
+]

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Tabel Produk - YNWA Inventory</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+  <style>
+    /* [CSS CUSTOM]: Pengaturan dasar layout aplikasi */
+    body {
+      background-color: #efefef;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: #212529;
+      height: 100vh;
+      z-index: 100;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link:hover {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: #ff0000;
+      color: white;
+      box-shadow: 0 4px 6px rgba(255, 0, 0, 0.3);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .content-scrollable {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding-bottom: 50px;
+    }
+
+    /* [POIN 1]: Custom CSS untuk warna badge kategori agar sinkron dengan dashboard */
+    .bg-Jersey {
+      background-color: #6f42c1 !important;
+      color: white;
+    }
+
+    .bg-Rompi {
+      background-color: #8f8cf2 !important;
+      color: white;
+    }
+
+    .bg-Sepatu {
+      background-color: #0dcaf0 !important;
+      color: white;
+    }
+
+    .bg-KaosKaki {
+      background-color: #20c997 !important;
+      color: white;
+    }
+
+    .bg-SarungTangan {
+      background-color: #0a8bfc !important;
+      color: white;
+    }
+
+    .bg-Lainnya {
+      background-color: #2f00ff !important;
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="d-flex">
+  <div class="sidebar d-flex flex-column flex-shrink-0 text-white shadow">
+    <div class="p-3 flex-grow-1">
+      <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+        <i class="fa-solid fa-shield-halved fs-3 me-2 text-danger"></i>
+        <span class="fs-5 fw-bold">YNWA INVENTORY</span>
+      </a>
+      <hr class="border-secondary" />
+      <ul class="nav nav-pills flex-column mb-auto mt-2">
+        <li><a href="/" class="nav-link"><i class="fa-solid fa-house me-3 text-center"></i> Dashboard</a></li>
+        <li><a href="/tabel" class="nav-link active"><i class="fa-solid fa-box-open me-3 text-center"></i> Tabel
+            Produk</a></li>
+        <li><a href="/tambah" class="nav-link"><i class="fa-solid fa-circle-plus me-3 text-center"></i> Tambah
+            Produk</a></li>
+      </ul>
+    </div>
+    <div class="border-top border-secondary d-flex align-items-center justify-content-center" style="height: 75px">
+      <div class="text-white fw-bold" style="font-size: 0.85rem"> &copy; 2311102138 - Rico Ade Pratama </div>
+    </div>
+  </div>
+
+  <div class="main-content w-100">
+    <div class="text-white px-4 py-3 shadow-sm w-100" style="background-color: #ff0000; z-index: 10">
+      <h5 class="mb-0 fw-bold">TUGAS COTS 2 - 2311102138_RICO ADE PRATAMA</h5>
+    </div>
+
+    <div class="content-scrollable p-4 p-md-5 pt-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Daftar Produk Inventaris</h2>
+        <a href="/tambah" class="btn btn-danger fw-bold"><i class="fa-solid fa-plus me-2"></i> Tambah Baru</a>
+      </div>
+
+      <div class="card shadow border-0 rounded-4 p-4">
+        <table id="tabelInventory" class="table table-hover table-bordered align-middle" style="width: 100%">
+          <thead class="table-light">
+            <tr>
+              <th>Nama Barang</th>
+              <th>Kategori</th>
+              <th>Stok</th>
+              <th>Harga Satuan</th>
+              <th class="text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // [POIN 5]: Implementasi JQuery Datatable menggunakan format data JSON dari API
+      $("#tabelInventory").DataTable({
+        ajax: "/api/produk",
+        columns: [
+          { data: "nama" },
+          {
+            data: "kategori",
+            render: function (data) {
+
+              let cls = data.replace(/\s+/g, "");
+              return `<span class="badge bg-${cls} p-2 shadow-sm">${data}</span>`;
+            },
+          },
+          { data: "stok" },
+          {
+            data: "harga",
+            render: function (data) {
+              return "Rp " + parseInt(data).toLocaleString("id-ID");
+            },
+          },
+          {
+            // [POIN 3]: Menambahkan aksi CRUD (Update & Delete) 
+            data: null,
+            className: "text-center",
+            render: function (data, type, row) {
+              return `
+                    <a href="/edit/${row.id}" class="btn btn-sm btn-warning fw-bold"><i class="fa-solid fa-pen"></i> Edit</a>
+                    <button class="btn btn-sm btn-danger fw-bold" onclick="hapusData(${row.id})"><i class="fa-solid fa-trash"></i> Hapus</button>
+                `;
+            },
+          },
+        ],
+      });
+    });
+
+    // [POIN 4]: Menggunakan JQuery AJAX untuk fungsionalitas CRUD Delete
+    function hapusData(id) {
+      if (confirm("Yakin ingin menghapus produk ini dari database JSON?")) {
+        $.ajax({
+          url: "/hapus/" + id,
+          type: "DELETE",
+          success: function (res) {
+            $("#tabelInventory").DataTable().ajax.reload();
+          },
+          error: function () {
+            alert("Gagal menghapus data!");
+          },
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>
