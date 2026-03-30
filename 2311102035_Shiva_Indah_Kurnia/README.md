@@ -825,18 +825,18 @@ File ini berfungsi sebagai antarmuka registrasi (Create) yang memungkinkan pengg
 ## 3. Screenshot Website
 
 1. Tampilan Awal Halaman
-![](assets/1.PNG)
+![](assets/1.png)
 2. Halaman Form Input Mahasiswa
-![](assets/2.PNG)
+![](assets/2.png)
 3. Halaman Data Mahasiswa
-![](assets/3.PNG)
+![](assets/3.png)
 4. Halaman Edit Data Mahasiswa
-![](assets/4.PNG)
+![](assets/4.png)
 5. Hasil Update Data
-![](assets/5.PNG)
+![](assets/5.png)
 6. Proses Hapus Data
-![](assets/6.PNG)
-![](assets/7.PNG)
+![](assets/6.png)
+![](assets/7.png)
 ---
 
 ## 4. Kesimpulan
