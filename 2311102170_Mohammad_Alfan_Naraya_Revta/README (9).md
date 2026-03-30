@@ -133,34 +133,7 @@ Terakhir, server dijalankan pada port 3000 dan dapat diakses melalui http://loca
 
 ---
 
-### C. File Data `data/data.json`
-
-Kondisi awal (kosong):
-
-```json
-[]
-```
-
-Contoh isi setelah data ditambahkan:
-
-```json
-[
-  {
-    "id": 1774789879130,
-    "nama": "Yoga Hogantara",
-    "nim": "2311102153",
-    "jurusan": "Teknik Informatika"
-  }
-]
-```
-
-**Penjelasan `data.json`**
-
-File `data.json` berfungsi sebagai media penyimpanan data sederhana. awalnya file ini berisi array kosong. Setelah pengguna menambahkan data melalui form, data mahasiswa akan disimpan sebagai objek JSON di dalam array tersebut. Setiap objek memiliki atribut `id`, `nim`, `nama`, `jurusan`. File ini berperan seperti database sederhana dalam aplikasi.
-
----
-
-### D. Halaman Beranda `views/index.ejs`
+### C. Halaman Beranda `views/index.ejs`
 
 ```html
 <!DOCTYPE html>
@@ -244,7 +217,7 @@ File index.ejs di atas merupakan halaman antarmuka utama yang berfungsi untuk me
 
 ---
 
-### E. Halaman Form Input `views/form.ejs`
+### D. Halaman Form Input `views/form.ejs`
 
 ```html
 <!DOCTYPE html>
