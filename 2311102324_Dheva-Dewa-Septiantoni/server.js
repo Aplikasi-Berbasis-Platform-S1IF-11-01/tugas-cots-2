@@ -8,7 +8,7 @@ app.use(express.static('public'));
 
 
 let mahasiswa = [
-    { id: 1, nama: "Dekanjut", nim: "112233", jurusan: "Teknik Informatika" },
+    { id: 1, nama: "Dekanjuy", nim: "112233", jurusan: "Teknik Informatika" },
     { id: 2, nama: "Ricul", nim: "445566", jurusan: "Sistem Informasi" }
 ];
 
