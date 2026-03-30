@@ -1,0 +1,58 @@
+<%- include('partials/header') %>
+
+<section class="page-hero glossy-card mb-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div>
+      <span class="hero-badge">DATA CENTER</span>
+      <h1 class="page-title mt-3 mb-2">Data Layanan DigiDaw</h1>
+      <p class="page-subtitle mb-0">
+        Halaman ini menampilkan data dari file JSON melalui endpoint API dan ditampilkan menggunakan DataTables.
+      </p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="/form" class="btn btn-light btn-pill">+ Tambah Data</a>
+      <button id="refreshTable" class="btn btn-outline-light btn-pill" type="button">Refresh Tabel</button>
+    </div>
+  </div>
+</section>
+
+<section class="row g-4 mb-4">
+  <div class="col-md-4">
+    <div class="stat-card glossy-card">
+      <div class="stat-label">Total Data</div>
+      <div class="stat-value" id="totalData">0</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card glossy-card">
+      <div class="stat-label">Status Aktif</div>
+      <div class="stat-value" id="totalAktif">0</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card glossy-card">
+      <div class="stat-label">Status Nonaktif</div>
+      <div class="stat-value" id="totalNonaktif">0</div>
+    </div>
+  </div>
+</section>
+
+<section class="glossy-card table-panel">
+  <div class="table-responsive">
+    <table id="digidawTable" class="table table-dark table-hover align-middle w-100">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama Layanan</th>
+          <th>Kategori</th>
+          <th>Harga</th>
+          <th>Status</th>
+          <th>Deskripsi</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

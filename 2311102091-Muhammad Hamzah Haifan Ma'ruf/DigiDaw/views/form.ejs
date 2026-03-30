@@ -1,0 +1,121 @@
+<%- include('partials/header') %>
+
+<section class="page-hero glossy-card mb-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div>
+      <span class="hero-badge">FORM CONTROL PANEL</span>
+      <h1 class="page-title mt-3 mb-2" id="formTitle">Form Input DigiDaw</h1>
+      <p class="page-subtitle mb-0">
+        Gunakan form ini untuk menambahkan layanan baru atau mengubah data layanan yang sudah ada.
+      </p>
+    </div>
+    <div class="page-hero-side">
+      <div class="side-chip">Modern UI</div>
+      <div class="side-chip">AJAX Submit</div>
+      <div class="side-chip">Premium Theme</div>
+    </div>
+  </div>
+</section>
+
+<section class="row g-4">
+  <div class="col-lg-8">
+    <div class="glossy-card form-panel">
+      <form id="digidawForm">
+        <input type="hidden" id="itemId">
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <label class="form-label text-light">Nama Layanan</label>
+            <input
+              type="text"
+              class="form-control dark-input"
+              id="nama"
+              placeholder="Contoh: UI Landing Page"
+              required
+            >
+            <small class="form-text-custom">Masukkan nama layanan digital yang akan dikelola.</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label text-light">Kategori</label>
+            <select class="form-select dark-input" id="kategori" required>
+              <option value="">Pilih Kategori</option>
+              <option value="Branding">Branding</option>
+              <option value="UI/UX">UI/UX</option>
+              <option value="Web Design">Web Design</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Development">Development</option>
+            </select>
+            <small class="form-text-custom">Pilih kategori sesuai jenis layanan.</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label text-light">Harga</label>
+            <input
+              type="number"
+              class="form-control dark-input"
+              id="harga"
+              placeholder="Contoh: 500000"
+              required
+            >
+            <small class="form-text-custom">Gunakan angka tanpa titik atau koma.</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label text-light">Status</label>
+            <select class="form-select dark-input" id="status" required>
+              <option value="Aktif">Aktif</option>
+              <option value="Nonaktif">Nonaktif</option>
+            </select>
+            <small class="form-text-custom">Status menunjukkan apakah layanan sedang tersedia.</small>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label text-light">Deskripsi</label>
+            <textarea
+              class="form-control dark-input"
+              id="deskripsi"
+              rows="5"
+              placeholder="Jelaskan layanan secara singkat namun informatif..."
+            ></textarea>
+            <small class="form-text-custom">Deskripsi akan ditampilkan pada tabel data.</small>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <button type="submit" class="btn btn-light btn-pill" id="submitBtn">Simpan Data</button>
+          <button type="reset" class="btn btn-outline-light btn-pill" id="resetBtn">Reset</button>
+          <a href="/data" class="btn btn-outline-secondary btn-pill">Lihat Tabel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="glossy-card info-side-panel h-100">
+      <span class="hero-badge">INFO PANEL</span>
+      <h4 class="mt-3">Petunjuk Pengisian</h4>
+      <ul class="info-list">
+        <li>Isi nama layanan dengan jelas.</li>
+        <li>Pilih kategori yang sesuai.</li>
+        <li>Masukkan harga dalam angka.</li>
+        <li>Pilih status aktif atau nonaktif.</li>
+        <li>Tulis deskripsi singkat agar data lebih informatif.</li>
+      </ul>
+
+      <div class="divider-glow"></div>
+
+      <h5 class="mb-3">Keunggulan Form</h5>
+      <div class="mini-card">
+        <strong>Edit Otomatis</strong>
+        <p class="mb-0">Jika membuka form dengan parameter ID, maka data lama akan langsung ditampilkan untuk diedit.</p>
+      </div>
+      <div class="mini-card">
+        <strong>AJAX Submit</strong>
+        <p class="mb-0">Penyimpanan dilakukan tanpa proses yang rumit dan langsung diarahkan ke halaman tabel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

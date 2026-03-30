@@ -1,0 +1,26 @@
+[
+  {
+    "id": 2,
+    "nama": "Logo Futuristic Pack",
+    "kategori": "Branding",
+    "harga": 350000,
+    "status": "Nonaktif",
+    "deskripsi": "Paket desain logo cyber modern dengan gaya clean, tech, dan glossy untuk bisnis digital."
+  },
+  {
+    "id": 3,
+    "nama": "Social Media Kit",
+    "kategori": "Social Media",
+    "harga": 275000,
+    "status": "Aktif",
+    "deskripsi": "Template konten social media dengan nuansa futuristik untuk Instagram, TikTok, dan promosi brand."
+  },
+  {
+    "id": 4,
+    "nama": "Website Company Profile",
+    "kategori": "Web Design",
+    "harga": 950000,
+    "status": "Aktif",
+    "deskripsi": "Desain tampilan website company profile modern untuk kebutuhan startup, UMKM, dan personal brand."
+  }
+]
