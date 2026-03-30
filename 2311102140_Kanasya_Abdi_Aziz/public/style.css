@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap');
+
+body {
+    background: linear-gradient(135deg, #fff5f7 0%, #fdeff4 100%);
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: #4a4a4a;
+}
+
+.navbar-custom {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(166, 77, 121, 0.1);
+    border-bottom: 2px solid #f8c8dc;
+}
+
+.navbar-custom .navbar-brand {
+    font-family: 'Playfair Display', serif;
+    color: #a64d79 !important;
+    font-weight: 700;
+}
+
+.navbar-custom .nav-link {
+    color: #7a3d5c !important;
+    font-weight: 500;
+}
+
+.card-soft {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(166, 77, 121, 0.1);
+    background-color: #ffffff;
+}
+
+.btn-pink {
+    background: linear-gradient(45deg, #f48fb1, #ec7098);
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.btn-pink:hover {
+    background: linear-gradient(45deg, #ec7098, #d81b60);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(236, 112, 152, 0.4);
+    color: white;
+}
+
+.btn-soft {
+    background-color: #ffd6e7;
+    border: none;
+    color: #7a3d5c;
+    padding: 10px 25px;
+    border-radius: 10px;
+}
+
+.title-pink {
+    color: #7a3d5c;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.table thead {
+    background-color: #fce4ec;
+    color: #7a3d5c;
+}
+
+.hero-box {
+    padding: 60px;
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 15px 35px rgba(166, 77, 121, 0.1);
+}
+
+.badge-category {
+    background-color: #fce4ec;
+    color: #a64d79;
+    border: 1px solid #f8c8dc;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Aksesoris - GlowJewels</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/public/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">GlowJewels</a>
+            <div class="ms-auto">
+                <a class="nav-link d-inline" href="/">Home</a>
+                <a class="nav-link d-inline" href="/form">Input Koleksi</a>
+                <a class="nav-link d-inline" href="/table">Data Aksesoris</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card card-soft p-5 mx-auto" style="max-width: 650px;">
+            <h2 class="title-pink mb-4" id="formTitle">Form Input Aksesoris Baru</h2>
+
+            <form id="productForm">
+                <input type="hidden" id="productId">
+
+                <div class="mb-3">
+                    <label class="form-label">Nama Item Aksesoris</label>
+                    <input type="text" class="form-control" id="nama" placeholder="Misal: Kalung Emas 18K" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Brand / Koleksi</label>
+                    <input type="text" class="form-control" id="brand" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Kategori</label>
+                    <select class="form-select" id="kategori" required>
+                        <option value="">-- Pilih Kategori Aksesoris --</option>
+                        <option value="Kalung">Kalung</option>
+                        <option value="Cincin">Cincin</option>
+                        <option value="Anting">Anting</option>
+                        <option value="Gelang">Gelang</option>
+                        <option value="Jam Tangan">Jam Tangan</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Harga Satuan (Rp)</label>
+                        <input type="number" class="form-control" id="harga" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Stok Tersedia</label>
+                        <input type="number" class="form-control" id="stok" required>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-pink w-100" id="submitBtn">Simpan Data</button>
+                    <a href="/table" class="btn btn-soft w-100 mt-2 text-center d-block">Kembali</a>
+                </div>
+            </form>
+            <div id="message" class="mt-3"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('id');
+
+        if (editId) {
+            $('#formTitle').text('Update Data Aksesoris');
+            $('#submitBtn').text('Update Koleksi');
+            $.get(`/api/products/${editId}`, function(data) {
+                $('#productId').val(data.id);
+                $('#nama').val(data.nama);
+                $('#brand').val(data.brand);
+                $('#kategori').val(data.kategori);
+                $('#harga').val(data.harga);
+                $('#stok').val(data.stok);
+            });
+        }
+
+        $('#productForm').submit(function(e) {
+            e.preventDefault();
+            const id = $('#productId').val();
+            const formData = {
+                nama: $('#nama').val(),
+                brand: $('#brand').val(),
+                kategori: $('#kategori').val(),
+                harga: $('#harga').val(),
+                stok: $('#stok').val()
+            };
+
+            $.ajax({
+                url: id ? `/api/products/${id}` : '/api/products',
+                method: id ? 'PUT' : 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(res) {
+                    $('#message').html(`<div class="alert alert-success">${res.message}</div>`);
+                    setTimeout(() => window.location.href = '/table', 1200);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
