@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Data - Sistem Informasi Mahasiswa</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"/>
+  <!-- Custom CSS -->
+  <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR
+  ====================================================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">
+        <i class="bi bi-mortarboard-fill me-2"></i>SiMahasiswa
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="bi bi-house me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/form"><i class="bi bi-person-plus me-1"></i>Tambah Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tabel"><i class="bi bi-table me-1"></i>Data Mahasiswa</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+  <div class="bg-light border-bottom py-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+          <li class="breadcrumb-item active" id="breadcrumbLabel">Tambah Data</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       MAIN CONTENT - Form Input Data Mahasiswa
+  ====================================================== -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+
+        <!-- Alert untuk pesan sukses/error -->
+        <div id="alertBox" class="alert d-none mb-4" role="alert"></div>
+
+        <!-- Card Form -->
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-primary text-white py-3">
+            <h5 class="mb-0" id="formTitle">
+              <i class="bi bi-person-plus-fill me-2"></i>Tambah Data Mahasiswa
+            </h5>
+          </div>
+          <div class="card-body p-4">
+
+            <!-- =========================================
+                 FORM INPUT DATA MAHASISWA
+                 id="mahasiswaForm" → referensi di jQuery
+            ========================================== -->
+            <form id="mahasiswaForm" novalidate>
+
+              <!-- Input tersembunyi: menyimpan ID saat mode Edit -->
+              <input type="hidden" id="editId" value=""/>
+
+              <!-- Field: Nama Lengkap -->
+              <div class="mb-3">
+                <label for="nama" class="form-label fw-semibold">
+                  Nama Lengkap <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nama"
+                  placeholder="Contoh: Budi Santoso"
+                  required
+                />
+                <div class="invalid-feedback">Nama tidak boleh kosong.</div>
+              </div>
+
+              <!-- Row untuk NIM dan Jurusan -->
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="nim" class="form-label fw-semibold">
+                    NIM <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nim"
+                    placeholder="Contoh: 2021001"
+                    required
+                  />
+                  <div class="invalid-feedback">NIM tidak boleh kosong.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="jurusan" class="form-label fw-semibold">
+                    Jurusan <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="jurusan" required>
+                    <option value="">-- Pilih Jurusan --</option>
+                    <option value="Teknik Informatika">Teknik Informatika</option>
+                    <option value="Sistem Informasi">Sistem Informasi</option>
+                    <option value="Teknik Komputer">Teknik Komputer</option>
+                    <option value="Ilmu Komputer">Ilmu Komputer</option>
+                    <option value="Manajemen Informatika">Manajemen Informatika</option>
+                  </select>
+                  <div class="invalid-feedback">Pilih jurusan terlebih dahulu.</div>
+                </div>
+              </div>
+
+              <!-- Row untuk IPK dan Email -->
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="ipk" class="form-label fw-semibold">
+                    IPK <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="ipk"
+                    placeholder="Contoh: 3.75"
+                    min="0"
+                    max="4"
+                    step="0.01"
+                    required
+                  />
+                  <div class="form-text">Nilai antara 0.00 - 4.00</div>
+                  <div class="invalid-feedback">IPK harus antara 0-4.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="status" class="form-label fw-semibold">Status</label>
+                  <select class="form-select" id="status">
+                    <option value="Aktif">Aktif</option>
+                    <option value="Cuti">Cuti</option>
+                    <option value="Lulus">Lulus</option>
+                    <option value="Drop Out">Drop Out</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Field: Email -->
+              <div class="mb-4">
+                <label for="email" class="form-label fw-semibold">
+                  Email <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Contoh: budi@mahasiswa.ac.id"
+                  required
+                />
+                <div class="invalid-feedback">Masukkan email yang valid.</div>
+              </div>
+
+              <!-- Tombol Aksi -->
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4" id="btnSubmit">
+                  <i class="bi bi-save me-2"></i>Simpan Data
+                </button>
+                <button type="button" class="btn btn-secondary px-4" id="btnReset" onclick="resetForm()">
+                  <i class="bi bi-arrow-counterclockwise me-2"></i>Reset
+                </button>
+                <a href="/tabel" class="btn btn-outline-secondary px-4">
+                  <i class="bi bi-table me-2"></i>Lihat Tabel
+                </a>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">© 2024 Sistem Informasi Mahasiswa | Tugas Praktikum Web</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  <script>
+    // ======================================================
+    // Script Form: Menangani Tambah dan Edit Data
+    // Menggunakan jQuery AJAX untuk komunikasi ke API
+    // ======================================================
+
+    $(document).ready(function () {
+
+      // ====================================================
+      // Cek apakah ada parameter ?edit=ID di URL
+      // Jika ada, mode Edit → ambil data lama dari API
+      // ====================================================
+      const urlParams = new URLSearchParams(window.location.search);
+      const editId    = urlParams.get('edit');  // Ambil nilai ?edit=xxx
+
+      if (editId) {
+        // Mode Edit: ubah judul form
+        $('#formTitle').html('<i class="bi bi-pencil-fill me-2"></i>Edit Data Mahasiswa');
+        $('#breadcrumbLabel').text('Edit Data');
+        $('#btnSubmit').html('<i class="bi bi-save me-2"></i>Update Data');
+        $('#editId').val(editId);
+
+        // Ambil data mahasiswa yang akan diedit dari API
+        $.ajax({
+          url: `/api/mahasiswa/${editId}`,
+          method: 'GET',
+          success: function (response) {
+            if (response.success) {
+              const m = response.data;  // Objek data mahasiswa
+
+              // Isi form dengan data yang ada
+              $('#nama').val(m.nama);
+              $('#nim').val(m.nim);
+              $('#jurusan').val(m.jurusan);
+              $('#ipk').val(m.ipk);
+              $('#email').val(m.email);
+              $('#status').val(m.status);
+            }
+          },
+          error: function () {
+            tampilkanAlert('danger', 'Gagal mengambil data untuk diedit!');
+          }
+        });
+      }
+
+      // ====================================================
+      // EVENT: Submit Form (Tambah atau Update)
+      // Ditangkap oleh jQuery dengan .submit()
+      // ====================================================
+      $('#mahasiswaForm').submit(function (e) {
+        e.preventDefault();  // Cegah reload halaman
+
+        // Validasi Bootstrap: cek apakah form valid
+        if (!this.checkValidity()) {
+          $(this).addClass('was-validated');  // Tampilkan pesan error Bootstrap
+          return;
+        }
+
+        // Kumpulkan data dari form menjadi objek JSON
+        const formData = {
+          nama:    $('#nama').val().trim(),
+          nim:     $('#nim').val().trim(),
+          jurusan: $('#jurusan').val(),
+          ipk:     $('#ipk').val(),
+          email:   $('#email').val().trim(),
+          status:  $('#status').val()
+        };
+
+        const id = $('#editId').val();  // Cek apakah mode edit atau tambah
+
+        // Tentukan method dan URL berdasarkan mode
+        const method = id ? 'PUT' : 'POST';
+        const url    = id ? `/api/mahasiswa/${id}` : '/api/mahasiswa';
+
+        // Kirim data ke API menggunakan jQuery AJAX
+        $.ajax({
+          url:         url,
+          method:      method,
+          contentType: 'application/json',
+          data:        JSON.stringify(formData),  // Konversi ke JSON string
+          success: function (response) {
+            if (response.success) {
+              tampilkanAlert('success', response.message);
+              if (!id) resetForm();  // Reset form jika mode Tambah
+            }
+          },
+          error: function (xhr) {
+            const pesan = xhr.responseJSON ? xhr.responseJSON.message : 'Terjadi kesalahan!';
+            tampilkanAlert('danger', pesan);
+          }
+        });
+      });
+
+    }); // end document.ready
+
+    // ======================================================
+    // FUNGSI: Reset form ke kondisi awal
+    // ======================================================
+    function resetForm() {
+      $('#mahasiswaForm')[0].reset();                   // Reset semua input
+      $('#mahasiswaForm').removeClass('was-validated'); // Hapus tampilan validasi
+      $('#editId').val('');                             // Kosongkan ID edit
+    }
+
+    // ======================================================
+    // FUNGSI: Tampilkan alert notifikasi
+    // type: 'success' atau 'danger'
+    // ======================================================
+    function tampilkanAlert(type, pesan) {
+      const icon  = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+      const alert = `<div class="alert alert-${type} d-flex align-items-center">
+                       <i class="bi ${icon} me-2"></i>${pesan}
+                     </div>`;
+      $('#alertBox').html(alert).removeClass('d-none');
+
+      // Sembunyikan alert otomatis setelah 4 detik
+      setTimeout(() => $('#alertBox').addClass('d-none'), 4000);
+
+      // Scroll ke atas untuk memperlihatkan alert
+      $('html, body').animate({ scrollTop: 0 }, 300);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "nama": "Budi Santoso",
+    "nim": "2021001",
+    "jurusan": "Teknik Informatika",
+    "ipk": "3.75",
+    "email": "budi.santoso@mahasiswa.ac.id",
+    "status": "Aktif"
+  },
+  {
+    "id": "2",
+    "nama": "Siti Rahayu",
+    "nim": "2021002",
+    "jurusan": "Sistem Informasi",
+    "ipk": "3.90",
+    "email": "siti.rahayu@mahasiswa.ac.id",
+    "status": "Aktif"
+  },
+  {
+    "id": "3",
+    "nama": "Ahmad Fauzi",
+    "nim": "2021003",
+    "jurusan": "Teknik Komputer",
+    "ipk": "3.55",
+    "email": "ahmad.fauzi@mahasiswa.ac.id",
+    "status": "Aktif"
+  },
+  {
+    "id": "4",
+    "nama": "Dewi Lestari",
+    "nim": "2021004",
+    "jurusan": "Teknik Informatika",
+    "ipk": "3.80",
+    "email": "dewi.lestari@mahasiswa.ac.id",
+    "status": "Cuti"
+  },
+  {
+    "id": "5",
+    "nama": "Rizky Pratama",
+    "nim": "2021005",
+    "jurusan": "Sistem Informasi",
+    "ipk": "3.65",
+    "email": "rizky.pratama@mahasiswa.ac.id",
+    "status": "Aktif"
+  }
+]

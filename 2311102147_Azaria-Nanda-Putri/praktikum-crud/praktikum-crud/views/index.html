@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Sistem Data Mahasiswa</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"/>
+  <!-- Custom CSS -->
+  <link href="/css/style.css" rel="stylesheet"/>
+
+  <style>
+    .identity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(8px);
+      border-radius: 50px;
+      padding: 10px 22px;
+      margin-top: 20px;
+      font-size: 0.95rem;
+    }
+    .identity-badge .divider {
+      width: 1px;
+      height: 18px;
+      background: rgba(255,255,255,0.4);
+    }
+    .identity-badge .nim-label {
+      font-size: 0.75rem;
+      opacity: 0.75;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR - Navigasi utama aplikasi
+  ====================================================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">
+        <i class="bi bi-mortarboard-fill me-2"></i>SiMahasiswa
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/"><i class="bi bi-house me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/form"><i class="bi bi-person-plus me-1"></i>Tambah Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tabel"><i class="bi bi-table me-1"></i>Data Mahasiswa</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =====================================================
+       HERO SECTION - Banner utama dashboard
+  ====================================================== -->
+  <div class="hero-section bg-primary text-white py-5">
+    <div class="container text-center">
+      <h1 class="display-4 fw-bold">
+        <i class="bi bi-mortarboard-fill me-3"></i>Sistem Informasi Mahasiswa
+      </h1>
+      <p class="lead mt-3">Kelola data mahasiswa dengan mudah, cepat, dan efisien</p>
+
+      <!-- ✅ Badge Identitas Mahasiswa -->
+      <div class="d-flex justify-content-center">
+        <div class="identity-badge text-white">
+          <i class="bi bi-person-badge-fill fs-5"></i>
+          <div class="text-start">
+            <div class="nim-label">Nama</div>
+            <div class="fw-semibold">Azaria Nanda Putri</div>
+          </div>
+          <div class="divider"></div>
+          <div class="text-start">
+            <div class="nim-label">NIM</div>
+            <div class="fw-semibold">2311102147</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <a href="/form" class="btn btn-light btn-lg me-3 px-4">
+          <i class="bi bi-person-plus me-2"></i>Tambah Mahasiswa
+        </a>
+        <a href="/tabel" class="btn btn-outline-light btn-lg px-4">
+          <i class="bi bi-table me-2"></i>Lihat Data
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       STATS CARDS - Kartu statistik ringkasan data
+  ====================================================== -->
+  <div class="container my-5">
+    <div class="row g-4" id="statsCards">
+      <!-- Kartu Total Mahasiswa -->
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100 card-stat">
+          <div class="card-body text-center p-4">
+            <div class="stat-icon bg-primary-subtle rounded-circle mx-auto mb-3">
+              <i class="bi bi-people-fill text-primary fs-2"></i>
+            </div>
+            <h2 class="fw-bold text-primary" id="totalMahasiswa">-</h2>
+            <p class="text-muted mb-0">Total Mahasiswa</p>
+          </div>
+        </div>
+      </div>
+      <!-- Kartu Mahasiswa Aktif -->
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100 card-stat">
+          <div class="card-body text-center p-4">
+            <div class="stat-icon bg-success-subtle rounded-circle mx-auto mb-3">
+              <i class="bi bi-person-check-fill text-success fs-2"></i>
+            </div>
+            <h2 class="fw-bold text-success" id="totalAktif">-</h2>
+            <p class="text-muted mb-0">Mahasiswa Aktif</p>
+          </div>
+        </div>
+      </div>
+      <!-- Kartu Jurusan -->
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100 card-stat">
+          <div class="card-body text-center p-4">
+            <div class="stat-icon bg-warning-subtle rounded-circle mx-auto mb-3">
+              <i class="bi bi-building text-warning fs-2"></i>
+            </div>
+            <h2 class="fw-bold text-warning" id="totalJurusan">-</h2>
+            <p class="text-muted mb-0">Jurusan</p>
+          </div>
+        </div>
+      </div>
+      <!-- Kartu Rata-rata IPK -->
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100 card-stat">
+          <div class="card-body text-center p-4">
+            <div class="stat-icon bg-info-subtle rounded-circle mx-auto mb-3">
+              <i class="bi bi-star-fill text-info fs-2"></i>
+            </div>
+            <h2 class="fw-bold text-info" id="rataIpk">-</h2>
+            <p class="text-muted mb-0">Rata-rata IPK</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================
+         INFO SECTION - Panduan penggunaan aplikasi
+    ==================================================== -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <h4 class="fw-bold mb-4"><i class="bi bi-info-circle me-2 text-primary"></i>Panduan Penggunaan</h4>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 bg-light h-100">
+          <div class="card-body p-4">
+            <i class="bi bi-1-circle-fill text-primary fs-4 mb-3"></i>
+            <h5 class="fw-bold">Tambah Data</h5>
+            <p class="text-muted">Klik menu "Tambah Data" untuk mengisi form dan menambahkan mahasiswa baru ke sistem.</p>
+            <a href="/form" class="btn btn-sm btn-primary">Ke Form →</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 bg-light h-100">
+          <div class="card-body p-4">
+            <i class="bi bi-2-circle-fill text-success fs-4 mb-3"></i>
+            <h5 class="fw-bold">Kelola Data</h5>
+            <p class="text-muted">Klik menu "Data Mahasiswa" untuk melihat, mencari, mengedit, atau menghapus data.</p>
+            <a href="/tabel" class="btn btn-sm btn-success">Ke Tabel →</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 bg-light h-100">
+          <div class="card-body p-4">
+            <i class="bi bi-3-circle-fill text-info fs-4 mb-3"></i>
+            <h5 class="fw-bold">Teknologi</h5>
+            <p class="text-muted">Dibangun dengan Node.js, Express, Bootstrap 5, jQuery, dan DataTables untuk CRUD yang efisien.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">© 2024 Sistem Informasi Mahasiswa | Tugas Praktikum Web</p>
+      <small class="text-muted">Node.js + Express + Bootstrap 5 + jQuery + DataTables</small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url: '/api/mahasiswa',
+        method: 'GET',
+        success: function (response) {
+          const data = response.data;
+
+          const totalMahasiswa = data.length;
+          const totalAktif     = data.filter(m => m.status === 'Aktif').length;
+          const jurusanUnik    = [...new Set(data.map(m => m.jurusan))].length;
+          const rataIpk        = (data.reduce((sum, m) => sum + parseFloat(m.ipk), 0) / totalMahasiswa).toFixed(2);
+
+          $('#totalMahasiswa').text(totalMahasiswa);
+          $('#totalAktif').text(totalAktif);
+          $('#totalJurusan').text(jurusanUnik);
+          $('#rataIpk').text(rataIpk);
+        },
+        error: function () {
+          console.log('Gagal mengambil statistik');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+/* ============================================================
+   style.css - Custom CSS untuk Aplikasi CRUD Mahasiswa
+   Melengkapi Bootstrap 5 dengan styling tambahan
+   ============================================================ */
+
+/* Import font Google: Poppins untuk judul, Inter untuk body */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* Root variables: warna dan font utama */
+:root {
+  --font-body:    'Inter', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+body {
+  font-family: var(--font-body);
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar-brand {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   HERO SECTION (Dashboard)
+   Gradient biru dan dekorasi lingkaran
+   ============================================================ */
+.hero-section {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 60%, #084298 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+
+/* Dekorasi lingkaran transparan di hero */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  top: -100px;
+  right: -100px;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  bottom: -50px;
+  left: 80px;
+}
+
+/* ============================================================
+   STAT CARDS (Dashboard)
+   ============================================================ */
+.card-stat {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px !important;
+}
+
+.card-stat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+/* Icon bulat di dalam stat card */
+.stat-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* ============================================================
+   CARD (General)
+   ============================================================ */
+.card {
+  border-radius: 12px;
+}
+
+.card-header {
+  border-radius: 12px 12px 0 0 !important;
+}
+
+/* ============================================================
+   FORM STYLES
+   ============================================================ */
+.form-control:focus,
+.form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+/* ============================================================
+   DATATABLES CUSTOM STYLES
+   Override beberapa style default DataTables
+   ============================================================ */
+
+/* Header tabel: ukuran font seragam */
+#tabelMahasiswa thead th {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Hover baris tabel */
+#tabelMahasiswa tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.04);
+}
+
+/* Tombol aksi: ukuran seragam */
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+/* ============================================================
+   BADGE STYLES
+   ============================================================ */
+.badge {
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   LOADING STATE
+   Animasi loading saat data sedang diambil
+   ============================================================ */
+.dataTables_processing {
+  background: rgba(255,255,255,0.9) !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 8px !important;
+  color: #0d6efd !important;
+  font-weight: 500 !important;
+  padding: 12px 24px !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   Penyesuaian untuk layar kecil (mobile)
+   ============================================================ */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 50px 0;
+  }
+
+  .hero-section h1 {
+    font-size: 1.8rem;
+  }
+
+  .card-body.p-4 {
+    padding: 1.25rem !important;
+  }
+}
+
+/* ============================================================
+   ALERT ANIMATION
+   ============================================================ */
+.alert {
+  border-radius: 10px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  font-size: 0.875rem;
+}

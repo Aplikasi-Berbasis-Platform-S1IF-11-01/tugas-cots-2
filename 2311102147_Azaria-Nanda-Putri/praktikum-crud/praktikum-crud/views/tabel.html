@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Mahasiswa - Sistem Informasi Mahasiswa</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"/>
+
+  <!-- =====================================================
+       DataTables CSS - Plugin jQuery untuk tabel interaktif
+       (Wajib sesuai ketentuan tugas)
+  ====================================================== -->
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+  <!-- Responsive DataTables -->
+  <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet"/>
+
+  <!-- Custom CSS -->
+  <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR
+  ====================================================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">
+        <i class="bi bi-mortarboard-fill me-2"></i>SiMahasiswa
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="bi bi-house me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/form"><i class="bi bi-person-plus me-1"></i>Tambah Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/tabel"><i class="bi bi-table me-1"></i>Data Mahasiswa</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div class="bg-light border-bottom py-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+          <li class="breadcrumb-item active">Data Mahasiswa</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       MAIN CONTENT - Tabel Data Mahasiswa
+  ====================================================== -->
+  <div class="container my-5">
+
+    <!-- Alert Notifikasi -->
+    <div id="alertBox" class="alert d-none mb-4" role="alert"></div>
+
+    <!-- Card Tabel -->
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+        <h5 class="mb-0 fw-bold">
+          <i class="bi bi-table me-2 text-primary"></i>Daftar Data Mahasiswa
+        </h5>
+        <a href="/form" class="btn btn-primary btn-sm px-3">
+          <i class="bi bi-plus-lg me-1"></i>Tambah Baru
+        </a>
+      </div>
+      <div class="card-body p-4">
+
+        <!-- ===============================================
+             TABEL DATA MAHASISWA
+             id="tabelMahasiswa" → diinisialisasi DataTables
+        ================================================ -->
+        <div class="table-responsive">
+          <table id="tabelMahasiswa" class="table table-striped table-hover dt-responsive nowrap w-100">
+            <thead class="table-dark">
+              <tr>
+                <th>No</th>
+                <th>NIM</th>
+                <th>Nama</th>
+                <th>Jurusan</th>
+                <th>IPK</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <!-- tbody diisi oleh DataTables secara otomatis dari JSON API -->
+            <tbody></tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       MODAL KONFIRMASI HAPUS
+       Muncul sebelum data benar-benar dihapus
+  ====================================================== -->
+  <div class="modal fade" id="modalHapus" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Konfirmasi Hapus
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <i class="bi bi-trash3-fill text-danger fs-1 mb-3 d-block"></i>
+          <p class="mb-1">Apakah Anda yakin ingin menghapus data:</p>
+          <strong id="namaHapus" class="fs-5 text-danger"></strong>
+          <p class="text-muted mt-2 small">Data yang dihapus tidak dapat dikembalikan.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+            <i class="bi bi-x-lg me-1"></i>Batal
+          </button>
+          <button type="button" class="btn btn-danger px-4" id="btnKonfirmasiHapus">
+            <i class="bi bi-trash3 me-1"></i>Ya, Hapus!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">© 2024 Sistem Informasi Mahasiswa | Tugas Praktikum Web</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery (WAJIB dimuat sebelum DataTables) -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  <!-- =====================================================
+       DataTables JS - jQuery Plugin (Wajib sesuai tugas)
+  ====================================================== -->
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <!-- Responsive extension DataTables -->
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+  <script>
+    // ======================================================
+    // Script Tabel: Inisialisasi DataTables + CRUD dengan AJAX
+    // ======================================================
+
+    // Variabel global untuk menyimpan ID yang akan dihapus
+    let idAkanDihapus = null;
+
+    $(document).ready(function () {
+
+      // ====================================================
+      // INISIALISASI DATATABLES
+      // DataTables adalah jQuery plugin untuk tabel interaktif
+      // Fitur: paginasi, pencarian, pengurutan otomatis
+      // ====================================================
+      const table = $('#tabelMahasiswa').DataTable({
+
+        // Ambil data dari API endpoint (format JSON)
+        ajax: {
+          url: '/api/mahasiswa',   // URL API yang mengembalikan JSON
+          type: 'GET',
+          dataSrc: 'data'          // DataTables akan pakai properti "data" dari respons JSON
+        },
+
+        // Definisikan kolom-kolom tabel
+        // "data" merujuk ke nama properti dalam objek JSON
+        columns: [
+          {
+            // Kolom No: Nomor urut otomatis
+            data: null,
+            render: function (data, type, row, meta) {
+              return meta.row + 1;  // meta.row = index baris (mulai 0)
+            }
+          },
+          { data: 'nim' },
+          { data: 'nama' },
+          { data: 'jurusan' },
+          {
+            // Kolom IPK: Tampilkan badge warna berdasarkan nilai
+            data: 'ipk',
+            render: function (data) {
+              const ipk   = parseFloat(data);
+              let warna   = 'success';
+              if (ipk < 3.0) warna = 'danger';
+              else if (ipk < 3.5) warna = 'warning';
+              return `<span class="badge bg-${warna}">${ipk.toFixed(2)}</span>`;
+            }
+          },
+          { data: 'email' },
+          {
+            // Kolom Status: Tampilkan badge dengan warna berbeda
+            data: 'status',
+            render: function (data) {
+              const warna = {
+                'Aktif':    'success',
+                'Cuti':     'warning',
+                'Lulus':    'info',
+                'Drop Out': 'danger'
+              };
+              return `<span class="badge bg-${warna[data] || 'secondary'}">${data}</span>`;
+            }
+          },
+          {
+            // Kolom Aksi: Tombol Edit dan Hapus
+            data: 'id',
+            orderable: false,   // Kolom aksi tidak bisa di-sort
+            render: function (id, type, row) {
+              return `
+                <div class="d-flex gap-1 justify-content-center">
+                  <a href="/form?edit=${id}" class="btn btn-sm btn-warning" title="Edit">
+                    <i class="bi bi-pencil-fill"></i>
+                  </a>
+                  <button class="btn btn-sm btn-danger btn-hapus"
+                          data-id="${id}"
+                          data-nama="${row.nama}"
+                          title="Hapus">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </div>
+              `;
+            }
+          }
+        ],
+
+        // Pengaturan bahasa (Indonesiakan DataTables)
+        language: {
+          search:           'Cari:',
+          lengthMenu:       'Tampilkan _MENU_ data',
+          info:             'Menampilkan _START_ - _END_ dari _TOTAL_ data',
+          infoEmpty:        'Tidak ada data yang tersedia',
+          infoFiltered:     '(difilter dari _MAX_ total data)',
+          zeroRecords:      'Tidak ada data yang cocok',
+          paginate: {
+            first:    'Pertama',
+            last:     'Terakhir',
+            next:     'Berikutnya',
+            previous: 'Sebelumnya'
+          },
+          loadingRecords:   'Memuat data...',
+          processing:       'Memproses...'
+        },
+
+        // Tampilkan pilihan jumlah data per halaman
+        lengthMenu: [5, 10, 25, 50],
+        pageLength: 10,
+
+        // Tampilkan loading indicator
+        processing: true,
+
+        // Responsive untuk layar kecil
+        responsive: true,
+
+        // Urutan default: berdasarkan nama (kolom ke-2, index 2)
+        order: [[2, 'asc']]
+      });
+
+      // ====================================================
+      // EVENT: Klik tombol Hapus
+      // Menggunakan event delegation karena tombol dibuat dinamis
+      // ====================================================
+      $('#tabelMahasiswa').on('click', '.btn-hapus', function () {
+        // Ambil data dari attribute data-id dan data-nama
+        idAkanDihapus = $(this).data('id');
+        const nama    = $(this).data('nama');
+
+        // Tampilkan nama di modal konfirmasi
+        $('#namaHapus').text(nama);
+
+        // Tampilkan modal konfirmasi Bootstrap
+        const modal = new bootstrap.Modal(document.getElementById('modalHapus'));
+        modal.show();
+      });
+
+      // ====================================================
+      // EVENT: Klik tombol konfirmasi hapus di modal
+      // Baru proses hapus setelah user konfirmasi
+      // ====================================================
+      $('#btnKonfirmasiHapus').click(function () {
+        if (!idAkanDihapus) return;
+
+        // Kirim request DELETE ke API menggunakan jQuery AJAX
+        $.ajax({
+          url:    `/api/mahasiswa/${idAkanDihapus}`,
+          method: 'DELETE',
+          success: function (response) {
+            // Tutup modal
+            bootstrap.Modal.getInstance(document.getElementById('modalHapus')).hide();
+
+            if (response.success) {
+              tampilkanAlert('success', response.message);
+
+              // Reload DataTables untuk memperbarui tampilan
+              // Tanpa reload seluruh halaman (AJAX)
+              table.ajax.reload(null, false);
+            }
+          },
+          error: function (xhr) {
+            bootstrap.Modal.getInstance(document.getElementById('modalHapus')).hide();
+            const pesan = xhr.responseJSON ? xhr.responseJSON.message : 'Gagal menghapus data!';
+            tampilkanAlert('danger', pesan);
+          }
+        });
+
+        idAkanDihapus = null;  // Reset ID setelah diproses
+      });
+
+    }); // end document.ready
+
+    // ======================================================
+    // FUNGSI: Tampilkan alert notifikasi
+    // ======================================================
+    function tampilkanAlert(type, pesan) {
+      const icon  = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+      const alert = `<div class="alert alert-${type} alert-dismissible d-flex align-items-center">
+                       <i class="bi ${icon} me-2"></i>${pesan}
+                       <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                     </div>`;
+      $('#alertBox').html(alert).removeClass('d-none');
+      $('html, body').animate({ scrollTop: 0 }, 300);
+    }
+  </script>
+</body>
+</html>
