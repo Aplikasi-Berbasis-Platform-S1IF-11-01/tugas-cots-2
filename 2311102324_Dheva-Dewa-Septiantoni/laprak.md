@@ -84,6 +84,7 @@ A. Spesifikasi Teknis Pengembangan (Wajib):
 ### Struktur Program
 
 ```
+├── assets/                 ← Folder untuk menyimpan aset keperluan web dan laprak
 ├── node_modules/           ← Library/Dependencies Node.js (Express, EJS, dll)
 ├── public/                 ← Folder Template Engine (Tampilan Antarmuka)
 │   ├── data.html           ← Halaman Form Perubahan Data (Update)
