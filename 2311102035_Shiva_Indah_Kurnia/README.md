@@ -826,11 +826,11 @@ File ini berfungsi sebagai antarmuka registrasi (Create) yang memungkinkan pengg
 
 1. Tampilan Awal Halaman
 ![](assets/1.png)
-2. Halaman Form Input Mahasiswa
+2. Halaman Form Input Data Pasien
 ![](assets/2.png)
-3. Halaman Data Mahasiswa
+3. Halaman Data Pasien
 ![](assets/3.png)
-4. Halaman Edit Data Mahasiswa
+4. Halaman Edit Data Pasien
 ![](assets/4.png)
 5. Hasil Update Data
 ![](assets/5.png)
