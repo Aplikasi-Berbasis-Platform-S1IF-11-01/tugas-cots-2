@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 id="formTitle">Tambah Data Mahasiswa</h2>
+        <form id="mahasiswaForm">
+            <input type="hidden" id="mahasiswaId">
+            <div class="mb-3">
+                <label class="form-label">NIM</label>
+                <input type="text" class="form-control" id="nim" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nama</label>
+                <input type="text" class="form-control" id="nama" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Jurusan</label>
+                <input type="text" class="form-control" id="jurusan" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <a href="data.html" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (id) {
+                $('#formTitle').text('Edit Data Mahasiswa');
+                $('#mahasiswaId').val(id);
+                $.get('/api/mahasiswa/' + id, function(data) {
+                    $('#nim').val(data.nim);
+                    $('#nama').val(data.nama);
+                    $('#jurusan').val(data.jurusan);
+                });
+            }
+
+            $('#mahasiswaForm').submit(function(e) {
+                e.preventDefault();
+                
+                const dataId = $('#mahasiswaId').val();
+                const formData = {
+                    nim: $('#nim').val(),
+                    nama: $('#nama').val(),
+                    jurusan: $('#jurusan').val()
+                };
+
+                if (dataId) {
+                    $.ajax({
+                        url: '/api/mahasiswa/' + dataId,
+                        type: 'PUT',
+                        data: formData,
+                        success: function(response) {
+                            alert(response.message);
+                            window.location.href = 'data.html';
+                        }
+                    });
+                } else {
+                    $.post('/api/mahasiswa', formData, function(response) {
+                        alert(response.message);
+                        window.location.href = 'data.html';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
