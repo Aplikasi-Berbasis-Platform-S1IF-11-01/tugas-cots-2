@@ -278,25 +278,23 @@ File form.ejs di atas merupakan halaman antarmuka formulir dinamis yang berfungs
 ## 3. Screenshot Website
 
 1. Tampilan Awal Halaman
-![](assets/1.PNG)
+![](assets/1.png)
 2. Halaman Form Input Mahasiswa
-![](assets/2.PNG)
+![](assets/2.png)
 3. Halaman Data Mahasiswa
-![](assets/3.PNG)
+![](assets/3.png)
 4. Halaman Edit Data Mahasiswa
-![](assets/4.PNG)
+![](assets/4.png)
 5. Hasil Update Data
-![](assets/5.PNG)
+![](assets/5.png)
 6. Proses Hapus Data
-![](assets/6.PNG)
-![](assets/7.PNG)
+![](assets/6.png)
+![](assets/7.png)
 ---
 
 ## 4. Kesimpulan
 
-Pada tugas COTS 2 ini berhasil dibuat aplikasi web sederhana bertema Sistem Data Mahasiswa menggunakan **Express JS**, **Bootstrap**, **jQuery**, dan **DataTables**. Aplikasi ini sudah memenuhi kebutuhan praktikum karena memiliki halaman form, tabel data, serta fitur CRUD lengkap, dengan data ditampilkan dalam format JSON melalui API.
-
-Express JS membantu membuat backend lebih terstruktur, sementara Bootstrap, jQuery, dan DataTables membuat tampilan lebih responsif dan interaktif. Walaupun masih menggunakan file JSON sebagai penyimpanan, aplikasi ini sudah cukup menunjukkan konsep dasar CRUD berbasis client-server.
+pada tugas cots2 ini adalah aplikasi CRUD (Create, Read, Update, Delete) berbasis Node.js yang menggunakan Express.js sebagai server dan EJS sebagai pengelola tampilan. Data dikelola secara dinamis dalam format JSON agar bisa ditampilkan secara otomatis oleh plugin DataTables, sementara Bootstrap 5 memastikan antarmuka formulir dan tabel terlihat modern serta responsif. Semua fungsi mulai dari menambah, mengedit, hingga menghapus data mahasiswa sudah terintegrasi secara rapi antara sisi backend dan frontend.
 ---
 
 ## 5. Referensi
@@ -309,5 +307,4 @@ Express JS membantu membuat backend lebih terstruktur, sementara Bootstrap, jQue
 6. https://ejs.co
 
 ## 6. Link Video Presentasi
-[https://drive.google.com/file/d/10lFjz_mV8Ch9Q_6vXwfb9Qz64nvECWdJ/view?usp=sharing]
 
