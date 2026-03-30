@@ -10,8 +10,8 @@
   <br />
   <h3>Disusun Oleh :</h3>
   <p>
-    <strong>Yoga Hogantara</strong><br>
-    <strong>2311102153</strong><br>
+    <strong>Mohammad Alfan Naraya</strong><br>
+    <strong>2311102170</strong><br>
     <strong>S1 IF-11-01</strong>
   </p>
   <br />
@@ -56,30 +56,17 @@
 
 ```json
 {
-  "name": "tugas2",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "body-parser": "^2.2.2",
     "ejs": "^5.0.1",
     "express": "^5.2.1"
   }
 }
-
 ```
 
 **Penjelasan `package.json`**
 
-file `package.json` untuk sebuah proyek Node.js bernama tugas2 dengan versi 1.0.0, yang berfungsi sebagai “identitas” sekaligus pengatur dependensi proyek. Bagian "main": "index.js" menunjukkan file utama yang akan dijalankan, sedangkan "scripts" berisi perintah yang bisa dijalankan lewat terminal, meskipun di sini hanya ada script test sederhana yang belum dipakai. Proyek ini menggunakan sistem modul "commonjs" (standar Node.js klasik), dan memiliki beberapa library penting di "dependencies" seperti express untuk membuat server web, ejs sebagai template engine agar bisa menampilkan halaman dinamis, serta body-parser untuk membaca data dari request (misalnya dari form).
-
+file package.json yang berfungsi sebagai daftar "bahan baku" atau library eksternal untuk menjalankan aplikasi web. Express bertugas sebagai kerangka kerja utama untuk membangun server dan mengatur rute halaman, sementara EJS berfungsi sebagai mesin templat yang menyisipkan data dinamis ke dalam kode HTML agar bisa tampil di browser. Terakhir, Body-parser berperan sebagai perantara yang mengekstrak data dari input formulir agar bisa diolah oleh server. Ketiga library ini bekerja sama untuk memastikan alur data dari form hingga ke tabel JSON berjalan sesuai spesifikasi praktikum.
 ---
 
 ### B. Backend `app.js`
@@ -87,87 +74,58 @@ file `package.json` untuk sebuah proyek Node.js bernama tugas2 dengan versi 1.0.
 ```javascript
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs'); 
-const path = require('path');
 const app = express();
 const PORT = 3000;
-
-const DATA_FILE = path.join(__dirname, 'data', 'data.json');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const readData = () => {
-    try {
-        const data = fs.readFileSync(DATA_FILE, 'utf8');
-        return JSON.parse(data);
-    } catch (err) { return []; }
-};
+// Database Sementara (Array)
+let dataMahasiswa = [
+    { id: 1, nama: "Mohammad Alfan", nim: "2311102170", prodi: "S1 Informatika" }
+];
 
-const writeData = (data) => {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-};
-
-// ROUTES
+// --- ROUTES ---
 app.get('/', (req, res) => res.render('index'));
-app.get('/form', (req, res) => res.render('form'));
-app.get('/data', (req, res) => res.render('data'));
+
+// Endpoint API JSON (Syarat Wajib Poin 5)
+app.get('/api/mahasiswa', (req, res) => {
+    res.json({ data: dataMahasiswa });
+});
+
+app.get('/tambah', (req, res) => res.render('form', { mhs: null }));
+
+app.post('/api/mahasiswa', (req, res) => {
+    dataMahasiswa.push({ id: Date.now(), ...req.body });
+    res.redirect('/');
+});
+
 app.get('/edit/:id', (req, res) => {
-    const students = readData();
-    const student = students.find(s => s.id == req.params.id);
-    student ? res.render('edit', { student }) : res.redirect('/data');
+    const mhs = dataMahasiswa.find(d => d.id == req.params.id);
+    res.render('form', { mhs });
 });
 
-// API
-app.get('/api/students', (req, res) => res.json({ data: readData() }));
-app.post('/api/students', (req, res) => {
-    let students = readData();
-    const { id, nama, nim, jurusan } = req.body;
-    if (id) {
-        const index = students.findIndex(s => s.id == id);
-        if (index !== -1) students[index] = { id: Number(id), nama, nim, jurusan };
-    } else {
-        students.push({ id: Date.now(), nama, nim, jurusan });
-    }
-    writeData(students); 
-    res.json({ message: "Berhasil!" });
-});
-app.delete('/api/students/:id', (req, res) => {
-    let students = readData();
-    students = students.filter(s => s.id != req.params.id);
-    writeData(students); 
-    res.json({ message: "Dihapus!" });
+app.post('/api/mahasiswa/update/:id', (req, res) => {
+    const index = dataMahasiswa.findIndex(d => d.id == req.params.id);
+    if (index !== -1) dataMahasiswa[index] = { id: parseInt(req.params.id), ...req.body };
+    res.redirect('/');
 });
 
-app.listen(PORT, () => {
-    console.log(`URL: http://localhost:${PORT}`);
-  
+app.get('/api/mahasiswa/delete/:id', (req, res) => {
+    dataMahasiswa = dataMahasiswa.filter(d => d.id != req.params.id);
+    res.redirect('/');
 });
+
+app.listen(PORT, () => console.log(`Server running: http://localhost:${PORT}`));
 ```
 
 **Penjelasan `app.js`**
 
-File `app.js` merupakan inti dari aplikasi karena di dalamnya terdapat konfigurasi server Express, middleware, fungsi pengelolaan data JSON, routing halaman, serta API untuk operasi CRUD data mahasiswa.
+Kode ini berfungsi sebagai backend utama yang mengelola data mahasiswa menggunakan framework Express.js. Inti kodenya mengatur sistem CRUD (Tambah, Tampil, Ubah, Hapus) dengan menyimpan data dalam variabel array sebagai pengganti database.
 
-Pada bagian awal, dilakukan import library express, body-parser, fs, dan path. Library express digunakan untuk membuat server, body-parser untuk membaca data dari request (baik form maupun JSON), fs untuk membaca dan menulis file sebagai penyimpanan data, serta path untuk mengatur lokasi file secara aman.
-
-`express.static('public')` digunakan agar file statis seperti CSS dan gambar bisa diakses dari folder public.
-`bodyParser.urlencoded({ extended: true })` membaca data dari form HTML.
-`bodyParser.json()` membaca data dalam format JSON dari request.
-
-EJS diaktifkan sebagai template engine menggunakan app.set('view engine', 'ejs'), sehingga server dapat merender halaman dinamis seperti index, form, data, dan edit dari folder views.
-
-Fungsi `readData()` digunakan untuk membaca isi file JSON dan mengubahnya menjadi object JavaScript, serta akan mengembalikan array kosong jika terjadi error (misalnya file belum ada). Fungsi writeData() digunakan untuk menyimpan atau memperbarui data ke dalam file JSON dengan format yang rapi.
-
-Pada bagian routing, terdapat beberapa endpoint untuk menampilkan halaman seperti / (halaman utama), /form (form input), /data (menampilkan data), dan /edit/:id (mengedit data berdasarkan id). Jika data tidak ditemukan, maka akan diarahkan kembali ke halaman data.
-
-API untuk operasi CRUD:
-
-`GET /api/students`  mengambil seluruh data mahasiswa.
-`POST /api/students` menambahkan data baru atau mengedit data jika id sudah ada.
-`DELETE /api/students/:id` menghapus data berdasarkan id.
+Secara teknis, kode ini bertugas menyediakan API JSON pada rute /api/mahasiswa agar bisa dibaca oleh plugin DataTables, serta memproses input dari formulir menggunakan Body-parser. Setiap ada perubahan data (seperti menambah atau menghapus), server akan memperbarui isi array dan mengarahkan kembali pengguna ke halaman utama secara otomatis.
 
 Terakhir, server dijalankan pada port 3000 dan dapat diakses melalui http://localhost:3000.
 
@@ -202,278 +160,145 @@ File `data.json` berfungsi sebagai media penyimpanan data sederhana. awalnya fil
 
 ---
 
-### D. Header `views/partials/header.ejs`
+### D. Halaman Beranda `views/index.ejs`
 
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YHOTA</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <title>Tugas Cots2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <style>
-        body { 
-            background-color: #121212; 
-            color: #f8f9fa !important; 
-            font-family: 'Segoe UI', sans-serif; 
-        }
-
-        .navbar { 
-            border-bottom: 1px solid #333; 
-            background-color: #121212 !important; 
-            padding: 25px 0; 
-        }
-        .navbar-brand { 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            color: #ffffff !important; 
-            font-size: 1.5rem; 
-            text-decoration: none;
-        }
-
-        .nav-custom-group {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-link-custom { 
-            color: #f8f9fa !important; 
-            font-size: 0.8rem; 
-            letter-spacing: 2px; 
-            font-weight: 700; 
-            text-decoration: none;
-            transition: 0.3s;
-            opacity: 0.7;
-        }
-        .nav-link-custom:hover { 
-            opacity: 1; 
-        }
-
-        .main-card { background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 25px; }
-        h1, h2, h3, h4, h5, label { color: #ffffff !important; }
-
-        input, select, .dataTables_filter input { background: #2a2a2a !important; border: 1px solid #444 !important; color: #ffffff !important; }
-        table.dataTable { color: #f8f9fa !important; }
-        .text-muted { color: #888 !important; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .card { border: none; border-radius: 12px; }
+        .navbar { border-bottom: 3px solid #0d6efd; }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="/">YHOTA</a>
-            
-            <div class="nav-custom-group">
-                <a class="nav-link-custom" href="/">HOME</a>
-                <a class="nav-link-custom" href="/data">DATABASE</a>
-                <a class="nav-link-custom" href="/form">ADD NEW</a>
-            </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Sistem Data Mahasiswa</a>
         </div>
     </nav>
-```
 
-**Penjelasan `header.ejs`**
+    <div class="container">
+        <div class="card shadow-sm p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold m-0 text-primary">Daftar Mahasiswa</h4>
+                <a href="/tambah" class="btn btn-primary px-4">+ Tambah Data</a>
+            </div>
+            
+            <div class="table-responsive">
+                <table id="tabelMhs" class="table table-hover align-middle" style="width:100%">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nama Mahasiswa</th>
+                            <th>NIM</th>
+                            <th>Program Studi</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
 
-File `header.ejs` digunakan sebagai bagian atas (header) yang dipakai ulang di setiap halaman. Di dalamnya sudah mencakup struktur awal HTML, bagian `<head>`, pemanggilan CSS seperti Bootstrap dan DataTables, serta navbar untuk navigasi antar halaman. Dengan menggunakan partial seperti ini, penulisan kode jadi lebih rapi karena tidak perlu mengulang header di setiap file. Selain itu, penggunaan `<%= title %>` memungkinkan judul halaman berubah secara otomatis sesuai halaman yang sedang dibuka.
-
----
-
-### E. Footer `views/partials/footer.ejs`
-
-```html
-<footer class="container mt-5 py-4 border-top border-secondary text-center">
-        <p class="text-muted small">Yoga Hogantara 2311102153</p>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#tabelMhs').DataTable({
+                "ajax": "/api/mahasiswa",
+                "columns": [
+                    { "data": "nama" },
+                    { "data": "nim" },
+                    { "data": "prodi" },
+                    { 
+                        "data": "id",
+                        "className": "text-center",
+                        "render": function(data) {
+                            return `
+                                <a href="/edit/${data}" class="btn btn-sm btn-outline-warning me-1">Edit</a>
+                                <a href="/api/mahasiswa/delete/${data}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data ini?')">Hapus</a>
+                            `;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
 </body>
 </html>
 ```
 
-**Penjelasan `footer.ejs`**
-
-File `footer.ejs` merupakan partial untuk bagian bawah setiap halaman. Di dalamnya terdapat elemen `<footer>` yang berisi teks identitas dengan styling sederhana seperti jarak (margin, padding), garis atas, dan posisi teks di tengah agar terlihat rapi. Tulisan di dalamnya menggunakan kelas text-muted dan small sehingga tampil lebih halus dan tidak terlalu mencolok.
-
----
-
-### F. Halaman Beranda `views/index.ejs`
-
-```html
-<%- include('partials/header') %>
-<div class="container text-center py-5">
-    <h1 class="display-4 fw-bold text-white mb-3">Yhota Database anjay</h1>
-    <p class="text-muted lead mb-5">Sistem management mahasiswa Yhota</p>
-    <div class="d-flex justify-content-center gap-3">
-        <a href="/data" class="btn btn-outline-light px-4 py-2">LIHAT DATA</a>
-        <a href="/form" class="btn btn-light px-4 py-2">INPUT BARU</a>
-    </div>
-</div>
-<%- include('partials/footer') %>
-```
-
 **Penjelasan `index.ejs`**
 
-File `index.ejs` berfungsi sebagai halaman utama atau tampilan awal saat aplikasi dibuka. Di halaman ini ditampilkan judul aplikasi, teknologi yang digunakan, identitas mahasiswa, serta tombol navigasi yang mengarah ke halaman form input dan halaman data. Halaman ini dibuat sebagai pengenalan agar pengguna punya gambaran dulu tentang aplikasi sebelum menggunakan fitur-fitur utamanya.
+File index.ejs di atas merupakan halaman antarmuka utama yang berfungsi untuk menampilkan data mahasiswa dalam bentuk tabel dinamis menggunakan kerangka kerja Bootstrap 5. Struktur kodenya mencakup bagian navigasi (navbar) dan kartu visual (card) untuk memberikan tampilan yang rapi, namun inti fungsinya terletak pada penggunaan plugin jQuery DataTables. Melalui skrip di bagian bawah, tabel akan melakukan permintaan data secara asinkron ke rute /api/mahasiswa dan menerima respons dalam format JSON, yang kemudian dipetakan secara otomatis ke dalam kolom nama, NIM, dan program studi. Selain itu, setiap baris data dilengkapi dengan tombol aksi "Edit" dan "Hapus" yang terhubung langsung ke logika backend, sehingga pengguna dapat mengelola data mahasiswa secara interaktif tanpa perlu memuat ulang seluruh halaman secara manual.
 
 ---
 
-### G. Halaman Form Input `views/form.ejs`
+### E. Halaman Form Input `views/form.ejs`
 
 ```html
-<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title><%= mhs ? 'Edit' : 'Tambah' %> Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f6; }
+        .card { border-radius: 15px; border: none; }
+        .form-control:focus { box-shadow: none; border-color: #0d6efd; }
+    </style>
+</head>
+<body class="d-flex align-items-center" style="min-height: 100vh;">
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="main-card shadow-lg p-5">
-                <h3 class="fw-bold mb-4 text-center">ENTRY DATA</h3>
-                <form id="formAction">
-                    <div class="mb-3">
-                        <label class="small text-muted mb-2">NOMOR INDUK MAHASISWA</label>
-                        <input type="text" name="nim" class="form-control" required placeholder="Contoh: 231110XXXX">
-                    </div>
-                    <div class="mb-3">
-                        <label class="small text-muted mb-2">NAMA LENGKAP</label>
-                        <input type="text" name="nama" class="form-control" required placeholder="Masukkan Nama">
-                    </div>
-                    <div class="mb-4">
-                        <label class="small text-muted mb-2">JURUSAN</label>
-                        <input type="text" name="jurusan" class="form-control" required placeholder="Ketik Jurusan (ex: Informatika)">
-                    </div>
-                    <button type="submit" class="btn btn-light w-100 fw-bold py-3 text-dark">SAVE DATA</button>
-                </form>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow-lg p-4">
+                    <h4 class="fw-bold mb-4 text-center"><%= mhs ? 'Update Mahasiswa' : 'Tambah Mahasiswa' %></h4>
+                    <form action="<%= mhs ? '/api/mahasiswa/update/' + mhs.id : '/api/mahasiswa' %>" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label small text-secondary fw-bold">NAMA LENGKAP</label>
+                            <input type="text" name="nama" class="form-control bg-light" value="<%= mhs ? mhs.nama : '' %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-secondary fw-bold">NIM</label>
+                            <input type="text" name="nim" class="form-control bg-light" value="<%= mhs ? mhs.nim : '' %>" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small text-secondary fw-bold">PROGRAM STUDI</label>
+                            <select name="prodi" class="form-select bg-light">
+                                <option value="S1 Informatika" <%= mhs && mhs.prodi == 'S1 Informatika' ? 'selected' : '' %>>S1 Informatika</option>
+                                <option value="S1 Sistem Informasi" <%= mhs && mhs.prodi == 'S1 Sistem Informasi' ? 'selected' : '' %>>S1 Sistem Informasi</option>
+                                <option value="S1 Teknik Telekomunikasi" <%= mhs && mhs.prodi == 'S1 Teknik Telekomunikasi' ? 'selected' : '' %>>S1 Teknik Telekomunikasi</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Simpan Perubahan</button>
+                        <a href="/" class="btn btn-link w-100 mt-2 text-decoration-none text-secondary">Kembali ke Daftar</a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<%- include('partials/footer') %>
-
-<script>
-    $('#formAction').on('submit', function(e) {
-        e.preventDefault();
-        $.ajax({ 
-            url: '/api/students', 
-            type: 'POST', 
-            data: $(this).serialize(), 
-            success: () => { 
-                alert('Data Berhasil Ditambah!'); 
-                window.location.href = '/data'; 
-            } 
-        });
-    });
-</script>
+</body>
+</html>
 ```
 
 **Penjelasan `form.ejs`**
 
-File `form.ejs` menampilkan halaman form untuk menambahkan data mahasiswa yang menggunakan EJS dengan bantuan partial header dan footer agar tampilan lebih konsisten. Di bagian utama terdapat form sederhana dengan tiga input yaitu NIM, nama lengkap, dan jurusan yang wajib diisi, lalu disusun rapi menggunakan Bootstrap agar terlihat lebih modern.
-Saat tombol “SAVE DATA” ditekan, data tidak langsung reload halaman, melainkan dikirim menggunakan jQuery AJAX ke endpoint /api/students dengan metode POST. Jika proses berhasil, akan muncul notifikasi lalu otomatis diarahkan ke halaman data untuk melihat hasil yang sudah ditambahkan.
-
----
-
-### H. Halaman Data `views/data.ejs`
-
-```html
-<%- include('partials/header') %>
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-end mb-4">
-            <div>
-                <h2>DATABASE</h2>
-            </div>
-        </div>
-        <div class="main-card shadow-lg">
-            <table id="myTable" class="table w-100" style="color: #f0ead6;">
-                <thead>
-                    <tr>
-                        <th>NIM</th>
-                        <th>NAMA</th>
-                        <th>JURUSAN</th>
-                        <th>AKSI</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
-    <%- include('partials/footer') %>
-        <script>
-            $(document).ready(function () {
-                const table = $('#myTable').DataTable({
-                    ajax: '/api/students',
-                    columns: [
-                        { data: 'nim' },
-                        { data: 'nama', render: (d) => d.toUpperCase() },
-                        { data: 'jurusan' },
-                        {
-                            data: 'id',
-                            render: (data) => `
-                                <div class="btn-group">
-                                    <a href="/edit/${data}" class="btn btn-sm" style="background:#d4a017; color:#ffffff !important; font-weight:bold; border:none;">EDIT</a>
-                                    <button class="btn btn-sm" style="background:#a30000; color:#ffffff !important; font-weight:bold; border:none;" onclick="hapus(${data})">HAPUS</button>
-                                </div>`
-                        }
-                    ]
-                });
-                window.hapus = (id) => {
-                    if (confirm('Hapus data?')) $.ajax({ url: `/api/students/${id}`, type: 'DELETE', success: () => table.ajax.reload() });
-                };
-            });
-        </script>
-```
-
-**Penjelasan `data.ejs`**
-
-File `data.ejs` menampilkan data mahasiswa dalam bentuk tabel. menggunakan EJS, dengan bantuan partial header dan footer agar tampilan tetap konsisten. Di bagian utama terdapat judul “DATABASE” dan sebuah tabel yang akan menampilkan seluruh data dari file JSON.
-Tabel tersebut menggunakan plugin DataTables sehingga data bisa ditampilkan secara dinamis melalui AJAX dari endpoint /api/students. Kolom yang ditampilkan meliputi NIM, nama (yang otomatis dibuat huruf besar), jurusan, dan aksi. Pada kolom aksi tersedia tombol EDIT untuk mengarah ke halaman edit, serta tombol HAPUS yang akan menghapus data berdasarkan id. Proses hapus dilakukan menggunakan jQuery AJAX dengan method DELETE, dan setelah data berhasil dihapus, tabel akan otomatis diperbarui tanpa perlu reload halaman.
-
----
-
-### I. Halaman Edit `views/edit.ejs`
-
-```html
-<%- include('partials/header') %>
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="main-card shadow-lg p-5" style="border-color: #d4a017;">
-                <h3 class="fw-bold mb-4 text-center" style="color: #d4a017;">EDIT DATA</h3>
-                <form id="formEdit">
-                    <input type="hidden" name="id" value="<%= student.id %>">
-                    <div class="mb-3">
-                        <label class="small text-muted mb-2">NIM</label>
-                        <input type="text" name="nim" class="form-control" value="<%= student.nim %>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="small text-muted mb-2">NAMA</label>
-                        <input type="text" name="nama" class="form-control" value="<%= student.nama %>" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="small text-muted mb-2">JURUSAN</label>
-                        <input type="text" name="jurusan" class="form-control" value="<%student.jurusan%>" required>
-                    </div>
-                    <button type="submit" class="btn w-100 fw-bold py-3" style="background:#d4a017; color:#ffffff !important; border:none;">UPDATE DATA</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<%- include('partials/footer') %>
-<script>
-    $('#formEdit').on('submit', function(e) {
-        e.preventDefault();
-        $.ajax({ url: '/api/students', type: 'POST', data: $(this).serialize(), success: () => { alert('Terupdate!'); window.location.href = '/data'; } });
-    });
-</script>
-```
-
-**Penjelasan `edit.ejs`**
-
-File `edit.ejs` menampilkan halaman edit data mahasiswa.engguna dapat mengubah data melalui input dan dropdown jurusan, lalu menekan tombol “UPDATE DATA”. Saat dikirim, data diproses menggunakan jQuery AJAX ke endpoint /api/students dengan metode POST, dan karena ada id, sistem akan menganggapnya sebagai proses update. Jika berhasil, akan muncul notifikasi dan pengguna diarahkan kembali ke halaman data.
+File form.ejs di atas merupakan halaman antarmuka formulir dinamis yang berfungsi sebagai sarana input sekaligus pembaruan data mahasiswa dengan tampilan modern dari Bootstrap 5. Inti dari kode ini terletak pada penggunaan logika EJS (<%= mhs ? ... %>) yang memungkinkan satu file formulir menjalankan dua peran sekaligus: jika server mengirimkan data mahasiswa, formulir akan otomatis terisi untuk proses Update, namun jika tidak ada data, formulir akan tampil kosong untuk proses Tambah baru. Saat tombol simpan ditekan, data yang dimasukkan ke dalam elemen input akan dikirim ke server melalui metode HTTP POST, yang kemudian akan diproses oleh backend untuk diperbarui atau disimpan ke dalam sistem. Desainnya yang menggunakan card shadow dan pengaturan posisi tengah layar memastikan pengalaman pengguna yang fokus dan bersih saat melakukan manipulasi data.
 
 ---
 
