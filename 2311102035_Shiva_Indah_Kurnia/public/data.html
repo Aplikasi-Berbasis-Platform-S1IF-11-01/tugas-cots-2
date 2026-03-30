@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawfect Petshop Dashboard | Premium Care</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        :root {
+            --primary-color: #1D4E89; 
+            --accent-color: #E9B44C;  
+            --text-dark: #1F2937;
+        }
+
+        /* --- BACKGROUND SULTAN (Mesh Gradient) --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            /* Gradasi lembut multi-warna di pojok-pojok layar */
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(197, 83%, 87%, 1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(47, 83%, 87%, 1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(354, 83%, 87%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(197, 83%, 87%, 1) 0, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(47, 83%, 87%, 1) 0, transparent 50%);
+        }
+
+        /* --- Navbar Glassmorphism --- */
+        .navbar-premium {
+            background: rgba(255, 255, 255, 0.6) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        /* --- Glassmorphism Card --- */
+        .card-table {
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(12px);
+        }
+
+        /* --- Page Header Style --- */
+        .page-header {
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- Button Style --- */
+        .btn-premium-success {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-premium-success:hover {
+            background-color: #153a66;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(29, 78, 137, 0.25);
+        }
+
+        /* --- Custom Datatable & Action Buttons --- */
+        #petTable thead th {
+            border: none;
+            color: #718096;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            padding-bottom: 15px;
+        }
+        #petTable tbody tr {
+            transition: all 0.2s ease;
+        }
+        #petTable tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            transform: scale(1.005);
+        }
+        #petTable tbody td {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+            padding: 16px 10px;
+            vertical-align: middle;
+        }
+        .btn-action-edit {
+            background-color: rgba(233, 180, 76, 0.15);
+            color: #B2841F;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+        }
+        .btn-action-edit:hover { background-color: var(--accent-color); color: white; }
+        .btn-action-delete {
+            background-color: rgba(220, 53, 69, 0.15);
+            color: #dc3545;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+        }
+        .btn-action-delete:hover { background-color: #dc3545; color: white; }
+
+        /* --- EFFECT SHIMMER / SKELETON LOADING --- */
+        .shimmer-row td {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-block {
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-block::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        /* Modal border radius */
+        .rounded-4 { border-radius: 1.2rem !important; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-premium sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-paw-fill me-2"></i>PAWFECT <span style="color:var(--accent-color);">CARE</span>
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="data.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tambah.html">Registrasi Hewan</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold m-0" style="color: var(--primary-color)">Manajemen Pasien</h2>
+                <p class="text-muted m-0 mt-1">Sistem informasi rekam medis eksklusif Paw Care.</p>
+            </div>
+            <a href="tambah.html" class="btn btn-premium-success">
+                <i class="bi bi-plus-lg me-2"></i>Pasien Baru
+            </a>
+        </div>
+
+        <div class="card card-table border-0 mb-5">
+            <table id="petTable" class="table w-100">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Hewan</th>
+                        <th>Jenis</th>
+                        <th>Ras</th>
+                        <th>Umur (Thn)</th>
+                        <th>Pemilik</th>
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr class="shimmer-row">
+                        <td><div class="shimmer-block" style="width: 30px"></div></td>
+                        <td><div class="shimmer-block" style="width: 100px"></div></td>
+                        <td><div class="shimmer-block" style="width: 70px"></div></td>
+                        <td><div class="shimmer-block" style="width: 120px"></div></td>
+                        <td><div class="shimmer-block" style="width: 40px"></div></td>
+                        <td><div class="shimmer-block" style="width: 90px"></div></td>
+                        <td><div class="shimmer-block" style="width: 80px"></div></td>
+                    </tr>
+                    <tr class="shimmer-row">
+                        <td><div class="shimmer-block" style="width: 30px"></div></td>
+                        <td><div class="shimmer-block" style="width: 80px"></div></td>
+                        <td><div class="shimmer-block" style="width: 60px"></div></td>
+                        <td><div class="shimmer-block" style="width: 100px"></div></td>
+                        <td><div class="shimmer-block" style="width: 40px"></div></td>
+                        <td><div class="shimmer-block" style="width: 110px"></div></td>
+                        <td><div class="shimmer-block" style="width: 80px"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <footer class="text-center text-muted mb-4 small">
+            © 2026 Pawfect Care Premium Services. All rights reserved.
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Simulasi delay 1.2 detik agar animasi shimmer loading terlihat menawan
+            setTimeout(function() {
+                // Hapus baris skeleton
+                $('#tableBody').empty();
+
+                // Inisialisasi DataTable
+                var table = $('#petTable').DataTable({
+                    ajax: '/api/pets',
+                    pageLength: 5,
+                    lengthMenu: [5, 10, 25],
+                    columns: [
+                        { data: 'id' },
+                        { data: 'name', className: 'fw-bold text-dark' },
+                        { data: 'type' },
+                        { data: 'breed' },
+                        { data: 'age' },
+                        { data: 'owner' },
+                        {
+                            data: null,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                return `
+                                    <a href="edit.html?id=${row.id}" class="btn btn-sm btn-action-edit" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-action-delete btn-delete" data-id="${row.id}" title="Hapus">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                `;
+                            }
+                        }
+                    ],
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Cari data pasien...",
+                        lengthMenu: "Tampilkan _MENU_ data",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ pasien",
+                        paginate: {
+                            previous: "<i class='bi bi-chevron-left'></i>",
+                            next: "<i class='bi bi-chevron-right'></i>"
+                        }
+                    }
+                });
+
+                // Style Search Bar DataTable agar makin estetik
+                $('.dataTables_filter input').addClass('form-control border-0 shadow-sm').css('background', 'rgba(255,255,255,0.7)');
+            }, 1200);
+
+            // Fungsionalitas Delete via SweetAlert2
+            $('#petTable').on('click', '.btn-delete', function() {
+                const id = $(this).data('id');
+                
+                Swal.fire({
+                    title: 'Hapus Data?',
+                    text: "Data yang dihapus tidak dapat dipulihkan kembali.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6e7881',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal',
+                    customClass: { popup: 'rounded-4' }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/api/pets/${id}`,
+                            type: 'DELETE',
+                            success: function(response) {
+                                Swal.fire({
+                                    title: 'Terhapus!',
+                                    text: response.message,
+                                    icon: 'success',
+                                    confirmButtonColor: '#1D4E89',
+                                    customClass: { popup: 'rounded-4' }
+                                });
+                                $('#petTable').DataTable().ajax.reload();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
