@@ -8,9 +8,9 @@
    <br><br>
  
 **Disusun Oleh :**<br>
-RICO ADE PRATAMA<br>
-2311102138<br>
-PS1IF-11-REG01
+Dheva Dewa Septiantoni<br>
+2311102324<br>
+IF-11-01
 <br><br>
  
 **Dosen Pengampu :**<br>
