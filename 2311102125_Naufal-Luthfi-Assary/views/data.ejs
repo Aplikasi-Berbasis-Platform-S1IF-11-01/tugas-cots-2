@@ -1,0 +1,70 @@
+<%- include('partials/header') %>
+
+<div class="topbar">
+  <div>
+    <span class="topbar-label">Product Data</span>
+    <h1 class="page-title">Data Produk</h1>
+    <p class="page-subtitle">Data produk Apple ditampilkan.</p>
+  </div>
+  <div class="owner-pill">Owner: iLutS</div>
+</div>
+
+<div class="content-card">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+      <h5 class="mb-1">Tabel Data Produk</h5>
+      <p class="page-subtitle mb-0">Daftar produk yang tersimpan di sistem</p>
+    </div>
+  </div>
+
+  <table id="productTable" class="table custom-table align-middle w-100">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nama Produk</th>
+        <th>Kategori</th>
+        <th>Harga</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-apple">
+      <form id="editForm">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold">Edit Produk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" id="editId" />
+
+          <div class="mb-3">
+            <label class="form-label">Nama Produk</label>
+            <input type="text" id="editNamaProduk" class="form-control custom-input" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Kategori</label>
+            <input type="text" id="editKategori" class="form-control custom-input" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Harga</label>
+            <input type="number" id="editHarga" class="form-control custom-input" required />
+          </div>
+        </div>
+
+        <div class="modal-footer border-0">
+          <button type="submit" class="btn btn-save">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,13 @@
+{
+  "name": "tugas-2-praktikum",
+  "version": "1.0.0",
+  "description": "Aplikasi CRUD produk dengan Express, Bootstrap, jQuery, dan DataTables",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2"
+  }
+}

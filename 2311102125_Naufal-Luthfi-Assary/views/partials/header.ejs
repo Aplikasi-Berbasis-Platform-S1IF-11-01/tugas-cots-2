@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <div class="brand">iLutS</div>
+        <div class="brand-subtitle">Apple Product Panel</div>
+
+        <nav class="sidebar-menu mt-4">
+          <a href="/" class="menu-item <%= title === 'Dashboard' ? 'active' : '' %>">Dashboard</a>
+          <a href="/form" class="menu-item <%= title === 'Form Input Produk' ? 'active' : '' %>">Form</a>
+          <a href="/data" class="menu-item <%= title === 'Data Produk' ? 'active' : '' %>">Data</a>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">2311102125 - Naufal Luthfi Assary</div>
+    </aside>
+
+    <main class="main-content">

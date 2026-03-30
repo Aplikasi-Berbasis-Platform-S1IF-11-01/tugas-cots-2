@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+
+<div class="topbar">
+  <div>
+    <span class="topbar-label">Apple Management System</span>
+    <h1 class="page-title">Tugas COTS 2 Aplikasi Berbasis Platform</h1>
+    <p class="page-subtitle">2311102125 - Naufal Luthfi Assary</p>
+  </div>
+  <div class="owner-pill">Owner: iLutS</div>
+</div>
+
+<div class="stats-grid">
+  <div class="stats-card">
+    <div class="stats-icon"></div>
+    <div>
+      <h6>Total Produk</h6>
+      <h3><%= summary.totalProduk %></h3>
+      <p>Jumlah seluruh produk Apple</p>
+    </div>
+  </div>
+
+  <div class="stats-card">
+    <div class="stats-icon">#</div>
+    <div>
+      <h6>Kategori Aktif</h6>
+      <h3><%= summary.kategoriAktif %></h3>
+      <p>Jumlah kategori yang berbeda</p>
+    </div>
+  </div>
+
+  <div class="stats-card">
+    <div class="stats-icon">Rp</div>
+    <div>
+      <h6>Total Harga</h6>
+      <h3>Rp <%= Number(summary.totalHarga).toLocaleString('id-ID') %></h3>
+      <p>Jumlah total harga seluruh produk</p>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

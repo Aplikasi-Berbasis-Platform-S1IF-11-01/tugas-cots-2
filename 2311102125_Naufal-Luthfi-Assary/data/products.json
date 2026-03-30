@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1774861921394,
+    "namaProduk": "iPad Pro M4",
+    "kategori": "iPad",
+    "harga": 15000000
+  },
+  {
+    "id": 1774883929707,
+    "namaProduk": "MacBook Pro M5",
+    "kategori": "Macbook",
+    "harga": 30000000
+  },
+  {
+    "id": 1774883959114,
+    "namaProduk": "iPad Pro M5",
+    "kategori": "iPad",
+    "harga": 40000000
+  },
+  {
+    "id": 1774884604455,
+    "namaProduk": "iPhone 18 Pro Max",
+    "kategori": "iPhone",
+    "harga": 40000000
+  }
+]
