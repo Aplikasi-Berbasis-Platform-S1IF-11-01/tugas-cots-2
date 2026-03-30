@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Management System</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+    <nav class="top-nav d-flex align-items-center justify-content-between px-4">
+      <div class="nav-brand d-flex align-items-center gap-2">
+        <span class="brand-icon"><i class="bi bi-box-seam-fill"></i></span>
+        <span class="brand-name">ProductHub</span>
+      </div>
+      <div class="nav-meta d-flex align-items-center gap-3">
+        <span class="nav-date" id="navDate"></span>
+        <div class="avatar-pill d-flex align-items-center gap-2">
+          <div class="avatar-dot"></div>
+          <span>Admin</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content px-4 py-4">
+
+      <div class="page-header mb-4">
+        <h1 class="page-title">Product Management System</h1>
+        <p class="page-subtitle">Manage your product inventory with full CRUD operations</p>
+      </div>
+
+      <div class="stats-bar d-flex gap-3 mb-4 flex-wrap">
+        <div class="stat-card">
+          <span class="stat-label">Total Products</span>
+          <span class="stat-value" id="statTotal">0</span>
+        </div>
+        <div class="stat-card stat-green">
+          <span class="stat-label">Electronics</span>
+          <span class="stat-value" id="statElec">0</span>
+        </div>
+        <div class="stat-card stat-orange">
+          <span class="stat-label">Fashion</span>
+          <span class="stat-value" id="statFashion">0</span>
+        </div>
+        <div class="stat-card stat-blue">
+          <span class="stat-label">Avg Price</span>
+          <span class="stat-value" id="statAvg">Rp 0</span>
+        </div>
+      </div>
+
+      <div class="form-card mb-4">
+        <div class="form-card-header d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <span class="form-card-icon"><i class="bi bi-plus-circle-fill"></i></span>
+            <span class="form-card-title" id="formTitle">New Product</span>
+          </div>
+          <button class="btn-reset-form" id="btnCancelEdit" style="display:none;" onclick="cancelEdit()">
+            <i class="bi bi-x-circle"></i> Cancel Edit
+          </button>
+        </div>
+
+        <div class="form-card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label-custom" for="inputNama">Nama Produk</label>
+              <input type="text" class="input-custom" id="inputNama" placeholder="e.g. iPhone 15 Pro Max"/>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label-custom" for="inputKategori">Kategori</label>
+              <select class="input-custom" id="inputKategori">
+                <option value="" disabled selected>Pilih Kategori</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Food & Beverage">Food & Beverage</option>
+                <option value="Home & Living">Home & Living</option>
+                <option value="Sports">Sports</option>
+                <option value="Beauty">Beauty</option>
+                <option value="Automotive">Automotive</option>
+                <option value="Books">Books</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label-custom" for="inputHarga">Harga (Rp)</label>
+              <input type="number" class="input-custom" id="inputHarga" placeholder="e.g. 15000000" min="0"/>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button class="btn-submit w-100" id="btnSubmit" onclick="submitProduct()">
+                <i class="bi bi-plus-lg me-1"></i> Tambah
+              </button>
+            </div>
+          </div>
+          <div id="formAlert" class="form-alert" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div class="d-flex align-items-center gap-2">
+            <span class="table-card-icon"><i class="bi bi-table"></i></span>
+            <span class="table-card-title">Daftar Produk</span>
+          </div>
+          <div class="table-meta" id="tableCount">Showing 0 products</div>
+        </div>
+
+        <div class="table-card-body">
+          <div class="table-responsive">
+            <table id="productTable" class="table table-hover align-middle w-100">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama Produk</th>
+                  <th>Kategori</th>
+                  <th>Harga</th>
+                  <th>Tanggal Ditambah</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title-custom"><i class="bi bi-pencil-square me-2"></i>Edit Produk</h5>
+          <button type="button" class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <input type="hidden" id="editId"/>
+          <div class="mb-3">
+            <label class="form-label-custom" for="editNama">Nama Produk</label>
+            <input type="text" class="input-custom" id="editNama"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom" for="editKategori">Kategori</label>
+            <select class="input-custom" id="editKategori">
+              <option value="Electronics">Electronics</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Food & Beverage">Food & Beverage</option>
+              <option value="Home & Living">Home & Living</option>
+              <option value="Sports">Sports</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Automotive">Automotive</option>
+              <option value="Books">Books</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom" for="editHarga">Harga (Rp)</label>
+            <input type="number" class="input-custom" id="editHarga" min="0"/>
+          </div>
+        </div>
+        <div class="modal-footer modal-footer-custom">
+          <button class="btn-cancel-modal" data-bs-dismiss="modal">Batal</button>
+          <button class="btn-save-modal" onclick="saveEdit()"><i class="bi bi-check-lg me-1"></i>Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content modal-custom">
+        <div class="modal-body modal-body-custom text-center py-4">
+          <div class="delete-icon-wrap mb-3"><i class="bi bi-trash3-fill"></i></div>
+          <h5 class="modal-delete-title">Hapus Produk?</h5>
+          <p class="modal-delete-sub" id="deleteProductName">Tindakan ini tidak dapat dibatalkan.</p>
+          <input type="hidden" id="deleteId"/>
+          <div class="d-flex gap-2 justify-content-center mt-4">
+            <button class="btn-cancel-modal" data-bs-dismiss="modal">Batal</button>
+            <button class="btn-delete-confirm" onclick="confirmDelete()"><i class="bi bi-trash3 me-1"></i>Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="appToast" class="toast toast-custom align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastBody">
+          <i class="bi bi-check-circle-fill me-2"></i> Berhasil!
+        </div>
+        <button type="button" class="btn-close btn-close-custom ms-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

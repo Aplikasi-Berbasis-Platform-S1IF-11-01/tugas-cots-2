@@ -1,0 +1,72 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "nim": "2021002",
+    "nama": "Siti Rahayu",
+    "jurusan": "Sistem Informasi",
+    "angkatan": 2021,
+    "ipk": 3.72,
+    "status": "Aktif",
+    "createdAt": "2024-01-10T08:05:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "nim": "2020001",
+    "nama": "Budi Santoso",
+    "jurusan": "Teknik Informatika",
+    "angkatan": 2020,
+    "ipk": 3.45,
+    "status": "Aktif",
+    "createdAt": "2024-01-10T08:10:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "nim": "2020002",
+    "nama": "Dewi Lestari",
+    "jurusan": "Manajemen Informatika",
+    "angkatan": 2020,
+    "ipk": 3.91,
+    "status": "Cuti",
+    "createdAt": "2024-01-10T08:15:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "nim": "2019001",
+    "nama": "Rizky Firmansyah",
+    "jurusan": "Teknik Komputer",
+    "angkatan": 2019,
+    "ipk": 2.89,
+    "status": "Tidak Aktif",
+    "createdAt": "2024-01-10T08:20:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "nim": "2022001",
+    "nama": "Ayu Wandira",
+    "jurusan": "Sistem Informasi",
+    "angkatan": 2022,
+    "ipk": 3.96,
+    "status": "Aktif",
+    "createdAt": "2024-01-10T08:25:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440007",
+    "nim": "2022002",
+    "nama": "Fajar Nugroho",
+    "jurusan": "Teknik Informatika",
+    "angkatan": 2022,
+    "ipk": 3.55,
+    "status": "Aktif",
+    "createdAt": "2024-01-10T08:30:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "nim": "2023001",
+    "nama": "Maya Indah",
+    "jurusan": "Manajemen Informatika",
+    "angkatan": 2023,
+    "ipk": 3.78,
+    "status": "Aktif",
+    "createdAt": "2024-01-10T08:35:00.000Z"
+  }
+]
