@@ -294,7 +294,7 @@ File form.ejs di atas merupakan halaman antarmuka formulir dinamis yang berfungs
 
 ## 4. Kesimpulan
 
-pada tugas cots2 ini adalah aplikasi CRUD (Create, Read, Update, Delete) berbasis Node.js yang menggunakan Express.js sebagai server dan EJS sebagai pengelola tampilan. Data dikelola secara dinamis dalam format JSON agar bisa ditampilkan secara otomatis oleh plugin DataTables, sementara Bootstrap 5 memastikan antarmuka formulir dan tabel terlihat modern serta responsif. Semua fungsi mulai dari menambah, mengedit, hingga menghapus data mahasiswa sudah terintegrasi secara rapi antara sisi backend dan frontend.
+Aplikasi CRUD Mahasiswa ini dibangun menggunakan stack Node.js, Express, dan EJS. Sistem mengelola data dalam format JSON agar kompatibel dengan DataTables, sehingga tampilan tabel menjadi lebih interaktif. Dengan dukungan Bootstrap 5, antarmuka aplikasi dijamin responsif dan estetik. Integrasi penuh antara frontend dan backend memungkinkan operasi tambah, edit, dan hapus data berjalan secara seamless.
 ---
 
 ## 5. Referensi
@@ -307,4 +307,4 @@ pada tugas cots2 ini adalah aplikasi CRUD (Create, Read, Update, Delete) berbasi
 6. https://ejs.co
 
 ## 6. Link Video Presentasi
-
+https://drive.google.com/file/d/1L5MJ8KswylSeetxRPUCgHfDYTtY4hjJQ/view?usp=sharing
