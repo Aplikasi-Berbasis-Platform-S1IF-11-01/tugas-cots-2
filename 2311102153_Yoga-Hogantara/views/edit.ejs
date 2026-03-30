@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="main-card shadow-lg p-5" style="border-color: #d4a017;">
+                <h3 class="fw-bold mb-4 text-center" style="color: #d4a017;">EDIT DATA</h3>
+                <form id="formEdit">
+                    <input type="hidden" name="id" value="<%= student.id %>">
+                    <div class="mb-3">
+                        <label class="small text-muted mb-2">NIM</label>
+                        <input type="text" name="nim" class="form-control" value="<%= student.nim %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted mb-2">NAMA</label>
+                        <input type="text" name="nama" class="form-control" value="<%= student.nama %>" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="small text-muted mb-2">JURUSAN</label>
+                        <input type="text" name="jurusan" class="form-control" value="<%student.jurusan%>" required>
+                    </div>
+                    <button type="submit" class="btn w-100 fw-bold py-3" style="background:#d4a017; color:#ffffff !important; border:none;">UPDATE DATA</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/footer') %>
+<script>
+    $('#formEdit').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({ url: '/api/students', type: 'POST', data: $(this).serialize(), success: () => { alert('Terupdate!'); window.location.href = '/data'; } });
+    });
+</script>

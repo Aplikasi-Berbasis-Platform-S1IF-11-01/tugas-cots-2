@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="main-card shadow-lg p-5">
+                <h3 class="fw-bold mb-4 text-center">ENTRY DATA</h3>
+                <form id="formAction">
+                    <div class="mb-3">
+                        <label class="small text-muted mb-2">NOMOR INDUK MAHASISWA</label>
+                        <input type="text" name="nim" class="form-control" required placeholder="Contoh: 231110XXXX">
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted mb-2">NAMA LENGKAP</label>
+                        <input type="text" name="nama" class="form-control" required placeholder="Masukkan Nama">
+                    </div>
+                    <div class="mb-4">
+                        <label class="small text-muted mb-2">JURUSAN</label>
+                        <input type="text" name="jurusan" class="form-control" required placeholder="Ketik Jurusan (ex: Informatika)">
+                    </div>
+                    <button type="submit" class="btn btn-light w-100 fw-bold py-3 text-dark">SAVE DATA</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+    $('#formAction').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({ 
+            url: '/api/students', 
+            type: 'POST', 
+            data: $(this).serialize(), 
+            success: () => { 
+                alert('Data Berhasil Ditambah!'); 
+                window.location.href = '/data'; 
+            } 
+        });
+    });
+</script>

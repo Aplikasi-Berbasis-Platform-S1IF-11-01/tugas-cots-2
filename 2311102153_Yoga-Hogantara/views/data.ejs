@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <h2>DATABASE</h2>
+            </div>
+        </div>
+        <div class="main-card shadow-lg">
+            <table id="myTable" class="table w-100" style="color: #f0ead6;">
+                <thead>
+                    <tr>
+                        <th>NIM</th>
+                        <th>NAMA</th>
+                        <th>JURUSAN</th>
+                        <th>AKSI</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <%- include('partials/footer') %>
+        <script>
+            $(document).ready(function () {
+                const table = $('#myTable').DataTable({
+                    ajax: '/api/students',
+                    columns: [
+                        { data: 'nim' },
+                        { data: 'nama', render: (d) => d.toUpperCase() },
+                        { data: 'jurusan' },
+                        {
+                            data: 'id',
+                            render: (data) => `
+                                <div class="btn-group">
+                                    <a href="/edit/${data}" class="btn btn-sm" style="background:#d4a017; color:#ffffff !important; font-weight:bold; border:none;">EDIT</a>
+                                    <button class="btn btn-sm" style="background:#a30000; color:#ffffff !important; font-weight:bold; border:none;" onclick="hapus(${data})">HAPUS</button>
+                                </div>`
+                        }
+                    ]
+                });
+                window.hapus = (id) => {
+                    if (confirm('Hapus data?')) $.ajax({ url: `/api/students/${id}`, type: 'DELETE', success: () => table.ajax.reload() });
+                };
+            });
+        </script>
