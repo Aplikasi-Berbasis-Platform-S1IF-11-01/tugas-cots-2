@@ -289,6 +289,7 @@ File form.ejs di atas merupakan halaman antarmuka formulir dinamis yang berfungs
 ![](assets/5.PNG)
 6. Proses Hapus Data
 ![](assets/6.PNG)
+![](assets/7.PNG)
 ---
 
 ## 4. Kesimpulan
