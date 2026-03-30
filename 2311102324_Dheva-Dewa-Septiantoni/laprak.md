@@ -2,7 +2,7 @@
    <h2>LAPORAN PRAKTIKUM<br>APLIKASI BERBASIS PLATFORM</h2>
    <h>
    <br>
-   <h4>TUGAS COTS 2<br>MANAJEMEN PRODUCT - YNWA INVENTORY</h4>
+   <h4>TUGAS COTS 2<br>TABEL DATA MAHASISWA</h4>
    <br>
    <img src="assets/logotelu.png" alt="Logo Telkom" width="200">
    <br><br>
