@@ -5,7 +5,7 @@
   <h3>Tugas COTS-2 <br></h3>
   <br />
   <br />
- <img src="assets/TU.jpeg" alt ="TU" width = "300"> 
+ <img src="assets/TU.jpg" alt ="TU" width = "300"> 
   <br />
   <br />
   <h3>Disusun Oleh :</h3>
