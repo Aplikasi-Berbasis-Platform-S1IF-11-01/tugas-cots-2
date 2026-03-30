@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 2 - Satrio Wibowo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar { margin-bottom: 30px; }
+        .card { border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Tugas 2 COTS</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link <%= page === 'home' ? 'active' : '' %>" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link <%= page === 'form' ? 'active' : '' %>" href="/form">Form Input</a></li>
+                <li class="nav-item"><a class="nav-link <%= page === 'tabel' ? 'active' : '' %>" href="/tabel">Data Tabel</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2 class="text-center mb-4">Manajemen Produk - Satrio Wibowo (2311102149)</h2>
+
+    <% if (page === 'home') { %>
+        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
+            <h1>Selamat Datang!</h1>
+            <p class="lead">Ini adalah aplikasi web sederhana berbasis Node.js Express untuk memenuhi Tugas 2 Praktikum.</p>
+            <hr>
+            <p>Gunakan menu navigasi di atas untuk mengelola data produk.</p>
+        </div>
+
+    <% } else if (page === 'form') { %>
+        <div class="card mb-4">
+            <div id="formHeader" class="card-header bg-primary text-white">Tambah Produk Baru</div>
+            <div class="card-body">
+                <form id="productForm">
+                    <input type="hidden" id="editId">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Nama Produk</label>
+                            <input type="text" id="nama" class="form-control" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select id="kategori" class="form-select" required>
+                                <option value="">Pilih...</option>
+                                <option value="Elektronik">Elektronik</option>
+                                <option value="Pakaian">Pakaian</option>
+                                <option value="Makanan">Makanan</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Harga</label>
+                            <input type="number" id="harga" class="form-control" required>
+                        </div>
+                        <div class="col-md-2 mb-3 d-flex align-items-end">
+                            <button type="submit" id="btnSubmit" class="btn btn-success w-100">Simpan</button>
+                            <button type="button" id="btnCancel" class="btn btn-secondary w-100 ms-2" style="display:none;">Batal</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <% } else if (page === 'tabel') { %>
+        <div class="card">
+            <div class="card-body">
+                <table id="productTable" class="table table-hover table-bordered w-100">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th><th>Nama Produk</th><th>Kategori</th><th>Harga</th><th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    let table;
+    let isEditing = false;
+
+    $(document).ready(function() {
+        // Inisialisasi DataTable hanya jika ada di halaman tabel
+        if ($('#productTable').length) {
+            table = $('#productTable').DataTable({
+                ajax: '/api/products',
+                columns: [
+                    { data: 'id' },
+                    { data: 'nama' },
+                    { data: 'kategori' },
+                    { data: 'harga', render: (data) => `Rp ${data}` },
+                    { 
+                        data: 'id',
+                        render: (id) => `
+                            <button class="btn btn-warning btn-sm" onclick="editData('${id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteData('${id}')">Hapus</button>
+                        `
+                    }
+                ]
+            });
+        }
+
+        // Handle Submit Form
+        $('#productForm').on('submit', function(e) {
+            e.preventDefault();
+            const id = $('#editId').val();
+            const url = isEditing ? `/api/products/update/${id}` : '/api/products';
+            
+            $.post(url, {
+                nama: $('#nama').val(),
+                kategori: $('#kategori').val(),
+                harga: $('#harga').val()
+            }, function() {
+                alert('Data berhasil diproses!');
+                window.location.href = '/tabel'; // Pindah ke halaman tabel setelah simpan
+            });
+        });
+
+        // Cek jika ada parameter edit di URL (untuk fitur edit lintas halaman)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('edit')) {
+            loadEditData(urlParams.get('edit'));
+        }
+    });
+
+    function deleteData(id) {
+        if(confirm('Hapus produk ini?')) {
+            $.ajax({ url: `/api/products/${id}`, type: 'DELETE', success: () => table.ajax.reload() });
+        }
+    }
+
+    function editData(id) {
+        // Pindah ke halaman form sambil membawa ID yang mau diedit
+        window.location.href = '/form?edit=' + id;
+    }
+
+    function loadEditData(id) {
+        $.get(`/api/products/${id}`, function(data) {
+            $('#editId').val(data.id);
+            $('#nama').val(data.nama);
+            $('#kategori').val(data.kategori);
+            $('#harga').val(data.harga.replace(/\./g, ''));
+
+            isEditing = true;
+            $('#formHeader').text('Edit Produk ID: ' + id).removeClass('bg-primary').addClass('bg-warning text-dark');
+            $('#btnSubmit').text('Simpan Perubahan').removeClass('btn-success').addClass('btn-warning');
+            $('#btnCancel').show().click(() => window.location.href = '/form');
+        });
+    }
+</script>
+</body>
+</html>
